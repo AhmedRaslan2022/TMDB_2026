@@ -5,7 +5,13 @@
       location = "group:TMDB.xcodeproj">
    </FileRef>
    <FileRef
-      location = "group:Packages">
+      location = "group:Packages/Core">
+   </FileRef>
+   <FileRef
+      location = "group:Packages/Features">
+   </FileRef>
+   <FileRef
+      location = "group:Packages/Shared">
    </FileRef>
    <FileRef
       location = "group:docs">

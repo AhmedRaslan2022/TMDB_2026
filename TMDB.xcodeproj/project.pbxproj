@@ -6,6 +6,21 @@
 	objectVersion = 77;
 	objects = {
 
+/* Begin PBXBuildFile section */
+		BEEF0000000000000000000A /* CoreModels in Frameworks */ = {isa = PBXBuildFile; productRef = CAFE0000000000000000000A /* CoreModels */; };
+		BEEF0000000000000000000B /* CoreUtilities in Frameworks */ = {isa = PBXBuildFile; productRef = CAFE0000000000000000000B /* CoreUtilities */; };
+		BEEF0000000000000000000C /* CoreEnvironment in Frameworks */ = {isa = PBXBuildFile; productRef = CAFE0000000000000000000C /* CoreEnvironment */; };
+		BEEF0000000000000000000D /* CoreNetworking in Frameworks */ = {isa = PBXBuildFile; productRef = CAFE0000000000000000000D /* CoreNetworking */; };
+		BEEF0000000000000000000E /* CoreStorage in Frameworks */ = {isa = PBXBuildFile; productRef = CAFE0000000000000000000E /* CoreStorage */; };
+		BEEF0000000000000000000F /* CoreUI in Frameworks */ = {isa = PBXBuildFile; productRef = CAFE0000000000000000000F /* CoreUI */; };
+		BEEF0000000000000000001A /* FeatureAuth in Frameworks */ = {isa = PBXBuildFile; productRef = CAFE0000000000000000001A /* FeatureAuth */; };
+		BEEF0000000000000000001B /* FeatureHome in Frameworks */ = {isa = PBXBuildFile; productRef = CAFE0000000000000000001B /* FeatureHome */; };
+		BEEF0000000000000000001C /* FeatureMovieDetails in Frameworks */ = {isa = PBXBuildFile; productRef = CAFE0000000000000000001C /* FeatureMovieDetails */; };
+		BEEF0000000000000000001D /* FeatureSearch in Frameworks */ = {isa = PBXBuildFile; productRef = CAFE0000000000000000001D /* FeatureSearch */; };
+		BEEF0000000000000000001E /* FeatureFavorites in Frameworks */ = {isa = PBXBuildFile; productRef = CAFE0000000000000000001E /* FeatureFavorites */; };
+		BEEF0000000000000000001F /* FeatureProfile in Frameworks */ = {isa = PBXBuildFile; productRef = CAFE0000000000000000001F /* FeatureProfile */; };
+/* End PBXBuildFile section */
+
 /* Begin PBXContainerItemProxy section */
 		A37BE8A73006C0D20047E68A /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
@@ -53,6 +68,18 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				BEEF0000000000000000000A /* CoreModels in Frameworks */,
+				BEEF0000000000000000000B /* CoreUtilities in Frameworks */,
+				BEEF0000000000000000000C /* CoreEnvironment in Frameworks */,
+				BEEF0000000000000000000D /* CoreNetworking in Frameworks */,
+				BEEF0000000000000000000E /* CoreStorage in Frameworks */,
+				BEEF0000000000000000000F /* CoreUI in Frameworks */,
+				BEEF0000000000000000001A /* FeatureAuth in Frameworks */,
+				BEEF0000000000000000001B /* FeatureHome in Frameworks */,
+				BEEF0000000000000000001C /* FeatureMovieDetails in Frameworks */,
+				BEEF0000000000000000001D /* FeatureSearch in Frameworks */,
+				BEEF0000000000000000001E /* FeatureFavorites in Frameworks */,
+				BEEF0000000000000000001F /* FeatureProfile in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -114,6 +141,18 @@
 			);
 			name = TMDB;
 			packageProductDependencies = (
+				CAFE0000000000000000000A /* CoreModels */,
+				CAFE0000000000000000000B /* CoreUtilities */,
+				CAFE0000000000000000000C /* CoreEnvironment */,
+				CAFE0000000000000000000D /* CoreNetworking */,
+				CAFE0000000000000000000E /* CoreStorage */,
+				CAFE0000000000000000000F /* CoreUI */,
+				CAFE0000000000000000001A /* FeatureAuth */,
+				CAFE0000000000000000001B /* FeatureHome */,
+				CAFE0000000000000000001C /* FeatureMovieDetails */,
+				CAFE0000000000000000001D /* FeatureSearch */,
+				CAFE0000000000000000001E /* FeatureFavorites */,
+				CAFE0000000000000000001F /* FeatureProfile */,
 			);
 			productName = TMDB;
 			productReference = A37BE8973006C0D00047E68A /* TMDB.app */;
@@ -197,6 +236,11 @@
 			);
 			mainGroup = A37BE88E3006C0D00047E68A;
 			minimizedProjectReferenceProxies = 1;
+			packageReferences = (
+				CAFE000000000000000000C0 /* XCLocalSwiftPackageReference "Packages/Core" */,
+				CAFE000000000000000000C1 /* XCLocalSwiftPackageReference "Packages/Features" */,
+				CAFE000000000000000000C2 /* XCLocalSwiftPackageReference "Packages/Shared" */,
+			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = A37BE8983006C0D00047E68A /* Products */;
 			projectDirPath = "";
@@ -572,6 +616,72 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCLocalSwiftPackageReference section */
+		CAFE000000000000000000C0 /* XCLocalSwiftPackageReference "Packages/Core" */ = {
+			isa = XCLocalSwiftPackageReference;
+			relativePath = Packages/Core;
+		};
+		CAFE000000000000000000C1 /* XCLocalSwiftPackageReference "Packages/Features" */ = {
+			isa = XCLocalSwiftPackageReference;
+			relativePath = Packages/Features;
+		};
+		CAFE000000000000000000C2 /* XCLocalSwiftPackageReference "Packages/Shared" */ = {
+			isa = XCLocalSwiftPackageReference;
+			relativePath = Packages/Shared;
+		};
+/* End XCLocalSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		CAFE0000000000000000000A /* CoreModels */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = CoreModels;
+		};
+		CAFE0000000000000000000B /* CoreUtilities */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = CoreUtilities;
+		};
+		CAFE0000000000000000000C /* CoreEnvironment */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = CoreEnvironment;
+		};
+		CAFE0000000000000000000D /* CoreNetworking */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = CoreNetworking;
+		};
+		CAFE0000000000000000000E /* CoreStorage */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = CoreStorage;
+		};
+		CAFE0000000000000000000F /* CoreUI */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = CoreUI;
+		};
+		CAFE0000000000000000001A /* FeatureAuth */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = FeatureAuth;
+		};
+		CAFE0000000000000000001B /* FeatureHome */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = FeatureHome;
+		};
+		CAFE0000000000000000001C /* FeatureMovieDetails */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = FeatureMovieDetails;
+		};
+		CAFE0000000000000000001D /* FeatureSearch */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = FeatureSearch;
+		};
+		CAFE0000000000000000001E /* FeatureFavorites */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = FeatureFavorites;
+		};
+		CAFE0000000000000000001F /* FeatureProfile */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = FeatureProfile;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = A37BE88F3006C0D00047E68A /* Project object */;
 }

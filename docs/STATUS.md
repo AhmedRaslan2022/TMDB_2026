@@ -6,8 +6,8 @@ Task checklist mirroring `docs/SPRINTS.md`. One line per deviation/decision.
 
 ## Sprint 0 — Foundation & Tooling
 
-- [ ] 0.1 Create Xcode workspace + thin app target
-- [ ] 0.2 Scaffold all SPM packages with dependency graph wired
+- [x] 0.1 Create Xcode workspace + thin app target
+- [x] 0.2 Scaffold all SPM packages with dependency graph wired
 - [ ] 0.3 SwiftLint + SwiftFormat, pre-commit hook, .editorconfig
 - [ ] 0.4 Create 4 xcconfig files + 4 build configs + 4 schemes
 - [ ] 0.5 Secrets.xcconfig (git-ignored) + Secrets.example.xcconfig committed
@@ -26,6 +26,7 @@ Task checklist mirroring `docs/SPRINTS.md`. One line per deviation/decision.
 - [ ] Repo history clean
 
 ### Decisions / Deviations
+- 0.2: Three manifests (Core, Features, Shared) with multiple library products each, matching the CLAUDE.md module map — not 13 separate packages. Swift tools 6.0 (strict concurrency), platform iOS 17.
 - Sprint backlog file moved from repo root (`TMDB-App-Sprints.md`) to `docs/SPRINTS.md` per CLAUDE.md.
 - No git remote configured yet → per-task branches are squash-merged into `develop` locally; PRs start once a remote exists.
 
