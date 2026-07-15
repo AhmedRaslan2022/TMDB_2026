@@ -14,16 +14,17 @@ Task checklist mirroring `docs/SPRINTS.md`. One line per deviation/decision.
 - [x] 0.6 CoreEnvironment.AppEnvironment — type-safe config reader
 - [x] 0.7 Per-env bundle IDs, app names, DEV/STG icon badge
 - [x] 0.8 CoreNetworking: APIClient, Endpoint protocol, request builder, error mapping
-- [x] 0.9 Auth interceptor (v4 Bearer) + `/configuration` smoke test — wiring verified on simulator (401 with placeholder token); 200 pending real token in Secrets.xcconfig
+- [x] 0.9 Auth interceptor (v4 Bearer) + `/configuration` smoke test — 200 OK verified on simulator with the real token
 - [x] 0.10 CoreUI design tokens + base components stub
 - [x] 0.11 DI approach decided + AppContainer skeleton
 - [x] 0.12 README v1
 
-### Sprint 0 Definition of Done
-- [ ] All 4 schemes build & run a blank screen
-- [ ] `/configuration` returns 200 in a debug log
-- [ ] Lint passes
-- [ ] Repo history clean
+### Sprint 0 Definition of Done — verified 2026-07-15 ✅
+- [x] All 4 schemes build & run a blank screen (TMDB-Dev/Staging/Test/Live, iPhone 17 Pro sim)
+- [x] `/configuration` returns 200 in a debug log — `SmokeCheck: /configuration → 200 OK (env: Dev)`
+- [x] Lint passes — `swiftformat --lint` + `swiftlint --strict` clean; pre-commit hook enforcing
+- [x] Repo history clean — one conventional squash commit per task on `develop` ("pushed" pending: no remote configured yet)
+- Tests: 21 Swift Testing cases green in Packages/Core (CoreEnvironment, CoreNetworking); app unit test target green on TMDB-Test scheme.
 
 ### Decisions / Deviations
 - 0.2: Three manifests (Core, Features, Shared) with multiple library products each, matching the CLAUDE.md module map — not 13 separate packages. Swift tools 6.0 (strict concurrency), platform iOS 17.
