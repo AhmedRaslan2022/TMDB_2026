@@ -10,8 +10,8 @@ Task checklist mirroring `docs/SPRINTS.md`. One line per deviation/decision.
 - [x] 0.2 Scaffold all SPM packages with dependency graph wired
 - [x] 0.3 SwiftLint + SwiftFormat, pre-commit hook, .editorconfig
 - [x] 0.4 Create 4 xcconfig files + 4 build configs + 4 schemes
-- [ ] 0.5 Secrets.xcconfig (git-ignored) + Secrets.example.xcconfig committed
-- [ ] 0.6 CoreEnvironment.AppEnvironment — type-safe config reader
+- [x] 0.5 Secrets.xcconfig (git-ignored) + Secrets.example.xcconfig committed
+- [x] 0.6 CoreEnvironment.AppEnvironment — type-safe config reader
 - [ ] 0.7 Per-env bundle IDs, app names, DEV/STG icon badge
 - [ ] 0.8 CoreNetworking: APIClient, Endpoint protocol, request builder, error mapping
 - [ ] 0.9 Auth interceptor (v4 Bearer) + `/configuration` smoke test
@@ -29,6 +29,7 @@ Task checklist mirroring `docs/SPRINTS.md`. One line per deviation/decision.
 - 0.2: Three manifests (Core, Features, Shared) with multiple library products each, matching the CLAUDE.md module map — not 13 separate packages. Swift tools 6.0 (strict concurrency), platform iOS 17.
 - 0.3: Pre-commit hook is versioned in `.githooks/`; enable per clone with `git config core.hooksPath .githooks`. Trailing commas mandatory (SwiftFormat + SwiftLint agree).
 - 0.4: Debug/Release replaced outright by Dev/Staging/Test/Live (not added alongside). Deployment target lowered from template 26.4 to iOS 17.0. Known SwiftPM heuristic: custom config names build package deps with release-style codegen — accepted.
+- 0.6: Throwing `AppEnvironment(infoDictionary:)` for testability + trapping `load(from:)` for the composition root. Partial `TMDB/Info.plist` merged via GENERATE_INFOPLIST_FILE; Info.plist excluded from the synchronized group to avoid duplicate-output collision.
 - Sprint backlog file moved from repo root (`TMDB-App-Sprints.md`) to `docs/SPRINTS.md` per CLAUDE.md.
 - No git remote configured yet → per-task branches are squash-merged into `develop` locally; PRs start once a remote exists.
 

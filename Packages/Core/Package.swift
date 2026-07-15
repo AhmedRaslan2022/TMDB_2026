@@ -20,5 +20,6 @@ let package = Package(
         .target(name: "CoreNetworking", dependencies: ["CoreUtilities"]),
         .target(name: "CoreStorage", dependencies: ["CoreUtilities"]),
         .target(name: "CoreUI", dependencies: ["CoreUtilities"]),
+        .testTarget(name: "CoreEnvironmentTests", dependencies: ["CoreEnvironment"]),
     ]
 )

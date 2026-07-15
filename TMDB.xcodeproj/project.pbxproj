@@ -49,9 +49,22 @@
 		DDCF000000000000000000F4 /* Live.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Live.xcconfig; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
+/* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
+		DDCF00000000000000000E01 /* Exceptions for "TMDB" folder in "TMDB" target */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				Info.plist,
+			);
+			target = A37BE8963006C0D00047E68A /* TMDB */;
+		};
+/* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
+
 /* Begin PBXFileSystemSynchronizedRootGroup section */
 		A37BE8993006C0D00047E68A /* TMDB */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
+			exceptions = (
+				DDCF00000000000000000E01 /* Exceptions for "TMDB" folder in "TMDB" target */,
+			);
 			path = TMDB;
 			sourceTree = "<group>";
 		};
@@ -104,17 +117,6 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		DDCF0000000000000000000A /* Configs */ = {
-			isa = PBXGroup;
-			children = (
-				DDCF000000000000000000F1 /* Dev.xcconfig */,
-				DDCF000000000000000000F2 /* Staging.xcconfig */,
-				DDCF000000000000000000F3 /* Test.xcconfig */,
-				DDCF000000000000000000F4 /* Live.xcconfig */,
-			);
-			path = Configs;
-			sourceTree = "<group>";
-		};
 		A37BE88E3006C0D00047E68A = {
 			isa = PBXGroup;
 			children = (
@@ -135,6 +137,17 @@
 				A37BE8B03006C0D20047E68A /* TMDBUITests.xctest */,
 			);
 			name = Products;
+			sourceTree = "<group>";
+		};
+		DDCF0000000000000000000A /* Configs */ = {
+			isa = PBXGroup;
+			children = (
+				DDCF000000000000000000F1 /* Dev.xcconfig */,
+				DDCF000000000000000000F2 /* Staging.xcconfig */,
+				DDCF000000000000000000F3 /* Test.xcconfig */,
+				DDCF000000000000000000F4 /* Live.xcconfig */,
+			);
+			path = Configs;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -544,6 +557,7 @@
 				CURRENT_PROJECT_VERSION = 1;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = TMDB/Info.plist;
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
@@ -575,6 +589,7 @@
 				CURRENT_PROJECT_VERSION = 1;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = TMDB/Info.plist;
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
@@ -606,6 +621,7 @@
 				CURRENT_PROJECT_VERSION = 1;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = TMDB/Info.plist;
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
@@ -637,6 +653,7 @@
 				CURRENT_PROJECT_VERSION = 1;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = TMDB/Info.plist;
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
