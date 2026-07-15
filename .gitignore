@@ -1,0 +1,23 @@
+# macOS
+.DS_Store
+
+# Xcode
+xcuserdata/
+*.xcuserstate
+DerivedData/
+build/
+*.xcscmblueprint
+*.xccheckout
+
+# SPM
+.build/
+.swiftpm/
+Package.resolved
+
+# Secrets — never commit real values
+Configs/Secrets.xcconfig
+
+# Fastlane (Sprint 9)
+fastlane/report.xml
+fastlane/screenshots/**/*.png
+fastlane/test_output
