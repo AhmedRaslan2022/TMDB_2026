@@ -13,8 +13,8 @@ Task checklist mirroring `docs/SPRINTS.md`. One line per deviation/decision.
 - [x] 0.5 Secrets.xcconfig (git-ignored) + Secrets.example.xcconfig committed
 - [x] 0.6 CoreEnvironment.AppEnvironment — type-safe config reader
 - [x] 0.7 Per-env bundle IDs, app names, DEV/STG icon badge
-- [ ] 0.8 CoreNetworking: APIClient, Endpoint protocol, request builder, error mapping
-- [ ] 0.9 Auth interceptor (v4 Bearer) + `/configuration` smoke test
+- [x] 0.8 CoreNetworking: APIClient, Endpoint protocol, request builder, error mapping
+- [x] 0.9 Auth interceptor (v4 Bearer) + `/configuration` smoke test — wiring verified on simulator (401 with placeholder token); 200 pending real token in Secrets.xcconfig
 - [ ] 0.10 CoreUI design tokens + base components stub
 - [ ] 0.11 DI approach decided + AppContainer skeleton
 - [ ] 0.12 README v1
@@ -31,6 +31,8 @@ Task checklist mirroring `docs/SPRINTS.md`. One line per deviation/decision.
 - 0.4: Debug/Release replaced outright by Dev/Staging/Test/Live (not added alongside). Deployment target lowered from template 26.4 to iOS 17.0. Known SwiftPM heuristic: custom config names build package deps with release-style codegen — accepted.
 - 0.6: Throwing `AppEnvironment(infoDictionary:)` for testability + trapping `load(from:)` for the composition root. Partial `TMDB/Info.plist` merged via GENERATE_INFOPLIST_FILE; Info.plist excluded from the synchronized group to avoid duplicate-output collision.
 - 0.7: Placeholder script-generated icons (TMDB wordmark + DEV/STG/TEST banner); real branding replaces them in Sprint 8. Test env also badged, not just DEV/STG.
+- 0.8: URLProtocol stub lives in CoreNetworkingTests, not SharedTestSupport — Shared already depends on Core, the reverse edge would cycle. Packages declare macOS 14 so `swift test` runs on the host.
+- 0.9: BearerAuthInterceptor takes a token-provider closure so CoreNetworking stays independent of CoreEnvironment; composition root bridges them. Debug-only smoke check in the app target.
 - Sprint backlog file moved from repo root (`TMDB-App-Sprints.md`) to `docs/SPRINTS.md` per CLAUDE.md.
 - No git remote configured yet → per-task branches are squash-merged into `develop` locally; PRs start once a remote exists.
 

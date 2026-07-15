@@ -10,53 +10,50 @@ private struct ImagesResponse: Decodable, Equatable {
     let baseUrl: String
 }
 
-/// Serialized: all cases share the URLProtocolStub's global state.
-@Suite(.serialized)
-final class URLSessionAPIClientTests {
-    private let client = URLSessionAPIClient(
-        baseURL: URL(string: "https://api.example.com/3")!,
-        session: URLProtocolStub.makeSession()
-    )
+struct URLSessionAPIClientTests {
+    private let client: URLSessionAPIClient
+    private let stub: URLProtocolStub.Handle
 
-    deinit {
-        URLProtocolStub.reset()
+    init() {
+        let (session, stub) = URLProtocolStub.makeSession()
+        self.stub = stub
+        client = URLSessionAPIClient(
+            baseURL: URL(string: "https://api.example.com/3")!,
+            session: session
+        )
     }
 
     @Test func decodesSnakeCaseSuccessResponse() async throws {
-        URLProtocolStub.stub(statusCode: 200, data: Data(#"{"base_url":"https://image.tmdb.org"}"#.utf8))
+        stub.stub(statusCode: 200, data: Data(#"{"base_url":"https://image.tmdb.org"}"#.utf8))
 
         let response: ImagesResponse = try await client.send(ConfigurationEndpoint())
 
         #expect(response == ImagesResponse(baseUrl: "https://image.tmdb.org"))
-        #expect(URLProtocolStub.lastRequest?.url?.path() == "/3/configuration")
+        #expect(stub.lastRequest?.url?.path() == "/3/configuration")
     }
 
     @Test func mapsUnauthorized() async {
-        URLProtocolStub.stub(statusCode: 401)
-
-        await #expect(throws: APIError.self) {
-            try await self.client.sendRaw(ConfigurationEndpoint())
-        }
+        stub.stub(statusCode: 401)
         await expectAPIError(.unauthorized)
     }
 
     @Test func mapsNotFound() async {
-        URLProtocolStub.stub(statusCode: 404)
+        stub.stub(statusCode: 404)
         await expectAPIError(.notFound)
     }
 
     @Test func mapsClientError() async {
-        URLProtocolStub.stub(statusCode: 422)
+        stub.stub(statusCode: 422)
         await expectAPIError(.client(statusCode: 422))
     }
 
     @Test func mapsServerError() async {
-        URLProtocolStub.stub(statusCode: 503)
+        stub.stub(statusCode: 503)
         await expectAPIError(.server(statusCode: 503))
     }
 
     @Test func mapsTransportError() async {
-        URLProtocolStub.stub(error: URLError(.notConnectedToInternet))
+        stub.stub(error: URLError(.notConnectedToInternet))
 
         do {
             try await client.sendRaw(ConfigurationEndpoint())
@@ -69,7 +66,7 @@ final class URLSessionAPIClientTests {
     }
 
     @Test func mapsDecodingFailure() async {
-        URLProtocolStub.stub(statusCode: 200, data: Data(#"{"unexpected":true}"#.utf8))
+        stub.stub(statusCode: 200, data: Data(#"{"unexpected":true}"#.utf8))
 
         do {
             let _: ImagesResponse = try await client.send(ConfigurationEndpoint())

@@ -16,14 +16,17 @@ public protocol APIClient: Sendable {
 public final class URLSessionAPIClient: APIClient {
     private let baseURL: URL
     private let session: URLSession
+    private let interceptors: [any RequestInterceptor]
     private let decoder: JSONDecoder
 
     /// - Parameters:
     ///   - baseURL: Root of the API, e.g. `https://api.themoviedb.org/3`.
     ///   - session: Injectable for `URLProtocol`-stubbed tests.
-    public init(baseURL: URL, session: URLSession = .shared) {
+    ///   - interceptors: Applied to every request, in order (e.g. auth).
+    public init(baseURL: URL, session: URLSession = .shared, interceptors: [any RequestInterceptor] = []) {
         self.baseURL = baseURL
         self.session = session
+        self.interceptors = interceptors
         let decoder = JSONDecoder()
         decoder.keyDecodingStrategy = .convertFromSnakeCase
         self.decoder = decoder
@@ -40,7 +43,10 @@ public final class URLSessionAPIClient: APIClient {
 
     @discardableResult
     public func sendRaw(_ endpoint: some Endpoint) async throws -> Data {
-        let request = try RequestBuilder.makeRequest(for: endpoint, baseURL: baseURL)
+        var request = try RequestBuilder.makeRequest(for: endpoint, baseURL: baseURL)
+        for interceptor in interceptors {
+            request = try await interceptor.adapt(request)
+        }
 
         let (data, response): (Data, URLResponse)
         do {

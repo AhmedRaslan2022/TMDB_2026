@@ -1,60 +1,75 @@
 import Foundation
 
-/// Intercepts every request on a stubbed `URLSession` and replies with the
-/// configured result. No test ever touches the real network.
+/// Serves stubbed responses for a single `URLSession`. Each call to
+/// `makeSession()` returns an isolated handle, so parallel tests never share
+/// state. No test ever touches the real network.
 final class URLProtocolStub: URLProtocol {
     struct Stub {
-        let statusCode: Int
-        let data: Data
-        let error: URLError?
+        var statusCode = 200
+        var data = Data()
+        var error: URLError?
     }
 
-    /// Isolated mutable state — tests run in parallel.
-    private static let state = State()
-
-    final class State: @unchecked Sendable {
+    /// Per-session stub configuration and request recording.
+    final class Handle: @unchecked Sendable {
         private let lock = NSLock()
-        private var stub: Stub?
-        private var lastRequest: URLRequest?
+        private var _stub = Stub()
+        private var _lastRequest: URLRequest?
 
-        func set(_ stub: Stub?) {
+        func stub(statusCode: Int = 200, data: Data = Data(), error: URLError? = nil) {
             lock.lock(); defer { lock.unlock() }
-            self.stub = stub
+            _stub = Stub(statusCode: statusCode, data: data, error: error)
         }
 
-        func current() -> Stub? {
+        var lastRequest: URLRequest? {
             lock.lock(); defer { lock.unlock() }
-            return stub
+            return _lastRequest
         }
 
-        func recordRequest(_ request: URLRequest) {
+        fileprivate var current: Stub {
             lock.lock(); defer { lock.unlock() }
-            lastRequest = request
+            return _stub
         }
 
-        func recordedRequest() -> URLRequest? {
+        fileprivate func record(_ request: URLRequest) {
             lock.lock(); defer { lock.unlock() }
-            return lastRequest
+            _lastRequest = request
         }
     }
 
-    static func stub(statusCode: Int = 200, data: Data = Data(), error: URLError? = nil) {
-        state.set(Stub(statusCode: statusCode, data: data, error: error))
+    private final class Registry: @unchecked Sendable {
+        private let lock = NSLock()
+        private var handles = [String: Handle]()
+
+        func register(_ handle: Handle, id: String) {
+            lock.lock(); defer { lock.unlock() }
+            handles[id] = handle
+        }
+
+        func handle(for id: String) -> Handle? {
+            lock.lock(); defer { lock.unlock() }
+            return handles[id]
+        }
     }
 
-    static func reset() {
-        state.set(nil)
-    }
+    private static let registry = Registry()
+    private static let headerField = "X-URLProtocolStub-ID"
 
-    static var lastRequest: URLRequest? {
-        state.recordedRequest()
-    }
+    /// A session whose requests are all served by the returned handle.
+    static func makeSession() -> (session: URLSession, stub: Handle) {
+        let id = UUID().uuidString
+        let handle = Handle()
+        registry.register(handle, id: id)
 
-    /// A session whose requests are all served by this stub.
-    static func makeSession() -> URLSession {
         let configuration = URLSessionConfiguration.ephemeral
         configuration.protocolClasses = [URLProtocolStub.self]
-        return URLSession(configuration: configuration)
+        configuration.httpAdditionalHeaders = [headerField: id]
+        return (URLSession(configuration: configuration), handle)
+    }
+
+    private static func handle(for request: URLRequest) -> Handle? {
+        guard let id = request.value(forHTTPHeaderField: headerField) else { return nil }
+        return registry.handle(for: id)
     }
 
     override static func canInit(with _: URLRequest) -> Bool {
@@ -66,11 +81,13 @@ final class URLProtocolStub: URLProtocol {
     }
 
     override func startLoading() {
-        Self.state.recordRequest(request)
-        guard let stub = Self.state.current() else {
+        guard let handle = Self.handle(for: request) else {
             client?.urlProtocol(self, didFailWithError: URLError(.unsupportedURL))
             return
         }
+        handle.record(request)
+        let stub = handle.current
+
         if let error = stub.error {
             client?.urlProtocol(self, didFailWithError: error)
             return
