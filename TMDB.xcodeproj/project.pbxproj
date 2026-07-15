@@ -6,10 +6,6 @@
 	objectVersion = 77;
 	objects = {
 
-/* Begin PBXBuildFile section */
-		A37BE8C43006C1070047E68A /* TMDB-App-Plan.md in Resources */ = {isa = PBXBuildFile; fileRef = A37BE8C33006C1070047E68A /* TMDB-App-Plan.md */; };
-/* End PBXBuildFile section */
-
 /* Begin PBXContainerItemProxy section */
 		A37BE8A73006C0D20047E68A /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
@@ -31,7 +27,7 @@
 		A37BE8973006C0D00047E68A /* TMDB.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = TMDB.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		A37BE8A63006C0D20047E68A /* TMDBTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = TMDBTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		A37BE8B03006C0D20047E68A /* TMDBUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = TMDBUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
-		A37BE8C33006C1070047E68A /* TMDB-App-Plan.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = "TMDB-App-Plan.md"; sourceTree = "<group>"; };
+		A37BE8C5300710980047E68A /* CLAUDE.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = CLAUDE.md; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
@@ -80,7 +76,7 @@
 		A37BE88E3006C0D00047E68A = {
 			isa = PBXGroup;
 			children = (
-				A37BE8C33006C1070047E68A /* TMDB-App-Plan.md */,
+				A37BE8C5300710980047E68A /* CLAUDE.md */,
 				A37BE8993006C0D00047E68A /* TMDB */,
 				A37BE8A93006C0D20047E68A /* TMDBTests */,
 				A37BE8B33006C0D20047E68A /* TMDBUITests */,
@@ -218,7 +214,6 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				A37BE8C43006C1070047E68A /* TMDB-App-Plan.md in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
