@@ -1,0 +1,12 @@
+// Staging — internal/TestFlight builds. Release-quality codegen.
+
+#include "Shared.xcconfig"
+
+APP_ENVIRONMENT_NAME = Staging
+
+SWIFT_OPTIMIZATION_LEVEL = -O
+SWIFT_COMPILATION_MODE = wholemodule
+ENABLE_NS_ASSERTIONS = NO
+DEBUG_INFORMATION_FORMAT = dwarf-with-dsym
+MTL_ENABLE_DEBUG_INFO = NO
+VALIDATE_PRODUCT = YES

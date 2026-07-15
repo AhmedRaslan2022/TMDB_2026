@@ -1,0 +1,8 @@
+// Settings common to every environment. Env-specific files include this.
+
+IPHONEOS_DEPLOYMENT_TARGET = 17.0
+
+// TMDB API — v3 endpoints, v4 bearer auth. `$()` breaks up `//` so it is
+// not parsed as an xcconfig comment.
+TMDB_API_BASE_URL = https:/$()/api.themoviedb.org/3
+TMDB_IMAGE_BASE_URL = https:/$()/image.tmdb.org/t/p
