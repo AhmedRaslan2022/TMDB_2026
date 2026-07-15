@@ -6,6 +6,9 @@
 
 IPHONEOS_DEPLOYMENT_TARGET = 17.0
 
+// App identity base — env files append their suffix / display name.
+APP_BUNDLE_ID_BASE = com.rasslan.github.TMDB
+
 // TMDB API — v3 endpoints, v4 bearer auth. `$()` breaks up `//` so it is
 // not parsed as an xcconfig comment.
 TMDB_API_BASE_URL = https:/$()/api.themoviedb.org/3
