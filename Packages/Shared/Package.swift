@@ -1,7 +1,7 @@
 // swift-tools-version: 6.0
 import PackageDescription
 
-// Mocks and stubs shared across test targets. Never linked into the app.
+/// Mocks and stubs shared across test targets. Never linked into the app.
 let package = Package(
     name: "Shared",
     defaultLocalization: "en",

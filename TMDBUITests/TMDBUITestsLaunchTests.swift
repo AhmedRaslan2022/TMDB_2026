@@ -1,14 +1,8 @@
-//
-//  TMDBUITestsLaunchTests.swift
-//  TMDBUITests
-//
-//  Created by Rasslan on 14/07/2026.
-//
-
 import XCTest
 
 final class TMDBUITestsLaunchTests: XCTestCase {
-
+    // Overriding an XCTestCase `class var` — `static` is not permitted here.
+    // swiftlint:disable:next static_over_final_class
     override class var runsForEachTargetApplicationUIConfiguration: Bool {
         true
     }
@@ -18,7 +12,7 @@ final class TMDBUITestsLaunchTests: XCTestCase {
     }
 
     @MainActor
-    func testLaunch() throws {
+    func testLaunch() {
         let app = XCUIApplication()
         app.launch()
 

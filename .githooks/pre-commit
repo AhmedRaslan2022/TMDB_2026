@@ -1,0 +1,22 @@
+#!/bin/sh
+# Pre-commit hook: SwiftFormat (lint mode) + SwiftLint must pass.
+# Enable once per clone:  git config core.hooksPath .githooks
+
+set -e
+
+if ! command -v swiftformat >/dev/null 2>&1; then
+  echo "error: swiftformat not installed — run: brew install swiftformat" >&2
+  exit 1
+fi
+if ! command -v swiftlint >/dev/null 2>&1; then
+  echo "error: swiftlint not installed — run: brew install swiftlint" >&2
+  exit 1
+fi
+
+echo "pre-commit: swiftformat --lint"
+swiftformat --lint . --quiet
+
+echo "pre-commit: swiftlint --strict"
+swiftlint lint --strict --quiet
+
+echo "pre-commit: OK"

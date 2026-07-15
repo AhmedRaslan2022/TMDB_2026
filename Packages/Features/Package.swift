@@ -1,9 +1,9 @@
 // swift-tools-version: 6.0
 import PackageDescription
 
-// Features depend on Core only — a feature target must NEVER depend on
-// another feature target. Cross-feature navigation happens through
-// coordinators in the app target.
+/// Features depend on Core only — a feature target must NEVER depend on
+/// another feature target. Cross-feature navigation happens through
+/// coordinators in the app target.
 let coreProducts: [Target.Dependency] = [
     .product(name: "CoreModels", package: "Core"),
     .product(name: "CoreUtilities", package: "Core"),
