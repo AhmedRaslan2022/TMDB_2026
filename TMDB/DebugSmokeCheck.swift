@@ -11,16 +11,11 @@
             let path = "/configuration"
         }
 
-        static func run() async {
+        static func run(apiClient: any APIClient, environment: AppEnvironment) async {
             let logger = AppLogger(category: "SmokeCheck")
-            let environment = AppEnvironment.load()
-            let client = URLSessionAPIClient(
-                baseURL: environment.apiBaseURL,
-                interceptors: [BearerAuthInterceptor(tokenProvider: { environment.accessToken })]
-            )
 
             do {
-                try await client.sendRaw(ConfigurationEndpoint())
+                try await apiClient.sendRaw(ConfigurationEndpoint())
                 logger.info("/configuration → 200 OK (env: \(environment.name.rawValue))")
             } catch APIError.unauthorized {
                 logger.error("/configuration → 401. Is the real v4 token in Configs/Secrets.xcconfig?")

@@ -15,8 +15,8 @@ Task checklist mirroring `docs/SPRINTS.md`. One line per deviation/decision.
 - [x] 0.7 Per-env bundle IDs, app names, DEV/STG icon badge
 - [x] 0.8 CoreNetworking: APIClient, Endpoint protocol, request builder, error mapping
 - [x] 0.9 Auth interceptor (v4 Bearer) + `/configuration` smoke test — wiring verified on simulator (401 with placeholder token); 200 pending real token in Secrets.xcconfig
-- [ ] 0.10 CoreUI design tokens + base components stub
-- [ ] 0.11 DI approach decided + AppContainer skeleton
+- [x] 0.10 CoreUI design tokens + base components stub
+- [x] 0.11 DI approach decided + AppContainer skeleton
 - [ ] 0.12 README v1
 
 ### Sprint 0 Definition of Done
@@ -33,6 +33,7 @@ Task checklist mirroring `docs/SPRINTS.md`. One line per deviation/decision.
 - 0.7: Placeholder script-generated icons (TMDB wordmark + DEV/STG/TEST banner); real branding replaces them in Sprint 8. Test env also badged, not just DEV/STG.
 - 0.8: URLProtocol stub lives in CoreNetworkingTests, not SharedTestSupport — Shared already depends on Core, the reverse edge would cycle. Packages declare macOS 14 so `swift test` runs on the host.
 - 0.9: BearerAuthInterceptor takes a token-provider closure so CoreNetworking stays independent of CoreEnvironment; composition root bridges them. Debug-only smoke check in the app target.
+- 0.11: DI = protocol-based constructor injection composed in `AppContainer` (@MainActor, app target). No service locator, no DI framework, no singletons. Coordinators receive feature dependencies from the container starting Sprint 1.
 - Sprint backlog file moved from repo root (`TMDB-App-Sprints.md`) to `docs/SPRINTS.md` per CLAUDE.md.
 - No git remote configured yet → per-task branches are squash-merged into `develop` locally; PRs start once a remote exists.
 
