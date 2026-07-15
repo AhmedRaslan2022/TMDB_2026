@@ -4,7 +4,7 @@ import PackageDescription
 let package = Package(
     name: "Core",
     defaultLocalization: "en",
-    platforms: [.iOS(.v17)],
+    platforms: [.iOS(.v17), .macOS(.v14)],
     products: [
         .library(name: "CoreModels", targets: ["CoreModels"]),
         .library(name: "CoreUtilities", targets: ["CoreUtilities"]),
@@ -21,5 +21,6 @@ let package = Package(
         .target(name: "CoreStorage", dependencies: ["CoreUtilities"]),
         .target(name: "CoreUI", dependencies: ["CoreUtilities"]),
         .testTarget(name: "CoreEnvironmentTests", dependencies: ["CoreEnvironment"]),
+        .testTarget(name: "CoreNetworkingTests", dependencies: ["CoreNetworking"]),
     ]
 )

@@ -24,7 +24,7 @@ let featureNames = [
 let package = Package(
     name: "Features",
     defaultLocalization: "en",
-    platforms: [.iOS(.v17)],
+    platforms: [.iOS(.v17), .macOS(.v14)],
     products: featureNames.map { .library(name: $0, targets: [$0]) },
     dependencies: [
         .package(path: "../Core"),
