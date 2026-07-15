@@ -17,7 +17,7 @@ Task checklist mirroring `docs/SPRINTS.md`. One line per deviation/decision.
 - [x] 0.9 Auth interceptor (v4 Bearer) + `/configuration` smoke test — wiring verified on simulator (401 with placeholder token); 200 pending real token in Secrets.xcconfig
 - [x] 0.10 CoreUI design tokens + base components stub
 - [x] 0.11 DI approach decided + AppContainer skeleton
-- [ ] 0.12 README v1
+- [x] 0.12 README v1
 
 ### Sprint 0 Definition of Done
 - [ ] All 4 schemes build & run a blank screen
