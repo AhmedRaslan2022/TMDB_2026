@@ -1,13 +1,22 @@
+import FeatureAuth
 import SwiftUI
 
-/// Temporary blank root. Replaced by the coordinator-driven shell in Sprint 1.
+/// Root switch between the auth gate and the main shell, driven entirely by
+/// `AppCoordinator`.
 struct RootView: View {
+    let coordinator: AppCoordinator
+
     var body: some View {
-        Color.clear
-            .ignoresSafeArea()
+        switch coordinator.rootScene {
+        case .auth:
+            AuthPlaceholderView(onContinue: { coordinator.completeAuthGate() })
+        case .main:
+            // Replaced by the coordinator-bound tab shell in task 1.6.
+            Text("Main shell", comment: "Temporary main scene placeholder")
+        }
     }
 }
 
 #Preview {
-    RootView()
+    RootView(coordinator: AppCoordinator())
 }

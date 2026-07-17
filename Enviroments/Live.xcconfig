@@ -1,6 +1,6 @@
 // Live — App Store builds. Release-quality codegen.
 
-#include "Shared.xcconfig"
+#include "../Configs/Shared.xcconfig"
 
 APP_ENVIRONMENT_NAME = Live
 PRODUCT_BUNDLE_IDENTIFIER = $(APP_BUNDLE_ID_BASE)

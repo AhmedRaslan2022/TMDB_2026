@@ -43,10 +43,10 @@
 		A37BE8A63006C0D20047E68A /* TMDBTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = TMDBTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		A37BE8B03006C0D20047E68A /* TMDBUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = TMDBUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		A37BE8C5300710980047E68A /* CLAUDE.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = CLAUDE.md; sourceTree = "<group>"; };
-		DDCF000000000000000000F1 /* Dev.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Dev.xcconfig; sourceTree = "<group>"; };
-		DDCF000000000000000000F2 /* Staging.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Staging.xcconfig; sourceTree = "<group>"; };
-		DDCF000000000000000000F3 /* Test.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Test.xcconfig; sourceTree = "<group>"; };
-		DDCF000000000000000000F4 /* Live.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Live.xcconfig; sourceTree = "<group>"; };
+		DDCF000000000000000000F1 /* Dev.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Enviroments/Dev.xcconfig; sourceTree = "<group>"; };
+		DDCF000000000000000000F2 /* Staging.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Enviroments/Staging.xcconfig; sourceTree = "<group>"; };
+		DDCF000000000000000000F3 /* Test.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Enviroments/Test.xcconfig; sourceTree = "<group>"; };
+		DDCF000000000000000000F4 /* Live.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Enviroments/Live.xcconfig; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
@@ -144,6 +144,7 @@
 				A37BE8A93006C0D20047E68A /* TMDBTests */,
 				A37BE8B33006C0D20047E68A /* TMDBUITests */,
 				A37BE8983006C0D00047E68A /* Products */,
+				A37BE9B6300A6C7B0047E68A /* Recovered References */,
 			);
 			sourceTree = "<group>";
 		};
@@ -155,6 +156,17 @@
 				A37BE8B03006C0D20047E68A /* TMDBUITests.xctest */,
 			);
 			name = Products;
+			sourceTree = "<group>";
+		};
+		A37BE9B6300A6C7B0047E68A /* Recovered References */ = {
+			isa = PBXGroup;
+			children = (
+				DDCF000000000000000000F1 /* Dev.xcconfig */,
+				DDCF000000000000000000F2 /* Staging.xcconfig */,
+				DDCF000000000000000000F3 /* Test.xcconfig */,
+				DDCF000000000000000000F4 /* Live.xcconfig */,
+			);
+			name = "Recovered References";
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */

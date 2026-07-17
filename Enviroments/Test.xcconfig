@@ -1,6 +1,6 @@
 // Test — automated test runs (unit + UI). Debug-quality codegen.
 
-#include "Shared.xcconfig"
+#include "../Configs/Shared.xcconfig"
 
 APP_ENVIRONMENT_NAME = Test
 PRODUCT_BUNDLE_IDENTIFIER = $(APP_BUNDLE_ID_BASE).test

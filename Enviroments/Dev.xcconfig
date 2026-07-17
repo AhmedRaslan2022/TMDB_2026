@@ -1,6 +1,6 @@
 // Dev — day-to-day development. Debug-quality codegen.
 
-#include "Shared.xcconfig"
+#include "../Configs/Shared.xcconfig"
 
 APP_ENVIRONMENT_NAME = Dev
 PRODUCT_BUNDLE_IDENTIFIER = $(APP_BUNDLE_ID_BASE).dev

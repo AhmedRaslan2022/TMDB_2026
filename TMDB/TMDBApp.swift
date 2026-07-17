@@ -1,3 +1,4 @@
+import SwiftData
 import SwiftUI
 
 /// App entry point. The app target only composes modules; all functionality
@@ -5,10 +6,11 @@ import SwiftUI
 @main
 struct TMDBApp: App {
     @State private var container = AppContainer()
+    @State private var coordinator = AppCoordinator()
 
     var body: some Scene {
         WindowGroup {
-            RootView()
+            RootView(coordinator: coordinator)
             #if DEBUG
                 .task { await DebugSmokeCheck.run(apiClient: container.apiClient, environment: container.environment) }
             #endif
