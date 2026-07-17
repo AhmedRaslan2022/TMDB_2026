@@ -6,7 +6,50 @@
 //
 
 import Foundation
+import KeychainStorage
 @testable import FeatureAuth
+
+/// In-memory `SecureStorage` for session-repository tests — no real keychain,
+/// which is unavailable to unhosted test runners anyway.
+actor InMemorySecureStorage: SecureStorage {
+    private var storage: [SecureStorageKey: String] = [:]
+    /// When set, every operation throws it, to exercise error propagation.
+    var failure: Error?
+
+    func seed(_ value: String, for key: SecureStorageKey) {
+        storage[key] = value
+    }
+
+    func setFailure(_ error: Error?) {
+        failure = error
+    }
+
+    func set(_ value: String, for key: SecureStorageKey) async throws {
+        try failIfNeeded()
+        storage[key] = value
+    }
+
+    func string(for key: SecureStorageKey) async throws -> String? {
+        try failIfNeeded()
+        return storage[key]
+    }
+
+    func removeValue(for key: SecureStorageKey) async throws {
+        try failIfNeeded()
+        storage[key] = nil
+    }
+
+    func removeAll() async throws {
+        try failIfNeeded()
+        storage.removeAll()
+    }
+
+    private func failIfNeeded() throws {
+        if let failure {
+            throw failure
+        }
+    }
+}
 
 /// Failure injected by tests; `unstubbed` flags a call path the test forgot
 /// to stub.

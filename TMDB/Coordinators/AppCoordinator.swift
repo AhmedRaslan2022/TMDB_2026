@@ -5,6 +5,8 @@
 //  Created by Ahmed Raslan on 17/07/2026.
 //
 
+import CoreUtilities
+import FeatureAuth
 import FeatureFavorites
 import FeatureHome
 import FeatureProfile
@@ -64,7 +66,30 @@ final class AppCoordinator {
     let favorites = TabCoordinator<FavoritesRoute>()
     let profile = TabCoordinator<ProfileRoute>()
 
-    /// Called when auth completes (real session handling lands in Sprint 2).
+    private let auth: AuthModule
+    private let logger = AppLogger(category: "Auth")
+
+    init(auth: AuthModule) {
+        self.auth = auth
+    }
+
+    /// Builds the auth-gate view model, wiring a completed session back to the
+    /// root switch. The session itself is already persisted by the use case.
+    func makeAuthViewModel() -> AuthViewModel {
+        auth.makeAuthViewModel(onAuthenticated: { [weak self] _ in
+            self?.completeAuthGate()
+        })
+    }
+
+    /// Restores a persisted session on launch, entering the main shell
+    /// directly when one exists. Called once from the root view.
+    func restoreSession() async {
+        if await auth.hasPersistedSession() {
+            rootScene = .main
+        }
+    }
+
+    /// Called when auth completes; enters the main shell.
     func completeAuthGate() {
         rootScene = .main
     }
@@ -83,7 +108,9 @@ final class AppCoordinator {
     }
 
     /// Returns to the auth gate, e.g. after logout, resetting all tab and
-    /// modal state.
+    /// modal state. Navigation resets immediately; session teardown (remote
+    /// delete + keychain wipe) runs in the background — the local wipe happens
+    /// first inside the use case, so the next launch cannot restore it.
     func signOut() {
         rootScene = .auth
         selectedTab = .home
@@ -92,5 +119,12 @@ final class AppCoordinator {
         search.popToRoot()
         favorites.popToRoot()
         profile.popToRoot()
+        Task {
+            do {
+                try await auth.logOut()
+            } catch {
+                logger.error("Logout teardown failed: \(error)")
+            }
+        }
     }
 }

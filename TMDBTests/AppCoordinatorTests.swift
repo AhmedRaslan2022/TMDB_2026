@@ -11,14 +11,14 @@ import Testing
 @MainActor
 struct AppCoordinatorTests {
     @Test func startsAtAuthGateOnHomeTab() {
-        let coordinator = AppCoordinator()
+        let coordinator = AppCoordinator(auth: .stub)
 
         #expect(coordinator.rootScene == .auth)
         #expect(coordinator.selectedTab == .home)
     }
 
     @Test func completingAuthGateShowsMainShell() {
-        let coordinator = AppCoordinator()
+        let coordinator = AppCoordinator(auth: .stub)
 
         coordinator.completeAuthGate()
 
@@ -26,7 +26,7 @@ struct AppCoordinatorTests {
     }
 
     @Test func signOutReturnsToAuthAndResetsTab() {
-        let coordinator = AppCoordinator()
+        let coordinator = AppCoordinator(auth: .stub)
         coordinator.completeAuthGate()
         coordinator.selectedTab = .favorites
 
@@ -37,7 +37,7 @@ struct AppCoordinatorTests {
     }
 
     @Test func selectedTabIsMutable() {
-        let coordinator = AppCoordinator()
+        let coordinator = AppCoordinator(auth: .stub)
 
         coordinator.selectedTab = .search
 

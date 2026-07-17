@@ -7,6 +7,8 @@
 
 import CoreEnvironment
 import CoreUtilities
+import FeatureAuth
+import Foundation
 import KeychainStorage
 import Networking
 import SwiftData
@@ -29,22 +31,66 @@ final class AppContainer {
     let secureStorage: any SecureStorage
     /// SwiftData container for app data (favorites, recents, cache).
     let modelContainer: ModelContainer
+    /// Auth use cases + session store, composed once here.
+    let authModule: AuthModule
+    /// Root coordinator, composed with the auth module so navigation stays
+    /// decoupled from concrete auth types.
+    let coordinator: AppCoordinator
 
     init() {
         let environment = AppEnvironment.load()
         self.environment = environment
-        apiClient = URLSessionAPIClient(
+        let apiClient = URLSessionAPIClient(
             baseURL: environment.apiBaseURL,
             interceptors: [
                 BearerAuthInterceptor(tokenProvider: { environment.accessToken }),
             ]
         )
-        secureStorage = KeychainManager()
+        self.apiClient = apiClient
+        let secureStorage = KeychainManager()
+        self.secureStorage = secureStorage
         do {
             // The Test environment never persists to disk.
             modelContainer = try ModelContainerFactory.make(inMemory: environment.name == .test)
         } catch {
             preconditionFailure("Could not create ModelContainer: \(error)")
         }
+
+        authModule = Self.makeAuthModule(apiClient: apiClient, secureStorage: secureStorage)
+        coordinator = AppCoordinator(auth: authModule)
+    }
+
+    /// Composes the auth vertical. In DEBUG a launch argument swaps in the
+    /// inert stub so UI tests — which can't complete real TMDB web auth —
+    /// exercise the shell offline.
+    private static func makeAuthModule(
+        apiClient: any APIClient,
+        secureStorage: any SecureStorage
+    ) -> AuthModule {
+        #if DEBUG
+            // UI tests can't complete real TMDB auth, so they opt into the
+            // inert stub before any live collaborators are built.
+            if ProcessInfo.processInfo.arguments.contains("-uitest-auth-bypass") {
+                return .stub
+            }
+        #endif
+        let authRepository = AuthRepositoryImpl(apiClient: apiClient)
+        let sessionRepository = SessionRepositoryImpl(secureStorage: secureStorage)
+        return AuthModule(
+            loginUseCase: LoginUseCaseImpl(
+                authRepository: authRepository,
+                sessionRepository: sessionRepository,
+                authorizer: WebRequestTokenAuthorizer()
+            ),
+            guestUseCase: CreateGuestSessionUseCaseImpl(
+                authRepository: authRepository,
+                sessionRepository: sessionRepository
+            ),
+            logoutUseCase: LogoutUseCaseImpl(
+                authRepository: authRepository,
+                sessionRepository: sessionRepository
+            ),
+            sessionRepository: sessionRepository
+        )
     }
 }

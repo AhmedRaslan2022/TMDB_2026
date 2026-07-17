@@ -102,6 +102,8 @@ struct MainTabView: View {
     }
 }
 
-#Preview {
-    MainTabView(coordinator: AppCoordinator())
-}
+#if DEBUG
+    #Preview {
+        MainTabView(coordinator: AppCoordinator(auth: .stub))
+    }
+#endif

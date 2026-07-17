@@ -14,9 +14,18 @@ import SwiftUI
 /// present coordinator-owned sheets and covers.
 struct RootView: View {
     @Bindable var coordinator: AppCoordinator
+    /// Built once from the coordinator; survives auth↔main switches so the
+    /// screen's loading/error state isn't reset by re-renders.
+    @State private var authViewModel: AuthViewModel
+
+    init(coordinator: AppCoordinator) {
+        _coordinator = Bindable(coordinator)
+        _authViewModel = State(initialValue: coordinator.makeAuthViewModel())
+    }
 
     var body: some View {
         content
+            .task { await coordinator.restoreSession() }
             .sheet(item: $coordinator.presentedSheet) { sheet in
                 switch sheet {
                 case .about:
@@ -35,13 +44,15 @@ struct RootView: View {
     private var content: some View {
         switch coordinator.rootScene {
         case .auth:
-            AuthPlaceholderView(onContinue: { coordinator.completeAuthGate() })
+            AuthView(viewModel: authViewModel)
         case .main:
             MainTabView(coordinator: coordinator)
         }
     }
 }
 
-#Preview {
-    RootView(coordinator: AppCoordinator())
-}
+#if DEBUG
+    #Preview {
+        RootView(coordinator: AppCoordinator(auth: .stub))
+    }
+#endif

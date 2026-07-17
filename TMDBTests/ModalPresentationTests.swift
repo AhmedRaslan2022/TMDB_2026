@@ -11,14 +11,14 @@ import Testing
 @MainActor
 struct ModalPresentationTests {
     @Test func startsWithNoModal() {
-        let coordinator = AppCoordinator()
+        let coordinator = AppCoordinator(auth: .stub)
 
         #expect(coordinator.presentedSheet == nil)
         #expect(coordinator.presentedFullScreenCover == nil)
     }
 
     @Test func presentsAndDismissesSheet() {
-        let coordinator = AppCoordinator()
+        let coordinator = AppCoordinator(auth: .stub)
 
         coordinator.presentSheet(.about)
         #expect(coordinator.presentedSheet == .about)
@@ -28,7 +28,7 @@ struct ModalPresentationTests {
     }
 
     @Test func presentsAndDismissesFullScreenCover() {
-        let coordinator = AppCoordinator()
+        let coordinator = AppCoordinator(auth: .stub)
 
         coordinator.presentFullScreenCover(.whatsNew)
         #expect(coordinator.presentedFullScreenCover == .whatsNew)
@@ -38,7 +38,7 @@ struct ModalPresentationTests {
     }
 
     @Test func signOutDismissesModals() {
-        let coordinator = AppCoordinator()
+        let coordinator = AppCoordinator(auth: .stub)
         coordinator.completeAuthGate()
         coordinator.presentSheet(.about)
 

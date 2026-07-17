@@ -17,12 +17,15 @@ final class TMDBUITests: XCTestCase {
     @MainActor
     func testAuthGateTabSwitchAndPushNavigation() {
         let app = XCUIApplication()
+        // Real TMDB auth needs web approval / network, so bypass it with the
+        // inert stub module — the guest path then enters the shell offline.
+        app.launchArguments += ["-uitest-auth-bypass"]
         app.launch()
 
-        // Auth gate → main shell.
-        let continueButton = app.buttons["Continue"]
-        XCTAssertTrue(continueButton.waitForExistence(timeout: 5), "Auth gate should show first")
-        continueButton.tap()
+        // Auth gate → main shell via the guest path.
+        let guestButton = app.buttons["Continue as guest"]
+        XCTAssertTrue(guestButton.waitForExistence(timeout: 5), "Auth gate should show first")
+        guestButton.tap()
 
         // Tab shell appears on Home.
         XCTAssertTrue(app.tabBars.buttons["Home"].waitForExistence(timeout: 5))
@@ -43,6 +46,6 @@ final class TMDBUITests: XCTestCase {
 
         // Sign out returns to the auth gate.
         app.buttons["Sign Out"].tap()
-        XCTAssertTrue(continueButton.waitForExistence(timeout: 5), "Sign out should return to auth gate")
+        XCTAssertTrue(guestButton.waitForExistence(timeout: 5), "Sign out should return to auth gate")
     }
 }

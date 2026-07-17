@@ -56,7 +56,7 @@ struct TabCoordinatorTests {
     }
 
     @Test func signOutResetsChildCoordinators() {
-        let app = AppCoordinator()
+        let app = AppCoordinator(auth: .stub)
         app.completeAuthGate()
         app.home.push(.movieDetails(movieID: 550))
         app.profile.push(.settings)
