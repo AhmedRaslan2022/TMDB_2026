@@ -36,5 +36,7 @@ let package = Package(
         .package(path: "../Core/CoreStorage"),
         .package(path: "../Core/CoreUI"),
     ],
-    targets: featureNames.map { .target(name: $0, dependencies: coreProducts) }
+    targets: featureNames.map { .target(name: $0, dependencies: coreProducts) } + [
+        .testTarget(name: "FeatureAuthTests", dependencies: ["FeatureAuth"]),
+    ]
 )

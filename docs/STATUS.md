@@ -69,7 +69,19 @@ Task checklist mirroring `docs/SPRINTS.md`. One line per deviation/decision.
 - 2026-07-17: CoreStorage package split into three products/targets — `KeychainStorage` (SecureStorage + KeychainManager), `SwiftDataStorage` (@Model types + ModelContainerFactory), `UserDefaultsStorage` (new `DefaultsStorage` protocol + `UserDefaultsManager`, first key `hasSeenOnboarding`). Package name/path stays `CoreStorage`; the umbrella `CoreStorage` product is gone. App links Keychain+SwiftData only; features get all three.
 
 ## Sprint 2 — Auth Feature
-- [ ] 2.1 – 2.9 (not started)
+
+- [x] 2.1 Domain: LoginUseCase, CreateGuestSessionUseCase, LogoutUseCase, repo protocols
+- [ ] 2.2 Data: auth DTOs + mappers + AuthRemoteDataSource + repository impl
+- [ ] 2.3 Login flow: request token → ASWebAuthenticationSession approval → create session
+- [ ] 2.4 Guest session path
+- [ ] 2.5 Persist session ID + account ID in Keychain; validate on launch
+- [ ] 2.6 Logout: remote delete + wipe Keychain + clear user-scoped SwiftData
+- [ ] 2.7 Presentation: AuthViewModel (@Observable @MainActor) + ViewState enum + views
+- [ ] 2.8 Wire auth state into AppCoordinator root switch
+- [ ] 2.9 [test] AuthViewModel + use cases with mocked repos; URLProtocol-stubbed data source
+
+### Sprint 2 Decisions / Deviations
+- 2.1: Web approval abstracted as `RequestTokenAuthorizer` protocol in Domain (implemented with ASWebAuthenticationSession in 2.3) so LoginUseCase orchestrates the full token → approval → session → persist flow. Logout wipes local state before the remote delete so the device is always logged out even if the network call fails (error still propagates). Guest expiry not modelled — 2.5 validates against the API instead. First Features test target (FeatureAuthTests) added to the manifest.
 
 ## Sprint 3 — Home & Movie Details
 - [ ] 3.1 – 3.10 (not started)

@@ -1,0 +1,92 @@
+//
+//  AuthMocks.swift
+//  TMDB
+//
+//  Created by Ahmed Raslan on 17/07/2026.
+//
+
+import Foundation
+@testable import FeatureAuth
+
+/// Failure injected by tests; `unstubbed` flags a call path the test forgot
+/// to stub.
+enum MockError: Error, Equatable {
+    case unstubbed
+    case stubbed
+}
+
+/// Mocks are `@unchecked Sendable`: tests drive them from a single task, so
+/// the mutable recording state is never accessed concurrently.
+final class AuthRepositoryMock: AuthRepository, @unchecked Sendable {
+    var requestTokenResult: Result<RequestToken, Error> = .failure(MockError.unstubbed)
+    var sessionResult: Result<AuthSession, Error> = .failure(MockError.unstubbed)
+    var guestSessionResult: Result<AuthSession, Error> = .failure(MockError.unstubbed)
+    var deleteSessionError: Error?
+
+    private(set) var createRequestTokenCallCount = 0
+    private(set) var createSessionApprovedTokens: [RequestToken] = []
+    private(set) var createGuestSessionCallCount = 0
+    private(set) var deletedSessionIDs: [String] = []
+
+    func createRequestToken() async throws -> RequestToken {
+        createRequestTokenCallCount += 1
+        return try requestTokenResult.get()
+    }
+
+    func createSession(approvedToken: RequestToken) async throws -> AuthSession {
+        createSessionApprovedTokens.append(approvedToken)
+        return try sessionResult.get()
+    }
+
+    func createGuestSession() async throws -> AuthSession {
+        createGuestSessionCallCount += 1
+        return try guestSessionResult.get()
+    }
+
+    func deleteSession(sessionID: String) async throws {
+        deletedSessionIDs.append(sessionID)
+        if let deleteSessionError {
+            throw deleteSessionError
+        }
+    }
+}
+
+final class SessionRepositoryMock: SessionRepository, @unchecked Sendable {
+    var storedSession: AuthSession?
+    var saveError: Error?
+    var clearError: Error?
+
+    private(set) var savedSessions: [AuthSession] = []
+    private(set) var clearSessionCallCount = 0
+
+    func currentSession() async throws -> AuthSession? {
+        storedSession
+    }
+
+    func save(_ session: AuthSession) async throws {
+        if let saveError {
+            throw saveError
+        }
+        savedSessions.append(session)
+        storedSession = session
+    }
+
+    func clearSession() async throws {
+        if let clearError {
+            throw clearError
+        }
+        clearSessionCallCount += 1
+        storedSession = nil
+    }
+}
+
+final class RequestTokenAuthorizerMock: RequestTokenAuthorizer, @unchecked Sendable {
+    var result: Result<RequestToken, Error> = .failure(MockError.unstubbed)
+
+    private(set) var receivedTokens: [RequestToken] = []
+
+    func authorize(_ token: RequestToken) async throws -> RequestToken {
+        receivedTokens.append(token)
+        return try result.get()
+    }
+}
