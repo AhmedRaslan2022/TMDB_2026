@@ -120,3 +120,37 @@ final class RequestTokenAuthorizerMock: RequestTokenAuthorizer, @unchecked Senda
         return try result.get()
     }
 }
+
+/// `LoginUseCase` and `CreateGuestSessionUseCase` share the exact shape
+/// (`execute() async throws -> AuthSession`), so one mock conforms to both;
+/// tests inject two separate instances to keep the paths distinct.
+@MainActor
+final class AuthUseCaseMock: LoginUseCase, CreateGuestSessionUseCase {
+    var result: Result<AuthSession, Error> = .failure(MockError.unstubbed)
+    private(set) var executeCallCount = 0
+
+    func execute() async throws -> AuthSession {
+        executeCallCount += 1
+        return try result.get()
+    }
+}
+
+/// Suspends inside `execute` until the test calls `release`, so the caller's
+/// intermediate `loading` state and the re-entrancy guard are observable.
+@MainActor
+final class GatedAuthUseCaseMock: LoginUseCase {
+    var result: Result<AuthSession, Error> = .success(.authenticated(sessionID: "gated"))
+    private(set) var executeCallCount = 0
+    private var continuation: CheckedContinuation<Void, Never>?
+
+    func execute() async throws -> AuthSession {
+        executeCallCount += 1
+        await withCheckedContinuation { continuation = $0 }
+        return try result.get()
+    }
+
+    func release() {
+        continuation?.resume()
+        continuation = nil
+    }
+}
