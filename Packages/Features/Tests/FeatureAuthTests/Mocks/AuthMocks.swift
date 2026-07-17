@@ -94,6 +94,18 @@ final class AuthRepositoryMock: AuthRepository, @unchecked Sendable {
     }
 }
 
+final class UserScopedDataStoreMock: UserScopedDataStore, @unchecked Sendable {
+    var clearAllError: Error?
+    private(set) var clearAllCallCount = 0
+
+    func clearAll() async throws {
+        clearAllCallCount += 1
+        if let clearAllError {
+            throw clearAllError
+        }
+    }
+}
+
 final class SessionRepositoryMock: SessionRepository, @unchecked Sendable {
     var storedSession: AuthSession?
     var saveError: Error?

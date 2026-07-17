@@ -56,7 +56,11 @@ final class AppContainer {
             preconditionFailure("Could not create ModelContainer: \(error)")
         }
 
-        authModule = Self.makeAuthModule(apiClient: apiClient, secureStorage: secureStorage)
+        authModule = Self.makeAuthModule(
+            apiClient: apiClient,
+            secureStorage: secureStorage,
+            modelContainer: modelContainer
+        )
         coordinator = AppCoordinator(auth: authModule)
     }
 
@@ -65,7 +69,8 @@ final class AppContainer {
     /// exercise the shell offline.
     private static func makeAuthModule(
         apiClient: any APIClient,
-        secureStorage: any SecureStorage
+        secureStorage: any SecureStorage,
+        modelContainer: ModelContainer
     ) -> AuthModule {
         #if DEBUG
             // UI tests can't complete real TMDB auth, so they opt into the
@@ -88,7 +93,8 @@ final class AppContainer {
             ),
             logoutUseCase: LogoutUseCaseImpl(
                 authRepository: authRepository,
-                sessionRepository: sessionRepository
+                sessionRepository: sessionRepository,
+                userDataStore: SwiftDataUserStore(modelContainer: modelContainer)
             ),
             sessionRepository: sessionRepository
         )
