@@ -1,4 +1,9 @@
-// By Ahmed Raslan ®
+//
+//  AppCoordinatorTests.swift
+//  TMDB
+//
+//  Created by Ahmed Raslan on 17/07/2026.
+//
 
 import Testing
 @testable import TMDB

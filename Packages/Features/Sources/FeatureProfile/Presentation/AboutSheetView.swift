@@ -1,4 +1,9 @@
-// By Ahmed Raslan ®
+//
+//  AboutSheetView.swift
+//  TMDB
+//
+//  Created by Ahmed Raslan on 17/07/2026.
+//
 
 import CoreUI
 import SwiftUI

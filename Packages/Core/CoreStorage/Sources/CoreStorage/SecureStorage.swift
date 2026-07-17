@@ -1,4 +1,9 @@
-// By Ahmed Raslan ®
+//
+//  SecureStorage.swift
+//  TMDB
+//
+//  Created by Ahmed Raslan on 17/07/2026.
+//
 
 /// Typed keys for values held in secure storage. New credentials get a case
 /// here — string literals never appear at call sites.

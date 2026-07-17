@@ -1,4 +1,9 @@
-// By Ahmed Raslan ®
+//
+//  RecentSearch.swift
+//  TMDB
+//
+//  Created by Ahmed Raslan on 17/07/2026.
+//
 
 import Foundation
 import SwiftData

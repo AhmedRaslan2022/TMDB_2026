@@ -21,4 +21,5 @@
 --stripunusedargs closure-only
 --self remove
 --importgrouping testable-bottom
---header "By Ahmed Raslan ®"
+--dateformat dmy
+--header "//\n//  {file}\n//  TMDB\n//\n//  Created by Ahmed Raslan on {created}.\n//"

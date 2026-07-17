@@ -1,4 +1,9 @@
-// By Ahmed Raslan ®
+//
+//  TMDBUITests.swift
+//  TMDB
+//
+//  Created by Ahmed Raslan on 14/07/2026.
+//
 
 import XCTest
 

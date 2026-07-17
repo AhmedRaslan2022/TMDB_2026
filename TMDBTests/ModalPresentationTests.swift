@@ -1,4 +1,9 @@
-// By Ahmed Raslan ®
+//
+//  ModalPresentationTests.swift
+//  TMDB
+//
+//  Created by Ahmed Raslan on 17/07/2026.
+//
 
 import Testing
 @testable import TMDB

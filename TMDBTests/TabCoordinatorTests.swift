@@ -1,4 +1,9 @@
-// By Ahmed Raslan ®
+//
+//  TabCoordinatorTests.swift
+//  TMDB
+//
+//  Created by Ahmed Raslan on 17/07/2026.
+//
 
 import FeatureHome
 import FeatureProfile

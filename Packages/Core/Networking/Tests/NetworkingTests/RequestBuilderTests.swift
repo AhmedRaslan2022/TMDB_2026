@@ -1,4 +1,9 @@
-// By Ahmed Raslan ®
+//
+//  RequestBuilderTests.swift
+//  TMDB
+//
+//  Created by Ahmed Raslan on 15/07/2026.
+//
 
 import Foundation
 import Testing

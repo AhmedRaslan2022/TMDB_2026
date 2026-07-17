@@ -1,4 +1,9 @@
-// By Ahmed Raslan ®
+//
+//  FavoritesRoute.swift
+//  TMDB
+//
+//  Created by Ahmed Raslan on 17/07/2026.
+//
 
 /// Pushable destinations reachable from the Favorites tab. The app target
 /// maps these to views — features never resolve routes themselves.
