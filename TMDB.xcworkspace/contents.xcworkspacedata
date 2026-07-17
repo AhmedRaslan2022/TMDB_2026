@@ -4,9 +4,28 @@
    <FileRef
       location = "group:TMDB.xcodeproj">
    </FileRef>
-   <FileRef
-      location = "group:Packages/Core">
-   </FileRef>
+   <Group
+      location = "container:"
+      name = "Core">
+      <FileRef
+         location = "group:Packages/Core/CoreModels">
+      </FileRef>
+      <FileRef
+         location = "group:Packages/Core/CoreUtilities">
+      </FileRef>
+      <FileRef
+         location = "group:Packages/Core/CoreEnvironment">
+      </FileRef>
+      <FileRef
+         location = "group:Packages/Core/Networking">
+      </FileRef>
+      <FileRef
+         location = "group:Packages/Core/CoreStorage">
+      </FileRef>
+      <FileRef
+         location = "group:Packages/Core/CoreUI">
+      </FileRef>
+   </Group>
    <FileRef
       location = "group:Packages/Features">
    </FileRef>

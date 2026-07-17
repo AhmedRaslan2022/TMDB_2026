@@ -10,7 +10,7 @@
 		BEEF0000000000000000000A /* CoreModels in Frameworks */ = {isa = PBXBuildFile; productRef = CAFE0000000000000000000A /* CoreModels */; };
 		BEEF0000000000000000000B /* CoreUtilities in Frameworks */ = {isa = PBXBuildFile; productRef = CAFE0000000000000000000B /* CoreUtilities */; };
 		BEEF0000000000000000000C /* CoreEnvironment in Frameworks */ = {isa = PBXBuildFile; productRef = CAFE0000000000000000000C /* CoreEnvironment */; };
-		BEEF0000000000000000000D /* CoreNetworking in Frameworks */ = {isa = PBXBuildFile; productRef = CAFE0000000000000000000D /* CoreNetworking */; };
+		BEEF0000000000000000000D /* Networking in Frameworks */ = {isa = PBXBuildFile; productRef = CAFE0000000000000000000D /* Networking */; };
 		BEEF0000000000000000000E /* CoreStorage in Frameworks */ = {isa = PBXBuildFile; productRef = CAFE0000000000000000000E /* CoreStorage */; };
 		BEEF0000000000000000000F /* CoreUI in Frameworks */ = {isa = PBXBuildFile; productRef = CAFE0000000000000000000F /* CoreUI */; };
 		BEEF0000000000000000001A /* FeatureAuth in Frameworks */ = {isa = PBXBuildFile; productRef = CAFE0000000000000000001A /* FeatureAuth */; };
@@ -88,7 +88,7 @@
 				BEEF0000000000000000000A /* CoreModels in Frameworks */,
 				BEEF0000000000000000000B /* CoreUtilities in Frameworks */,
 				BEEF0000000000000000000C /* CoreEnvironment in Frameworks */,
-				BEEF0000000000000000000D /* CoreNetworking in Frameworks */,
+				BEEF0000000000000000000D /* Networking in Frameworks */,
 				BEEF0000000000000000000E /* CoreStorage in Frameworks */,
 				BEEF0000000000000000000F /* CoreUI in Frameworks */,
 				BEEF0000000000000000001A /* FeatureAuth in Frameworks */,
@@ -173,7 +173,7 @@
 				CAFE0000000000000000000A /* CoreModels */,
 				CAFE0000000000000000000B /* CoreUtilities */,
 				CAFE0000000000000000000C /* CoreEnvironment */,
-				CAFE0000000000000000000D /* CoreNetworking */,
+				CAFE0000000000000000000D /* Networking */,
 				CAFE0000000000000000000E /* CoreStorage */,
 				CAFE0000000000000000000F /* CoreUI */,
 				CAFE0000000000000000001A /* FeatureAuth */,
@@ -266,7 +266,12 @@
 			mainGroup = A37BE88E3006C0D00047E68A;
 			minimizedProjectReferenceProxies = 1;
 			packageReferences = (
-				CAFE000000000000000000C0 /* XCLocalSwiftPackageReference "Packages/Core" */,
+				CAFE000000000000000000C3 /* XCLocalSwiftPackageReference "Packages/Core/CoreModels" */,
+				CAFE000000000000000000C4 /* XCLocalSwiftPackageReference "Packages/Core/CoreUtilities" */,
+				CAFE000000000000000000C5 /* XCLocalSwiftPackageReference "Packages/Core/CoreEnvironment" */,
+				CAFE000000000000000000C6 /* XCLocalSwiftPackageReference "Packages/Core/Networking" */,
+				CAFE000000000000000000C7 /* XCLocalSwiftPackageReference "Packages/Core/CoreStorage" */,
+				CAFE000000000000000000C8 /* XCLocalSwiftPackageReference "Packages/Core/CoreUI" */,
 				CAFE000000000000000000C1 /* XCLocalSwiftPackageReference "Packages/Features" */,
 				CAFE000000000000000000C2 /* XCLocalSwiftPackageReference "Packages/Shared" */,
 			);
@@ -874,9 +879,29 @@
 /* End XCConfigurationList section */
 
 /* Begin XCLocalSwiftPackageReference section */
-		CAFE000000000000000000C0 /* XCLocalSwiftPackageReference "Packages/Core" */ = {
+		CAFE000000000000000000C3 /* XCLocalSwiftPackageReference "Packages/Core/CoreModels" */ = {
 			isa = XCLocalSwiftPackageReference;
-			relativePath = Packages/Core;
+			relativePath = Packages/Core/CoreModels;
+		};
+		CAFE000000000000000000C4 /* XCLocalSwiftPackageReference "Packages/Core/CoreUtilities" */ = {
+			isa = XCLocalSwiftPackageReference;
+			relativePath = Packages/Core/CoreUtilities;
+		};
+		CAFE000000000000000000C5 /* XCLocalSwiftPackageReference "Packages/Core/CoreEnvironment" */ = {
+			isa = XCLocalSwiftPackageReference;
+			relativePath = Packages/Core/CoreEnvironment;
+		};
+		CAFE000000000000000000C6 /* XCLocalSwiftPackageReference "Packages/Core/Networking" */ = {
+			isa = XCLocalSwiftPackageReference;
+			relativePath = Packages/Core/Networking;
+		};
+		CAFE000000000000000000C7 /* XCLocalSwiftPackageReference "Packages/Core/CoreStorage" */ = {
+			isa = XCLocalSwiftPackageReference;
+			relativePath = Packages/Core/CoreStorage;
+		};
+		CAFE000000000000000000C8 /* XCLocalSwiftPackageReference "Packages/Core/CoreUI" */ = {
+			isa = XCLocalSwiftPackageReference;
+			relativePath = Packages/Core/CoreUI;
 		};
 		CAFE000000000000000000C1 /* XCLocalSwiftPackageReference "Packages/Features" */ = {
 			isa = XCLocalSwiftPackageReference;
@@ -901,9 +926,9 @@
 			isa = XCSwiftPackageProductDependency;
 			productName = CoreEnvironment;
 		};
-		CAFE0000000000000000000D /* CoreNetworking */ = {
+		CAFE0000000000000000000D /* Networking */ = {
 			isa = XCSwiftPackageProductDependency;
-			productName = CoreNetworking;
+			productName = Networking;
 		};
 		CAFE0000000000000000000E /* CoreStorage */ = {
 			isa = XCSwiftPackageProductDependency;

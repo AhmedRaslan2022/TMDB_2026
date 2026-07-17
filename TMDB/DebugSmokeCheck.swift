@@ -1,8 +1,8 @@
 #if DEBUG
     import CoreEnvironment
-    import CoreNetworking
     import CoreUtilities
     import Foundation
+    import Networking
 
     /// Sprint 0 wiring check: calls TMDB `/configuration` once at launch and logs
     /// the outcome. Debug builds only; removed when real features land.

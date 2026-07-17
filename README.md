@@ -21,8 +21,8 @@ graph TD
     App --> FeatureAuth & FeatureHome & FeatureMovieDetails & FeatureSearch & FeatureFavorites & FeatureProfile
     FeatureAuth & FeatureHome & FeatureMovieDetails & FeatureSearch & FeatureFavorites & FeatureProfile --> Core
 
-    subgraph Core [Packages/Core]
-        CoreNetworking
+    subgraph Core [Packages/Core — one package per module]
+        Networking
         CoreStorage
         CoreModels
         CoreUI
@@ -67,7 +67,7 @@ Environment values flow `Configs/*.xcconfig` → Info.plist → `CoreEnvironment
 
 - **Swift Testing** (`@Test` / `#expect`) for unit tests; XCTest only for UI tests.
 - Networking is tested through `URLProtocol` stubs — no test touches the network.
-- Run package tests: `cd Packages/Core && swift test`, or ⌘U on the `TMDB-Test` scheme.
+- Run package tests: `swift test` inside a package (e.g. `Packages/Core/Networking`), or ⌘U on the `TMDB-Test` scheme.
 
 ## Git Workflow
 

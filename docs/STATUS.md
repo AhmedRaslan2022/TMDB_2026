@@ -35,6 +35,7 @@ Task checklist mirroring `docs/SPRINTS.md`. One line per deviation/decision.
 - 0.8: URLProtocol stub lives in CoreNetworkingTests, not SharedTestSupport — Shared already depends on Core, the reverse edge would cycle. Packages declare macOS 14 so `swift test` runs on the host.
 - 0.9: BearerAuthInterceptor takes a token-provider closure so CoreNetworking stays independent of CoreEnvironment; composition root bridges them. Debug-only smoke check in the app target.
 - 0.11: DI = protocol-based constructor injection composed in `AppContainer` (@MainActor, app target). No service locator, no DI framework, no singletons. Coordinators receive feature dependencies from the container starting Sprint 1.
+- Post-sprint refactor (2026-07-17): the single Core package split into six standalone packages under `Packages/Core/*`, and `CoreNetworking` renamed to `Networking` (module, product, package). Features/Shared manifests and app wiring updated; CLAUDE.md module map updated to match.
 - Sprint backlog file moved from repo root (`TMDB-App-Sprints.md`) to `docs/SPRINTS.md` per CLAUDE.md.
 - No git remote configured yet → per-task branches are squash-merged into `develop` locally; PRs start once a remote exists.
 

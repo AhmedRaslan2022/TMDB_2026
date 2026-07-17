@@ -1,6 +1,6 @@
 import Foundation
 import Testing
-@testable import CoreNetworking
+@testable import Networking
 
 private struct PingEndpoint: Endpoint {
     let path = "/ping"

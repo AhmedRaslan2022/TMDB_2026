@@ -1,6 +1,6 @@
 import CoreEnvironment
-import CoreNetworking
 import CoreUtilities
+import Networking
 
 /// Composition root for the whole app.
 ///

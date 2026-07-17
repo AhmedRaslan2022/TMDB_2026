@@ -20,13 +20,13 @@ Portfolio-grade iOS app on the TMDB API. Purpose: demonstrate senior-level iOS s
 5. **Coordinator pattern owns ALL navigation.** Views never push/present directly. Each tab has its own `NavigationStack` bound to a child coordinator; routes are `Hashable` enums; `navigationDestination(for:)` mapping lives in the app target. Sheets/covers are coordinator-driven too.
 6. **SPM dependency direction:** `Features → Core` only. A feature package NEVER imports another feature package. Cross-feature navigation goes through coordinators in the app target. `Core` packages never import `Features`.
 7. **Dependency injection via protocols.** No singletons except where the OS forces it; use cases and repositories are injected, never instantiated inside consumers.
-8. **No third-party networking or reactive libs.** URLSession only. (Image loading: the custom actor-based cache in CoreUI/CoreNetworking.)
+8. **No third-party networking or reactive libs.** URLSession only. (Image loading: the custom actor-based cache in CoreUI/Networking.)
 
 ## Module Map
 
 ```
 TMDBApp (app target: composition root, AppCoordinator, route wiring only)
-Packages/Core:      CoreNetworking, CoreStorage, CoreModels, CoreUI, CoreUtilities, CoreEnvironment
+Packages/Core:      separate packages — Networking, CoreStorage, CoreModels, CoreUI, CoreUtilities, CoreEnvironment
 Packages/Features:  FeatureAuth, FeatureHome, FeatureMovieDetails, FeatureSearch, FeatureFavorites, FeatureProfile (+ FeatureTV, FeaturePerson in Sprint 6)
 Packages/Shared:    SharedTestSupport (mocks/stubs — test targets only)
 ```
