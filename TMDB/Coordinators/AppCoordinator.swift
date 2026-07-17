@@ -26,8 +26,31 @@ final class AppCoordinator {
         case main
     }
 
+    /// Modals presented as sheets. All modal presentation is
+    /// coordinator-driven — views only report intent.
+    enum Sheet: String, Identifiable {
+        /// App/about information (placeholder until Sprint 5's settings).
+        case about
+
+        var id: String {
+            rawValue
+        }
+    }
+
+    /// Modals presented as full-screen covers.
+    enum FullScreenCover: String, Identifiable {
+        /// What's-new walkthrough (placeholder content for now).
+        case whatsNew
+
+        var id: String {
+            rawValue
+        }
+    }
+
     private(set) var rootScene: RootScene = .auth
     var selectedTab: AppTab = .home
+    var presentedSheet: Sheet?
+    var presentedFullScreenCover: FullScreenCover?
 
     let home = TabCoordinator<HomeRoute>()
     let search = TabCoordinator<SearchRoute>()
@@ -39,10 +62,25 @@ final class AppCoordinator {
         rootScene = .main
     }
 
-    /// Returns to the auth gate, e.g. after logout, resetting all tab state.
+    func presentSheet(_ sheet: Sheet) {
+        presentedSheet = sheet
+    }
+
+    func presentFullScreenCover(_ cover: FullScreenCover) {
+        presentedFullScreenCover = cover
+    }
+
+    func dismissModal() {
+        presentedSheet = nil
+        presentedFullScreenCover = nil
+    }
+
+    /// Returns to the auth gate, e.g. after logout, resetting all tab and
+    /// modal state.
     func signOut() {
         rootScene = .auth
         selectedTab = .home
+        dismissModal()
         home.popToRoot()
         search.popToRoot()
         favorites.popToRoot()

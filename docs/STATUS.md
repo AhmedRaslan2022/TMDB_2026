@@ -48,10 +48,11 @@ Task checklist mirroring `docs/SPRINTS.md`. One line per deviation/decision.
 - [x] 1.5 Route enums per feature (Hashable) + navigationDestination wiring in app target
 - [x] 1.6 TabBar shell (Home/Search/Favorites/Profile) with placeholder views
 - [x] 1.7 Each tab owns its NavigationStack bound to a child coordinator
-- [ ] 1.8 Sheet/fullScreenCover presentation via coordinator
+- [x] 1.8 Sheet/fullScreenCover presentation via coordinator
 - [ ] 1.9 [test] KeychainManager + AppEnvironment unit tests (Swift Testing)
 
 ### Sprint 1 Decisions / Deviations
+- 1.8: Modals owned by AppCoordinator (Sheet/FullScreenCover Identifiable enums) and attached once at RootView; demo About sheet + What's New cover from Profile. signOut clears modals too.
 - 1.6/1.7 (pair PR): generic `TabCoordinator<Route>` instead of four near-identical classes; classic `.tabItem` API (the `Tab` builder is iOS 18+, min target is 17). Feature views report intent via closures; only coordinators mutate paths.
 - Env xcconfigs were moved in Xcode to a root `Enviroments/` folder (rode into the 1.1 commit); project refs and `#include ../Configs/Shared.xcconfig` fixed in 1.4. Secrets/Shared stay in `Configs/`.
 - 1.4: Auth gate placeholder view lives in FeatureAuth; AppCoordinator exposes completeAuthGate()/signOut(). Missing `import SwiftData` in TMDBApp (from 1.2) caught and fixed here — earlier build check had a false positive.

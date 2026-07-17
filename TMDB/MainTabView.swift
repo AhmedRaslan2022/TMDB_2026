@@ -86,6 +86,8 @@ struct MainTabView: View {
             RouteDestinations.attach(
                 to: ProfileView(
                     onOpenSettings: { coordinator.profile.push(.settings) },
+                    onShowAbout: { coordinator.presentSheet(.about) },
+                    onShowWhatsNew: { coordinator.presentFullScreenCover(.whatsNew) },
                     onSignOut: { coordinator.signOut() }
                 )
             )

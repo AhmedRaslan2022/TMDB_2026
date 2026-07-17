@@ -2,12 +2,23 @@ import CoreUI
 import SwiftUI
 
 /// Profile tab placeholder. Account details land in Sprint 5.
+/// Navigation and presentation intent is reported through closures — the
+/// coordinator decides what happens.
 public struct ProfileView: View {
     private let onOpenSettings: () -> Void
+    private let onShowAbout: () -> Void
+    private let onShowWhatsNew: () -> Void
     private let onSignOut: () -> Void
 
-    public init(onOpenSettings: @escaping () -> Void, onSignOut: @escaping () -> Void) {
+    public init(
+        onOpenSettings: @escaping () -> Void,
+        onShowAbout: @escaping () -> Void,
+        onShowWhatsNew: @escaping () -> Void,
+        onSignOut: @escaping () -> Void
+    ) {
         self.onOpenSettings = onOpenSettings
+        self.onShowAbout = onShowAbout
+        self.onShowWhatsNew = onShowWhatsNew
         self.onSignOut = onSignOut
     }
 
@@ -23,6 +34,18 @@ public struct ProfileView: View {
                 Text("Settings", comment: "Open settings button")
             }
 
+            Button {
+                onShowAbout()
+            } label: {
+                Text("About (sheet)", comment: "Show about sheet button")
+            }
+
+            Button {
+                onShowWhatsNew()
+            } label: {
+                Text("What's New (cover)", comment: "Show what's-new cover button")
+            }
+
             Button(role: .destructive) {
                 onSignOut()
             } label: {
@@ -35,6 +58,6 @@ public struct ProfileView: View {
 
 #Preview {
     NavigationStack {
-        ProfileView(onOpenSettings: {}, onSignOut: {})
+        ProfileView(onOpenSettings: {}, onShowAbout: {}, onShowWhatsNew: {}, onSignOut: {})
     }
 }
