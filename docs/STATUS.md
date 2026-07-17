@@ -42,8 +42,8 @@ Task checklist mirroring `docs/SPRINTS.md`. One line per deviation/decision.
 ## Sprint 1 — Persistence & App Shell
 
 - [x] 1.1 CoreStorage.KeychainManager — actor over Security framework, typed API
-- [ ] 1.2 SwiftData stack: ModelContainer per env + in-memory container for tests
-- [ ] 1.3 @Model types: FavoriteMovie, RecentSearch, CachedMovie
+- [x] 1.2 SwiftData stack: ModelContainer per env + in-memory container for tests
+- [x] 1.3 @Model types: FavoriteMovie, RecentSearch, CachedMovie
 - [x] 1.4 AppCoordinator (@Observable): root switch (auth vs main), selected tab
 - [x] 1.5 Route enums per feature (Hashable) + navigationDestination wiring in app target
 - [x] 1.6 TabBar shell (Home/Search/Favorites/Profile) with placeholder views
