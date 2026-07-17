@@ -1,3 +1,5 @@
+// By Ahmed Raslan ®
+
 /// Typed keys for values held in secure storage. New credentials get a case
 /// here — string literals never appear at call sites.
 public enum SecureStorageKey: String, CaseIterable, Sendable {

@@ -1,4 +1,5 @@
 // swift-tools-version: 6.0
+// By Ahmed Raslan ®
 import PackageDescription
 
 /// Features depend on Core packages only — a feature target must NEVER depend

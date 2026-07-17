@@ -1,3 +1,5 @@
+// By Ahmed Raslan ®
+
 import Foundation
 
 /// Turns an `Endpoint` into a `URLRequest` against a base URL.

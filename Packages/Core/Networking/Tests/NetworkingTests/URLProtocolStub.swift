@@ -1,3 +1,5 @@
+// By Ahmed Raslan ®
+
 import Foundation
 
 /// Serves stubbed responses for a single `URLSession`. Each call to

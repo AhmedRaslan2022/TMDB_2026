@@ -1,3 +1,5 @@
+// By Ahmed Raslan ®
+
 import Foundation
 
 /// Mutates outgoing requests before they are sent — auth headers, tracing,

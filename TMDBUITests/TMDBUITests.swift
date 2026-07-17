@@ -1,3 +1,5 @@
+// By Ahmed Raslan ®
+
 import XCTest
 
 /// Sprint 1 DoD: the auth-gated shell launches, tabs switch, and a

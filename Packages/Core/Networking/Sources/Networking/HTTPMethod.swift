@@ -1,3 +1,5 @@
+// By Ahmed Raslan ®
+
 /// HTTP methods used by the TMDB API.
 public enum HTTPMethod: String, Sendable {
     case get = "GET"

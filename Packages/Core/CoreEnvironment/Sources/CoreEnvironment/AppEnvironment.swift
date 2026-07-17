@@ -1,3 +1,5 @@
+// By Ahmed Raslan ®
+
 import Foundation
 
 /// Type-safe view over the per-environment configuration injected through

@@ -1,4 +1,5 @@
 // swift-tools-version: 6.0
+// By Ahmed Raslan ®
 import PackageDescription
 
 let package = Package(

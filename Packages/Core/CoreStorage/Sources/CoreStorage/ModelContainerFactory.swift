@@ -1,3 +1,5 @@
+// By Ahmed Raslan ®
+
 import SwiftData
 
 /// Builds the app's `ModelContainer` with the full schema.

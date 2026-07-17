@@ -1,3 +1,5 @@
+// By Ahmed Raslan ®
+
 import Foundation
 
 /// Failures an `APIClient` call can surface, mapped from transport and HTTP

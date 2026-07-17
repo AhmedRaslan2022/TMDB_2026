@@ -1,3 +1,5 @@
+// By Ahmed Raslan ®
+
 import os
 
 /// Thin wrapper over `os.Logger` so call sites don't depend on `os` directly

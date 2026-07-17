@@ -1,4 +1,5 @@
 // swift-tools-version: 6.0
+// By Ahmed Raslan ®
 import PackageDescription
 
 /// Mocks and stubs shared across test targets. Never linked into the app.

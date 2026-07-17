@@ -1,3 +1,5 @@
+// By Ahmed Raslan ®
+
 import Foundation
 
 /// Spacing scale (pt). Stick to the scale — no ad-hoc values in views.

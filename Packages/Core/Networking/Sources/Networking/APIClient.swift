@@ -1,3 +1,5 @@
+// By Ahmed Raslan ®
+
 import Foundation
 
 /// Sends `Endpoint`s and decodes their JSON responses.

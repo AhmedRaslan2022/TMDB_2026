@@ -21,4 +21,4 @@
 --stripunusedargs closure-only
 --self remove
 --importgrouping testable-bottom
---header strip
+--header "By Ahmed Raslan ®"

@@ -1,3 +1,5 @@
+// By Ahmed Raslan ®
+
 import SwiftUI
 
 /// Semantic color tokens. Views use these — never raw `Color` literals — so
