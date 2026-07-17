@@ -72,7 +72,7 @@ Task checklist mirroring `docs/SPRINTS.md`. One line per deviation/decision.
 
 - [x] 2.1 Domain: LoginUseCase, CreateGuestSessionUseCase, LogoutUseCase, repo protocols
 - [x] 2.2 Data: auth DTOs + mappers + AuthRemoteDataSource + repository impl
-- [ ] 2.3 Login flow: request token → ASWebAuthenticationSession approval → create session
+- [x] 2.3 Login flow: request token → ASWebAuthenticationSession approval → create session
 - [ ] 2.4 Guest session path
 - [ ] 2.5 Persist session ID + account ID in Keychain; validate on launch
 - [ ] 2.6 Logout: remote delete + wipe Keychain + clear user-scoped SwiftData
@@ -81,6 +81,7 @@ Task checklist mirroring `docs/SPRINTS.md`. One line per deviation/decision.
 - [ ] 2.9 [test] AuthViewModel + use cases with mocked repos; URLProtocol-stubbed data source
 
 ### Sprint 2 Decisions / Deviations
+- 2.3: Pure approval logic (`TMDBApprovalFlow`: URL build + redirect parsing, incl. denied/token-mismatch) split from `WebRequestTokenAuthorizer` (@MainActor, wraps ASWebAuthenticationSession via continuation — OS API has no async form). Callback scheme `tmdb-auth://` needs no Info.plist registration (session intercepts it). canceledLogin + TMDB `denied=true` both → AuthError.userCancelled.
 - 2.2: DTOs + AuthRemoteDataSource are internal — composition root only sees `AuthRepositoryImpl(apiClient:)`. 401 on createSession → `AuthError.tokenNotApproved` (can't disambiguate TMDB status codes until APIError exposes the error body). `URLProtocolStub` duplicated as public into SharedTestSupport; the NetworkingTests copy can't move there without a Shared→Networking package cycle. Guest expiry dropped in mapping per the 2.1 decision.
 - 2.1: Web approval abstracted as `RequestTokenAuthorizer` protocol in Domain (implemented with ASWebAuthenticationSession in 2.3) so LoginUseCase orchestrates the full token → approval → session → persist flow. Logout wipes local state before the remote delete so the device is always logged out even if the network call fails (error still propagates). Guest expiry not modelled — 2.5 validates against the API instead. First Features test target (FeatureAuthTests) added to the manifest.
 
