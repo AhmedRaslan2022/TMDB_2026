@@ -13,5 +13,6 @@ struct TMDBApp: App {
                 .task { await DebugSmokeCheck.run(apiClient: container.apiClient, environment: container.environment) }
             #endif
         }
+        .modelContainer(container.modelContainer)
     }
 }

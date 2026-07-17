@@ -1,6 +1,8 @@
 import CoreEnvironment
+import CoreStorage
 import CoreUtilities
 import Networking
+import SwiftData
 
 /// Composition root for the whole app.
 ///
@@ -15,6 +17,10 @@ final class AppContainer {
     let environment: AppEnvironment
     /// Authenticated TMDB API client shared by all repositories.
     let apiClient: any APIClient
+    /// Credential store backing session persistence.
+    let secureStorage: any SecureStorage
+    /// SwiftData container for app data (favorites, recents, cache).
+    let modelContainer: ModelContainer
 
     init() {
         let environment = AppEnvironment.load()
@@ -25,5 +31,12 @@ final class AppContainer {
                 BearerAuthInterceptor(tokenProvider: { environment.accessToken }),
             ]
         )
+        secureStorage = KeychainManager()
+        do {
+            // The Test environment never persists to disk.
+            modelContainer = try ModelContainerFactory.make(inMemory: environment.name == .test)
+        } catch {
+            preconditionFailure("Could not create ModelContainer: \(error)")
+        }
     }
 }
