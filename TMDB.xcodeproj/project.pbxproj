@@ -50,6 +50,16 @@
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
+		A37BE9B5300A650C0047E68A /* Exceptions for "Enviroments" folder in "TMDB" target */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				Dev.xcconfig,
+				Live.xcconfig,
+				Staging.xcconfig,
+				Test.xcconfig,
+			);
+			target = A37BE8963006C0D00047E68A /* TMDB */;
+		};
 		DDCF00000000000000000E01 /* Exceptions for "TMDB" folder in "TMDB" target */ = {
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
@@ -76,6 +86,14 @@
 		A37BE8B33006C0D20047E68A /* TMDBUITests */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
 			path = TMDBUITests;
+			sourceTree = "<group>";
+		};
+		A37BE9B4300A64FF0047E68A /* Enviroments */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			exceptions = (
+				A37BE9B5300A650C0047E68A /* Exceptions for "Enviroments" folder in "TMDB" target */,
+			);
+			path = Enviroments;
 			sourceTree = "<group>";
 		};
 /* End PBXFileSystemSynchronizedRootGroup section */
@@ -121,7 +139,7 @@
 			isa = PBXGroup;
 			children = (
 				A37BE8C5300710980047E68A /* CLAUDE.md */,
-				DDCF0000000000000000000A /* Configs */,
+				A37BE9B4300A64FF0047E68A /* Enviroments */,
 				A37BE8993006C0D00047E68A /* TMDB */,
 				A37BE8A93006C0D20047E68A /* TMDBTests */,
 				A37BE8B33006C0D20047E68A /* TMDBUITests */,
@@ -137,17 +155,6 @@
 				A37BE8B03006C0D20047E68A /* TMDBUITests.xctest */,
 			);
 			name = Products;
-			sourceTree = "<group>";
-		};
-		DDCF0000000000000000000A /* Configs */ = {
-			isa = PBXGroup;
-			children = (
-				DDCF000000000000000000F1 /* Dev.xcconfig */,
-				DDCF000000000000000000F2 /* Staging.xcconfig */,
-				DDCF000000000000000000F3 /* Test.xcconfig */,
-				DDCF000000000000000000F4 /* Live.xcconfig */,
-			);
-			path = Configs;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -167,6 +174,7 @@
 			);
 			fileSystemSynchronizedGroups = (
 				A37BE8993006C0D00047E68A /* TMDB */,
+				A37BE9B4300A64FF0047E68A /* Enviroments */,
 			);
 			name = TMDB;
 			packageProductDependencies = (
@@ -879,6 +887,14 @@
 /* End XCConfigurationList section */
 
 /* Begin XCLocalSwiftPackageReference section */
+		CAFE000000000000000000C1 /* XCLocalSwiftPackageReference "Packages/Features" */ = {
+			isa = XCLocalSwiftPackageReference;
+			relativePath = Packages/Features;
+		};
+		CAFE000000000000000000C2 /* XCLocalSwiftPackageReference "Packages/Shared" */ = {
+			isa = XCLocalSwiftPackageReference;
+			relativePath = Packages/Shared;
+		};
 		CAFE000000000000000000C3 /* XCLocalSwiftPackageReference "Packages/Core/CoreModels" */ = {
 			isa = XCLocalSwiftPackageReference;
 			relativePath = Packages/Core/CoreModels;
@@ -902,14 +918,6 @@
 		CAFE000000000000000000C8 /* XCLocalSwiftPackageReference "Packages/Core/CoreUI" */ = {
 			isa = XCLocalSwiftPackageReference;
 			relativePath = Packages/Core/CoreUI;
-		};
-		CAFE000000000000000000C1 /* XCLocalSwiftPackageReference "Packages/Features" */ = {
-			isa = XCLocalSwiftPackageReference;
-			relativePath = Packages/Features;
-		};
-		CAFE000000000000000000C2 /* XCLocalSwiftPackageReference "Packages/Shared" */ = {
-			isa = XCLocalSwiftPackageReference;
-			relativePath = Packages/Shared;
 		};
 /* End XCLocalSwiftPackageReference section */
 

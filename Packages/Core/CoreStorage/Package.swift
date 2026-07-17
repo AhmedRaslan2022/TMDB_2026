@@ -18,5 +18,6 @@ let package = Package(
                 .product(name: "CoreUtilities", package: "CoreUtilities"),
             ]
         ),
+        .testTarget(name: "CoreStorageTests", dependencies: ["CoreStorage"]),
     ]
 )

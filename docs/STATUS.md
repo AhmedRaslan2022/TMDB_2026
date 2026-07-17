@@ -40,7 +40,19 @@ Task checklist mirroring `docs/SPRINTS.md`. One line per deviation/decision.
 - No git remote configured yet → per-task branches are squash-merged into `develop` locally; PRs start once a remote exists.
 
 ## Sprint 1 — Persistence & App Shell
-- [ ] 1.1 – 1.9 (not started)
+
+- [x] 1.1 CoreStorage.KeychainManager — actor over Security framework, typed API
+- [ ] 1.2 SwiftData stack: ModelContainer per env + in-memory container for tests
+- [ ] 1.3 @Model types: FavoriteMovie, RecentSearch, CachedMovie
+- [ ] 1.4 AppCoordinator (@Observable): root switch (auth vs main), selected tab
+- [ ] 1.5 Route enums per feature (Hashable) + navigationDestination wiring in app target
+- [ ] 1.6 TabBar shell (Home/Search/Favorites/Profile) with placeholder views
+- [ ] 1.7 Each tab owns its NavigationStack bound to a child coordinator
+- [ ] 1.8 Sheet/fullScreenCover presentation via coordinator
+- [ ] 1.9 [test] KeychainManager + AppEnvironment unit tests (Swift Testing)
+
+### Sprint 1 Decisions / Deviations
+- 1.1: `SecureStorage` protocol + `KeychainManager` actor; typed `SecureStorageKey` enum. `removeAll` deletes per key (service-wide SecItemDelete only removes the first match on macOS). Keychain tests run on the macOS host via `swift test` — unhosted iOS-simulator test runners lack the keychain entitlement (errSecMissingEntitlement); in-app iOS keychain roundtrip is verified at the sprint DoD instead.
 
 ## Sprint 2 — Auth Feature
 - [ ] 2.1 – 2.9 (not started)
