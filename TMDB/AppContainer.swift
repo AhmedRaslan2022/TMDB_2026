@@ -6,10 +6,11 @@
 //
 
 import CoreEnvironment
-import CoreStorage
 import CoreUtilities
+import KeychainStorage
 import Networking
 import SwiftData
+import SwiftDataStorage
 
 /// Composition root for the whole app.
 ///

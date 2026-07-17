@@ -11,8 +11,9 @@
 		BEEF0000000000000000000B /* CoreUtilities in Frameworks */ = {isa = PBXBuildFile; productRef = CAFE0000000000000000000B /* CoreUtilities */; };
 		BEEF0000000000000000000C /* CoreEnvironment in Frameworks */ = {isa = PBXBuildFile; productRef = CAFE0000000000000000000C /* CoreEnvironment */; };
 		BEEF0000000000000000000D /* Networking in Frameworks */ = {isa = PBXBuildFile; productRef = CAFE0000000000000000000D /* Networking */; };
-		BEEF0000000000000000000E /* CoreStorage in Frameworks */ = {isa = PBXBuildFile; productRef = CAFE0000000000000000000E /* CoreStorage */; };
+		BEEF0000000000000000000E /* KeychainStorage in Frameworks */ = {isa = PBXBuildFile; productRef = CAFE0000000000000000000E /* KeychainStorage */; };
 		BEEF0000000000000000000F /* CoreUI in Frameworks */ = {isa = PBXBuildFile; productRef = CAFE0000000000000000000F /* CoreUI */; };
+		BEEF00000000000000000010 /* SwiftDataStorage in Frameworks */ = {isa = PBXBuildFile; productRef = CAFE00000000000000000010 /* SwiftDataStorage */; };
 		BEEF0000000000000000001A /* FeatureAuth in Frameworks */ = {isa = PBXBuildFile; productRef = CAFE0000000000000000001A /* FeatureAuth */; };
 		BEEF0000000000000000001B /* FeatureHome in Frameworks */ = {isa = PBXBuildFile; productRef = CAFE0000000000000000001B /* FeatureHome */; };
 		BEEF0000000000000000001C /* FeatureMovieDetails in Frameworks */ = {isa = PBXBuildFile; productRef = CAFE0000000000000000001C /* FeatureMovieDetails */; };
@@ -107,7 +108,8 @@
 				BEEF0000000000000000000B /* CoreUtilities in Frameworks */,
 				BEEF0000000000000000000C /* CoreEnvironment in Frameworks */,
 				BEEF0000000000000000000D /* Networking in Frameworks */,
-				BEEF0000000000000000000E /* CoreStorage in Frameworks */,
+				BEEF0000000000000000000E /* KeychainStorage in Frameworks */,
+				BEEF00000000000000000010 /* SwiftDataStorage in Frameworks */,
 				BEEF0000000000000000000F /* CoreUI in Frameworks */,
 				BEEF0000000000000000001A /* FeatureAuth in Frameworks */,
 				BEEF0000000000000000001B /* FeatureHome in Frameworks */,
@@ -194,7 +196,8 @@
 				CAFE0000000000000000000B /* CoreUtilities */,
 				CAFE0000000000000000000C /* CoreEnvironment */,
 				CAFE0000000000000000000D /* Networking */,
-				CAFE0000000000000000000E /* CoreStorage */,
+				CAFE0000000000000000000E /* KeychainStorage */,
+				CAFE00000000000000000010 /* SwiftDataStorage */,
 				CAFE0000000000000000000F /* CoreUI */,
 				CAFE0000000000000000001A /* FeatureAuth */,
 				CAFE0000000000000000001B /* FeatureHome */,
@@ -582,11 +585,11 @@
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = TMDB/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = "TMDB Dev";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
-				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
-				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -612,11 +615,11 @@
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = TMDB/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = "TMDB Dev";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
-				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
-				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -642,11 +645,11 @@
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = TMDB/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = "TMDB Dev";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
-				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
-				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -672,11 +675,11 @@
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = TMDB/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = "TMDB Dev";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
-				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
-				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -950,13 +953,17 @@
 			isa = XCSwiftPackageProductDependency;
 			productName = Networking;
 		};
-		CAFE0000000000000000000E /* CoreStorage */ = {
+		CAFE0000000000000000000E /* KeychainStorage */ = {
 			isa = XCSwiftPackageProductDependency;
-			productName = CoreStorage;
+			productName = KeychainStorage;
 		};
 		CAFE0000000000000000000F /* CoreUI */ = {
 			isa = XCSwiftPackageProductDependency;
 			productName = CoreUI;
+		};
+		CAFE00000000000000000010 /* SwiftDataStorage */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = SwiftDataStorage;
 		};
 		CAFE0000000000000000001A /* FeatureAuth */ = {
 			isa = XCSwiftPackageProductDependency;

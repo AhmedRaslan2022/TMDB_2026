@@ -9,7 +9,9 @@ let coreProducts: [Target.Dependency] = [
     .product(name: "CoreModels", package: "CoreModels"),
     .product(name: "CoreUtilities", package: "CoreUtilities"),
     .product(name: "Networking", package: "Networking"),
-    .product(name: "CoreStorage", package: "CoreStorage"),
+    .product(name: "KeychainStorage", package: "CoreStorage"),
+    .product(name: "SwiftDataStorage", package: "CoreStorage"),
+    .product(name: "UserDefaultsStorage", package: "CoreStorage"),
     .product(name: "CoreUI", package: "CoreUI"),
 ]
 

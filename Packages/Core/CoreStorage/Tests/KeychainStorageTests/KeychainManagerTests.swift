@@ -7,7 +7,7 @@
 
 import Foundation
 import Testing
-@testable import CoreStorage
+@testable import KeychainStorage
 
 /// Runs against the real keychain under a dedicated test service; every test
 /// wipes that service afterwards so nothing leaks between runs or into the

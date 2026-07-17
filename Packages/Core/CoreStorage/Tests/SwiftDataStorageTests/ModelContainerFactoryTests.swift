@@ -8,7 +8,7 @@
 import Foundation
 import SwiftData
 import Testing
-@testable import CoreStorage
+@testable import SwiftDataStorage
 
 /// All suites use in-memory containers — no test touches disk.
 @MainActor

@@ -7,9 +7,9 @@
 
 #if DEBUG
     import CoreEnvironment
-    import CoreStorage
     import CoreUtilities
     import Foundation
+    import KeychainStorage
     import Networking
 
     /// Launch-time wiring checks, debug builds only: TMDB `/configuration`

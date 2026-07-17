@@ -65,6 +65,9 @@ Task checklist mirroring `docs/SPRINTS.md`. One line per deviation/decision.
 - 1.4: Auth gate placeholder view lives in FeatureAuth; AppCoordinator exposes completeAuthGate()/signOut(). Missing `import SwiftData` in TMDBApp (from 1.2) caught and fixed here — earlier build check had a false positive.
 - 1.1: `SecureStorage` protocol + `KeychainManager` actor; typed `SecureStorageKey` enum. `removeAll` deletes per key (service-wide SecItemDelete only removes the first match on macOS). Keychain tests run on the macOS host via `swift test` — unhosted iOS-simulator test runners lack the keychain entitlement (errSecMissingEntitlement); in-app iOS keychain roundtrip is verified at the sprint DoD instead.
 
+### Post-Sprint-1 refactors
+- 2026-07-17: CoreStorage package split into three products/targets — `KeychainStorage` (SecureStorage + KeychainManager), `SwiftDataStorage` (@Model types + ModelContainerFactory), `UserDefaultsStorage` (new `DefaultsStorage` protocol + `UserDefaultsManager`, first key `hasSeenOnboarding`). Package name/path stays `CoreStorage`; the umbrella `CoreStorage` product is gone. App links Keychain+SwiftData only; features get all three.
+
 ## Sprint 2 — Auth Feature
 - [ ] 2.1 – 2.9 (not started)
 
