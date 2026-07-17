@@ -35,8 +35,15 @@ let package = Package(
         .package(path: "../Core/Networking"),
         .package(path: "../Core/CoreStorage"),
         .package(path: "../Core/CoreUI"),
+        .package(path: "../Shared"),
     ],
     targets: featureNames.map { .target(name: $0, dependencies: coreProducts) } + [
-        .testTarget(name: "FeatureAuthTests", dependencies: ["FeatureAuth"]),
+        .testTarget(
+            name: "FeatureAuthTests",
+            dependencies: [
+                "FeatureAuth",
+                .product(name: "SharedTestSupport", package: "Shared"),
+            ]
+        ),
     ]
 )

@@ -80,6 +80,36 @@ final class SessionRepositoryMock: SessionRepository, @unchecked Sendable {
     }
 }
 
+final class AuthRemoteDataSourceMock: AuthRemoteDataSource, @unchecked Sendable {
+    var requestTokenResult: Result<RequestTokenDTO, Error> = .failure(MockError.unstubbed)
+    var sessionResult: Result<CreateSessionDTO, Error> = .failure(MockError.unstubbed)
+    var guestSessionResult: Result<GuestSessionDTO, Error> = .failure(MockError.unstubbed)
+    var deleteSessionError: Error?
+
+    private(set) var createSessionTokens: [String] = []
+    private(set) var deletedSessionIDs: [String] = []
+
+    func createRequestToken() async throws -> RequestTokenDTO {
+        try requestTokenResult.get()
+    }
+
+    func createSession(requestToken: String) async throws -> CreateSessionDTO {
+        createSessionTokens.append(requestToken)
+        return try sessionResult.get()
+    }
+
+    func createGuestSession() async throws -> GuestSessionDTO {
+        try guestSessionResult.get()
+    }
+
+    func deleteSession(sessionID: String) async throws {
+        deletedSessionIDs.append(sessionID)
+        if let deleteSessionError {
+            throw deleteSessionError
+        }
+    }
+}
+
 final class RequestTokenAuthorizerMock: RequestTokenAuthorizer, @unchecked Sendable {
     var result: Result<RequestToken, Error> = .failure(MockError.unstubbed)
 
