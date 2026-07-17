@@ -11,8 +11,7 @@ struct RootView: View {
         case .auth:
             AuthPlaceholderView(onContinue: { coordinator.completeAuthGate() })
         case .main:
-            // Replaced by the coordinator-bound tab shell in task 1.6.
-            Text("Main shell", comment: "Temporary main scene placeholder")
+            MainTabView(coordinator: coordinator)
         }
     }
 }

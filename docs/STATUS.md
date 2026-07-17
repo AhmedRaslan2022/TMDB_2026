@@ -46,12 +46,13 @@ Task checklist mirroring `docs/SPRINTS.md`. One line per deviation/decision.
 - [ ] 1.3 @Model types: FavoriteMovie, RecentSearch, CachedMovie
 - [x] 1.4 AppCoordinator (@Observable): root switch (auth vs main), selected tab
 - [x] 1.5 Route enums per feature (Hashable) + navigationDestination wiring in app target
-- [ ] 1.6 TabBar shell (Home/Search/Favorites/Profile) with placeholder views
-- [ ] 1.7 Each tab owns its NavigationStack bound to a child coordinator
+- [x] 1.6 TabBar shell (Home/Search/Favorites/Profile) with placeholder views
+- [x] 1.7 Each tab owns its NavigationStack bound to a child coordinator
 - [ ] 1.8 Sheet/fullScreenCover presentation via coordinator
 - [ ] 1.9 [test] KeychainManager + AppEnvironment unit tests (Swift Testing)
 
 ### Sprint 1 Decisions / Deviations
+- 1.6/1.7 (pair PR): generic `TabCoordinator<Route>` instead of four near-identical classes; classic `.tabItem` API (the `Tab` builder is iOS 18+, min target is 17). Feature views report intent via closures; only coordinators mutate paths.
 - Env xcconfigs were moved in Xcode to a root `Enviroments/` folder (rode into the 1.1 commit); project refs and `#include ../Configs/Shared.xcconfig` fixed in 1.4. Secrets/Shared stay in `Configs/`.
 - 1.4: Auth gate placeholder view lives in FeatureAuth; AppCoordinator exposes completeAuthGate()/signOut(). Missing `import SwiftData` in TMDBApp (from 1.2) caught and fixed here — earlier build check had a false positive.
 - 1.1: `SecureStorage` protocol + `KeychainManager` actor; typed `SecureStorageKey` enum. `removeAll` deletes per key (service-wide SecItemDelete only removes the first match on macOS). Keychain tests run on the macOS host via `swift test` — unhosted iOS-simulator test runners lack the keychain entitlement (errSecMissingEntitlement); in-app iOS keychain roundtrip is verified at the sprint DoD instead.
