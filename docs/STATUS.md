@@ -45,7 +45,7 @@ Task checklist mirroring `docs/SPRINTS.md`. One line per deviation/decision.
 - [ ] 1.2 SwiftData stack: ModelContainer per env + in-memory container for tests
 - [ ] 1.3 @Model types: FavoriteMovie, RecentSearch, CachedMovie
 - [x] 1.4 AppCoordinator (@Observable): root switch (auth vs main), selected tab
-- [ ] 1.5 Route enums per feature (Hashable) + navigationDestination wiring in app target
+- [x] 1.5 Route enums per feature (Hashable) + navigationDestination wiring in app target
 - [ ] 1.6 TabBar shell (Home/Search/Favorites/Profile) with placeholder views
 - [ ] 1.7 Each tab owns its NavigationStack bound to a child coordinator
 - [ ] 1.8 Sheet/fullScreenCover presentation via coordinator
