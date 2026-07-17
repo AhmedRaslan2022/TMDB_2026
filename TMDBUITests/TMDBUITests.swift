@@ -1,36 +1,41 @@
 import XCTest
 
+/// Sprint 1 DoD: the auth-gated shell launches, tabs switch, and a
+/// coordinator-driven push lands on the destination.
 final class TMDBUITests: XCTestCase {
     override func setUpWithError() throws {
-        // Put setup code here. This method is called before the invocation of each test method in the class.
-
-        // In UI tests it is usually best to stop immediately when a failure occurs.
         continueAfterFailure = false
-
-        // In UI tests it’s important to set the initial state - such as interface orientation - required for your tests before
-        // they run. The setUp method is a good place to do this.
-    }
-
-    override func tearDownWithError() throws {
-        // Put teardown code here. This method is called after the invocation of each test method in the class.
     }
 
     @MainActor
-    func testExample() {
-        // UI tests must launch the application that they test.
+    func testAuthGateTabSwitchAndPushNavigation() {
         let app = XCUIApplication()
         app.launch()
 
-        // Use XCTAssert and related functions to verify your tests produce the correct results.
-        // XCUIAutomation Documentation
-        // https://developer.apple.com/documentation/xcuiautomation
-    }
+        // Auth gate → main shell.
+        let continueButton = app.buttons["Continue"]
+        XCTAssertTrue(continueButton.waitForExistence(timeout: 5), "Auth gate should show first")
+        continueButton.tap()
 
-    @MainActor
-    func testLaunchPerformance() {
-        // This measures how long it takes to launch your application.
-        measure(metrics: [XCTApplicationLaunchMetric()]) {
-            XCUIApplication().launch()
-        }
+        // Tab shell appears on Home.
+        XCTAssertTrue(app.tabBars.buttons["Home"].waitForExistence(timeout: 5))
+
+        // Coordinator-driven push from Home.
+        app.buttons["Open a movie (test push)"].tap()
+        XCTAssertTrue(app.staticTexts["movieID: 550"].waitForExistence(timeout: 5), "Push should land on details")
+        app.navigationBars.buttons.firstMatch.tap() // back
+
+        // Tab switching.
+        app.tabBars.buttons["Profile"].tap()
+        XCTAssertTrue(app.buttons["Sign Out"].waitForExistence(timeout: 5))
+
+        // Coordinator-driven sheet.
+        app.buttons["About (sheet)"].tap()
+        XCTAssertTrue(app.buttons["Done"].waitForExistence(timeout: 5))
+        app.buttons["Done"].tap()
+
+        // Sign out returns to the auth gate.
+        app.buttons["Sign Out"].tap()
+        XCTAssertTrue(continueButton.waitForExistence(timeout: 5), "Sign out should return to auth gate")
     }
 }

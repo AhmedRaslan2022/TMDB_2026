@@ -49,9 +49,16 @@ Task checklist mirroring `docs/SPRINTS.md`. One line per deviation/decision.
 - [x] 1.6 TabBar shell (Home/Search/Favorites/Profile) with placeholder views
 - [x] 1.7 Each tab owns its NavigationStack bound to a child coordinator
 - [x] 1.8 Sheet/fullScreenCover presentation via coordinator
-- [ ] 1.9 [test] KeychainManager + AppEnvironment unit tests (Swift Testing)
+- [x] 1.9 [test] KeychainManager + AppEnvironment unit tests (Swift Testing)
+
+### Sprint 1 Definition of Done — verified 2026-07-17 ✅
+- [x] App launches into auth-gated shell (auth gate → Continue → tab shell; UI test + screenshot)
+- [x] Can store/read a value in Keychain — 7 unit tests (macOS host) + in-app iOS roundtrip logged: `keychain roundtrip OK`
+- [x] Tab switching + a test push navigation work — UI test covers gate, push to details, back, tab switch, sheet, sign-out
+- [x] Tests green — 33 package tests (6 CoreEnvironment, 15 Networking, 12 CoreStorage) + 14 app unit tests + 1 UI test; all 4 schemes build; lint clean
 
 ### Sprint 1 Decisions / Deviations
+- 1.9: Explicit `deinit {}` in TabCoordinator works around a swift-frontend 6.3 EarlyPerfInliner crash on generic @Observable classes under -O (Staging/Live only). Smoke check extended with an in-app keychain roundtrip.
 - 1.8: Modals owned by AppCoordinator (Sheet/FullScreenCover Identifiable enums) and attached once at RootView; demo About sheet + What's New cover from Profile. signOut clears modals too.
 - 1.6/1.7 (pair PR): generic `TabCoordinator<Route>` instead of four near-identical classes; classic `.tabItem` API (the `Tab` builder is iOS 18+, min target is 17). Feature views report intent via closures; only coordinators mutate paths.
 - Env xcconfigs were moved in Xcode to a root `Enviroments/` folder (rode into the 1.1 commit); project refs and `#include ../Configs/Shared.xcconfig` fixed in 1.4. Secrets/Shared stay in `Configs/`.

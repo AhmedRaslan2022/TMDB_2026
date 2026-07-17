@@ -12,7 +12,13 @@ struct TMDBApp: App {
         WindowGroup {
             RootView(coordinator: coordinator)
             #if DEBUG
-                .task { await DebugSmokeCheck.run(apiClient: container.apiClient, environment: container.environment) }
+                .task {
+                    await DebugSmokeCheck.run(
+                        apiClient: container.apiClient,
+                        secureStorage: container.secureStorage,
+                        environment: container.environment
+                    )
+                }
             #endif
         }
         .modelContainer(container.modelContainer)
