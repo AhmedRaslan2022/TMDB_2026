@@ -100,7 +100,7 @@ Task checklist mirroring `docs/SPRINTS.md`. One line per deviation/decision.
 ## Sprint 3 — Home & Movie Details
 
 - [x] 3.1 Domain + Data for movie lists (trending/popular/now playing/upcoming/top rated)
-- [ ] 3.2 HomeViewModel: parallel section fetch with TaskGroup; per-section ViewState
+- [x] 3.2 HomeViewModel: parallel section fetch with TaskGroup; per-section ViewState
 - [ ] 3.3 Home UI: horizontal carousels, day/week trending toggle, pull-to-refresh
 - [ ] 3.4 Pagination (infinite scroll) for section "see all" lists
 - [ ] 3.5 Skeleton shimmer loading + empty/error states
@@ -111,6 +111,7 @@ Task checklist mirroring `docs/SPRINTS.md`. One line per deviation/decision.
 - [ ] 3.10 [test] HomeViewModel (TaskGroup paths), mappers, image cache
 
 ### Sprint 3 Decisions / Deviations
+- 3.2: `HomeSection` enum (display order, maps to `MovieList` given the trending window) + `HomeViewModel` with `[HomeSection: SectionState]` — per-section exhaustive state (idle/loading/loaded/error(LocalizedStringResource)). `withTaskGroup` fans out over sections; states update as each child finishes, so fast sections render before slow ones. `refresh()` keeps stale content until fresh data lands (no skeleton flash); `retry(section:)` for 3.5's error UI; `selectTrendingWindow` re-fetches trending only. CancellationError → back to idle, never error; failed sections drop stale content by design (retry re-fetches). Review-driven hardening: explicit `inFlight` set guards ALL fetches (incl. refresh — refreshing an in-flight section is a no-op) + per-section generation tokens so a window toggle preempts an in-flight trending fetch and its stale result is dropped on arrival (was a desync bug). 11 VM tests incl. gated-mock proofs of parallel independence, toggle-supersedes-fetch, and refresh-skips-in-flight — part of 3.10's named coverage, landed same-PR. Sprint 8 note: LocalizedStringResource defaults to .main bundle; FeatureHome + FeatureAuth error strings need `bundle:` pointing at Bundle.module when the String Catalogs land.
 - 3.1: Shared movie entities (`Movie`, `MoviePage` with `hasMorePages`, `TrendingWindow`) live in CoreModels — Home/Details/Search/Favorites all consume them and features can't import each other. One parameterized `FetchMovieListUseCase(list:page:)` over a `MovieList` enum instead of five clone use cases (deviation from the backlog's naming; 3.2's TaskGroup fans out over the enum). Mapper is lenient: missing/unparseable release_date → nil, absent optionals get zero-values — TMDB list items routinely ship partial data. Repository is network-only; offline caching is a later sprint's task. FeatureHomeTests target added; repository+data source tested together through URLProtocol-stubbed URLSessionAPIClient.
 
 ## Sprint 4 — Search & Favorites
