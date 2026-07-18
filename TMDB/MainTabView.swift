@@ -5,6 +5,7 @@
 //  Created by Ahmed Raslan on 17/07/2026.
 //
 
+import CoreModels
 import FeatureFavorites
 import FeatureHome
 import FeatureProfile
@@ -16,6 +17,16 @@ import SwiftUI
 struct MainTabView: View {
     @Bindable var coordinator: AppCoordinator
     let homeViewModel: HomeViewModel
+    let makeMovieListViewModel: @MainActor (HomeSection, TrendingWindow) -> MovieListViewModel
+
+    /// One place to wire the route table's dependencies for every tab.
+    private func attached(_ view: some View) -> some View {
+        RouteDestinations.attach(
+            to: view,
+            coordinator: coordinator,
+            makeMovieListViewModel: makeMovieListViewModel
+        )
+    }
 
     var body: some View {
         TabView(selection: $coordinator.selectedTab) {
@@ -64,44 +75,37 @@ struct MainTabView: View {
     private var homeTab: some View {
         @Bindable var home = coordinator.home
         return NavigationStack(path: $home.path) {
-            RouteDestinations.attach(
-                to: HomeView(
-                    viewModel: homeViewModel,
-                    onSelectMovie: { coordinator.home.push(.movieDetails(movieID: $0)) }
-                )
-            )
+            attached(HomeView(
+                viewModel: homeViewModel,
+                onSelectMovie: { coordinator.home.push(.movieDetails(movieID: $0)) },
+                onSeeAll: { coordinator.home.push(.seeAll(section: $0, window: $1)) }
+            ))
         }
     }
 
     private var searchTab: some View {
         @Bindable var search = coordinator.search
         return NavigationStack(path: $search.path) {
-            RouteDestinations.attach(
-                to: SearchView(onSelectMovie: { coordinator.search.push(.movieDetails(movieID: $0)) })
-            )
+            attached(SearchView(onSelectMovie: { coordinator.search.push(.movieDetails(movieID: $0)) }))
         }
     }
 
     private var favoritesTab: some View {
         @Bindable var favorites = coordinator.favorites
         return NavigationStack(path: $favorites.path) {
-            RouteDestinations.attach(
-                to: FavoritesView(onSelectMovie: { coordinator.favorites.push(.movieDetails(movieID: $0)) })
-            )
+            attached(FavoritesView(onSelectMovie: { coordinator.favorites.push(.movieDetails(movieID: $0)) }))
         }
     }
 
     private var profileTab: some View {
         @Bindable var profile = coordinator.profile
         return NavigationStack(path: $profile.path) {
-            RouteDestinations.attach(
-                to: ProfileView(
-                    onOpenSettings: { coordinator.profile.push(.settings) },
-                    onShowAbout: { coordinator.presentSheet(.about) },
-                    onShowWhatsNew: { coordinator.presentFullScreenCover(.whatsNew) },
-                    onSignOut: { coordinator.signOut() }
-                )
-            )
+            attached(ProfileView(
+                onOpenSettings: { coordinator.profile.push(.settings) },
+                onShowAbout: { coordinator.presentSheet(.about) },
+                onShowWhatsNew: { coordinator.presentFullScreenCover(.whatsNew) },
+                onSignOut: { coordinator.signOut() }
+            ))
         }
     }
 }
@@ -113,7 +117,15 @@ struct MainTabView: View {
             homeViewModel: HomeViewModel(
                 fetchMovieList: StubFetchMovieListUseCase(),
                 imageBaseURL: URL(fileURLWithPath: "/")
-            )
+            ),
+            makeMovieListViewModel: { section, window in
+                MovieListViewModel(
+                    section: section,
+                    window: window,
+                    fetchMovieList: StubFetchMovieListUseCase(),
+                    imageBaseURL: URL(fileURLWithPath: "/")
+                )
+            }
         )
     }
 #endif

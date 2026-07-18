@@ -18,6 +18,7 @@ struct HomeSectionView: View {
     let posterURL: (Movie) -> URL?
     let onSelectMovie: (Int) -> Void
     let onSelectWindow: (TrendingWindow) -> Void
+    let onSeeAll: () -> Void
     let onRetry: () -> Void
 
     var body: some View {
@@ -35,8 +36,28 @@ struct HomeSectionView: View {
             if section == .trending {
                 windowPicker
             }
+            if hasContent {
+                seeAllButton
+            }
         }
         .padding(.horizontal, AppSpacing.lg)
+    }
+
+    private var hasContent: Bool {
+        if case let .loaded(movies) = state, !movies.isEmpty {
+            true
+        } else {
+            false
+        }
+    }
+
+    private var seeAllButton: some View {
+        Button(action: onSeeAll) {
+            Text("See All", comment: "Opens the full paginated list for a home section")
+                .font(AppTypography.label)
+                .foregroundStyle(AppColors.brandSecondary)
+        }
+        .accessibilityIdentifier("home.seeAll.\(String(describing: section))")
     }
 
     private var windowPicker: some View {

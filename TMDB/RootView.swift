@@ -5,6 +5,7 @@
 //  Created by Ahmed Raslan on 15/07/2026.
 //
 
+import CoreModels
 import FeatureAuth
 import FeatureHome
 import FeatureProfile
@@ -19,11 +20,13 @@ struct RootView: View {
     @Bindable private var coordinator: AppCoordinator
     @State private var authViewModel: AuthViewModel
     @State private var homeViewModel: HomeViewModel
+    private let makeMovieListViewModel: @MainActor (HomeSection, TrendingWindow) -> MovieListViewModel
 
     init(container: AppContainer) {
         _coordinator = Bindable(container.coordinator)
         _authViewModel = State(initialValue: container.coordinator.makeAuthViewModel())
         _homeViewModel = State(initialValue: container.makeHomeViewModel())
+        makeMovieListViewModel = container.makeMovieListViewModel
     }
 
     var body: some View {
@@ -49,7 +52,11 @@ struct RootView: View {
         case .auth:
             AuthView(viewModel: authViewModel)
         case .main:
-            MainTabView(coordinator: coordinator, homeViewModel: homeViewModel)
+            MainTabView(
+                coordinator: coordinator,
+                homeViewModel: homeViewModel,
+                makeMovieListViewModel: makeMovieListViewModel
+            )
         }
     }
 }

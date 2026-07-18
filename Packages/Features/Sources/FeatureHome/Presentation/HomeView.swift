@@ -15,10 +15,16 @@ import SwiftUI
 public struct HomeView: View {
     private let viewModel: HomeViewModel
     private let onSelectMovie: (Int) -> Void
+    private let onSeeAll: (HomeSection, TrendingWindow) -> Void
 
-    public init(viewModel: HomeViewModel, onSelectMovie: @escaping (Int) -> Void) {
+    public init(
+        viewModel: HomeViewModel,
+        onSelectMovie: @escaping (Int) -> Void,
+        onSeeAll: @escaping (HomeSection, TrendingWindow) -> Void
+    ) {
         self.viewModel = viewModel
         self.onSelectMovie = onSelectMovie
+        self.onSeeAll = onSeeAll
     }
 
     public var body: some View {
@@ -34,6 +40,7 @@ public struct HomeView: View {
                         onSelectWindow: { window in
                             Task { await viewModel.selectTrendingWindow(window) }
                         },
+                        onSeeAll: { onSeeAll(section, viewModel.trendingWindow) },
                         onRetry: {
                             Task { await viewModel.retry(section: section) }
                         }
@@ -56,7 +63,8 @@ public struct HomeView: View {
                     fetchMovieList: PreviewFetchMovieListUseCase(),
                     imageBaseURL: URL(fileURLWithPath: "/")
                 ),
-                onSelectMovie: { _ in }
+                onSelectMovie: { _ in },
+                onSeeAll: { _, _ in }
             )
         }
     }

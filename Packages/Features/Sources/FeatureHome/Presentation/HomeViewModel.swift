@@ -6,6 +6,7 @@
 //
 
 import CoreModels
+import CoreUI
 import Foundation
 import Observation
 
@@ -51,10 +52,7 @@ public final class HomeViewModel {
 
     /// The w342 poster URL for carousel cards, or `nil` without a poster.
     public func posterURL(for movie: Movie) -> URL? {
-        guard let path = movie.posterPath else { return nil }
-        return imageBaseURL
-            .appending(path: "w342")
-            .appending(path: String(path.drop(while: { $0 == "/" })))
+        TMDBImageURL.url(base: imageBaseURL, path: movie.posterPath, size: .w342)
     }
 
     public func state(for section: HomeSection) -> SectionState {

@@ -6,6 +6,7 @@
 //
 
 import CoreEnvironment
+import CoreModels
 import CoreUtilities
 import FeatureAuth
 import FeatureHome
@@ -77,6 +78,29 @@ final class AppContainer {
             }
         #endif
         return HomeViewModel(
+            fetchMovieList: FetchMovieListUseCaseImpl(
+                repository: MovieListRepositoryImpl(apiClient: apiClient)
+            ),
+            imageBaseURL: environment.imageBaseURL
+        )
+    }
+
+    /// Builds a paginated "see all" view model for one home section. Called
+    /// per push — each pushed list owns its own pagination state.
+    func makeMovieListViewModel(section: HomeSection, window: TrendingWindow) -> MovieListViewModel {
+        #if DEBUG
+            if UITestStubs.isActive {
+                return MovieListViewModel(
+                    section: section,
+                    window: window,
+                    fetchMovieList: StubFetchMovieListUseCase(),
+                    imageBaseURL: environment.imageBaseURL
+                )
+            }
+        #endif
+        return MovieListViewModel(
+            section: section,
+            window: window,
             fetchMovieList: FetchMovieListUseCaseImpl(
                 repository: MovieListRepositoryImpl(apiClient: apiClient)
             ),
