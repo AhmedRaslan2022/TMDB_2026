@@ -35,21 +35,56 @@ public struct MovieListView: View {
     private var content: some View {
         switch viewModel.state {
         case .idle, .loading:
-            ProgressView()
-                .frame(maxWidth: .infinity, maxHeight: .infinity)
+            loadingGrid
         case let .error(message):
             errorView(message)
+        case let .loaded(content) where content.movies.isEmpty:
+            emptyView
         case let .loaded(content):
             grid(content)
         }
     }
 
+    /// Skeleton grid mirroring the loaded layout. The skeletons themselves
+    /// are collapsed into one "Loading" element so VoiceOver announces the
+    /// screen is busy instead of placeholder noise (or nothing at all).
+    private var loadingGrid: some View {
+        ScrollView {
+            LazyVGrid(columns: gridColumns, spacing: AppSpacing.lg) {
+                ForEach(0 ..< 9) { _ in
+                    MoviePosterCardSkeleton()
+                }
+            }
+            .padding(AppSpacing.lg)
+        }
+        .scrollDisabled(true)
+        .shimmering()
+        .accessibilityElement()
+        .accessibilityLabel(Text("Loading", comment: "VoiceOver label while a movie list loads"))
+    }
+
+    private var emptyView: some View {
+        ContentUnavailableView(
+            label: {
+                Label {
+                    Text("No Movies", comment: "Empty see-all list title")
+                } icon: {
+                    Image(systemName: "film.stack")
+                }
+            },
+            description: {
+                Text("This list has nothing in it right now.", comment: "Empty see-all list description")
+            }
+        )
+    }
+
+    private var gridColumns: [GridItem] {
+        [GridItem(.adaptive(minimum: 130), spacing: AppSpacing.md, alignment: .top)]
+    }
+
     private func grid(_ content: MovieListViewModel.Content) -> some View {
         ScrollView {
-            LazyVGrid(
-                columns: [GridItem(.adaptive(minimum: 130), spacing: AppSpacing.md, alignment: .top)],
-                spacing: AppSpacing.lg
-            ) {
+            LazyVGrid(columns: gridColumns, spacing: AppSpacing.lg) {
                 ForEach(content.movies) { movie in
                     MoviePosterCard(
                         movie: movie,

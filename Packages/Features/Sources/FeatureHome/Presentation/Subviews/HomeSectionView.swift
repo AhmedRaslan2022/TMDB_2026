@@ -78,20 +78,25 @@ struct HomeSectionView: View {
     private var content: some View {
         switch state {
         case .idle, .loading:
-            // Plain spinner row for now — task 3.5 replaces this with
-            // skeleton shimmer placeholders.
-            ProgressView()
-                .frame(maxWidth: .infinity, minHeight: 195)
+            MoviePosterSkeletonRow()
         case let .error(message):
             errorRow(message)
         case .loaded([]):
-            Text("Nothing here right now.", comment: "Empty home section body")
-                .font(AppTypography.body)
-                .foregroundStyle(AppColors.textSecondary)
-                .frame(maxWidth: .infinity, minHeight: 100)
+            emptyRow
         case let .loaded(movies):
             carousel(movies)
         }
+    }
+
+    private var emptyRow: some View {
+        HStack(spacing: AppSpacing.sm) {
+            Image(systemName: "film.stack")
+                .accessibilityHidden(true)
+            Text("Nothing here right now.", comment: "Empty home section body")
+                .font(AppTypography.body)
+        }
+        .foregroundStyle(AppColors.textSecondary)
+        .frame(maxWidth: .infinity, minHeight: 100)
     }
 
     private func carousel(_ movies: [Movie]) -> some View {
@@ -111,9 +116,13 @@ struct HomeSectionView: View {
 
     private func errorRow(_ message: LocalizedStringResource) -> some View {
         VStack(spacing: AppSpacing.md) {
-            Text(message)
-                .font(AppTypography.body)
-                .foregroundStyle(AppColors.textSecondary)
+            HStack(spacing: AppSpacing.sm) {
+                Image(systemName: "exclamationmark.triangle")
+                    .accessibilityHidden(true)
+                Text(message)
+                    .font(AppTypography.body)
+            }
+            .foregroundStyle(AppColors.textSecondary)
             Button(action: onRetry) {
                 Text("Retry", comment: "Retry a failed home section")
                     .font(AppTypography.label)
