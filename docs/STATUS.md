@@ -98,7 +98,20 @@ Task checklist mirroring `docs/SPRINTS.md`. One line per deviation/decision.
 - 2.1: Web approval abstracted as `RequestTokenAuthorizer` protocol in Domain (implemented with ASWebAuthenticationSession in 2.3) so LoginUseCase orchestrates the full token → approval → session → persist flow. Logout wipes local state before the remote delete so the device is always logged out even if the network call fails (error still propagates). Guest expiry not modelled — 2.5 validates against the API instead. First Features test target (FeatureAuthTests) added to the manifest.
 
 ## Sprint 3 — Home & Movie Details
-- [ ] 3.1 – 3.10 (not started)
+
+- [x] 3.1 Domain + Data for movie lists (trending/popular/now playing/upcoming/top rated)
+- [ ] 3.2 HomeViewModel: parallel section fetch with TaskGroup; per-section ViewState
+- [ ] 3.3 Home UI: horizontal carousels, day/week trending toggle, pull-to-refresh
+- [ ] 3.4 Pagination (infinite scroll) for section "see all" lists
+- [ ] 3.5 Skeleton shimmer loading + empty/error states
+- [ ] 3.6 Async image loader: actor cache (memory + disk)
+- [ ] 3.7 Movie Details: domain/data (details, credits, videos, similar, recommendations)
+- [ ] 3.8 Details UI: stretchy backdrop, rating ring, genres, cast carousel, trailers, similar
+- [ ] 3.9 Navigate Home → Details via coordinator route
+- [ ] 3.10 [test] HomeViewModel (TaskGroup paths), mappers, image cache
+
+### Sprint 3 Decisions / Deviations
+- 3.1: Shared movie entities (`Movie`, `MoviePage` with `hasMorePages`, `TrendingWindow`) live in CoreModels — Home/Details/Search/Favorites all consume them and features can't import each other. One parameterized `FetchMovieListUseCase(list:page:)` over a `MovieList` enum instead of five clone use cases (deviation from the backlog's naming; 3.2's TaskGroup fans out over the enum). Mapper is lenient: missing/unparseable release_date → nil, absent optionals get zero-values — TMDB list items routinely ship partial data. Repository is network-only; offline caching is a later sprint's task. FeatureHomeTests target added; repository+data source tested together through URLProtocol-stubbed URLSessionAPIClient.
 
 ## Sprint 4 — Search & Favorites
 - [ ] 4.1 – 4.9 (not started)
