@@ -16,7 +16,7 @@ struct TMDBApp: App {
 
     var body: some Scene {
         WindowGroup {
-            RootView(coordinator: container.coordinator)
+            RootView(container: container)
             #if DEBUG
                 .task {
                     await DebugSmokeCheck.run(

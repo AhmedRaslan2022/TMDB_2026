@@ -8,6 +8,7 @@
 import CoreEnvironment
 import CoreUtilities
 import FeatureAuth
+import FeatureHome
 import Foundation
 import KeychainStorage
 import Networking
@@ -64,6 +65,25 @@ final class AppContainer {
         coordinator = AppCoordinator(auth: authModule)
     }
 
+    /// Builds the Home screen's view model. Screen-scoped, so a factory
+    /// rather than a stored property — each shell gets a fresh one.
+    func makeHomeViewModel() -> HomeViewModel {
+        #if DEBUG
+            if UITestStubs.isActive {
+                return HomeViewModel(
+                    fetchMovieList: StubFetchMovieListUseCase(),
+                    imageBaseURL: environment.imageBaseURL
+                )
+            }
+        #endif
+        return HomeViewModel(
+            fetchMovieList: FetchMovieListUseCaseImpl(
+                repository: MovieListRepositoryImpl(apiClient: apiClient)
+            ),
+            imageBaseURL: environment.imageBaseURL
+        )
+    }
+
     /// Composes the auth vertical. In DEBUG a launch argument swaps in the
     /// inert stub so UI tests — which can't complete real TMDB web auth —
     /// exercise the shell offline.
@@ -75,7 +95,7 @@ final class AppContainer {
         #if DEBUG
             // UI tests can't complete real TMDB auth, so they opt into the
             // inert stub before any live collaborators are built.
-            if ProcessInfo.processInfo.arguments.contains("-uitest-auth-bypass") {
+            if UITestStubs.isActive {
                 return .stub
             }
         #endif

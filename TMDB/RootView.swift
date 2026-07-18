@@ -6,21 +6,24 @@
 //
 
 import FeatureAuth
+import FeatureHome
 import FeatureProfile
 import SwiftUI
 
 /// Root switch between the auth gate and the main shell, driven entirely by
 /// `AppCoordinator`. Modal presentation is attached here so any scene can
-/// present coordinator-owned sheets and covers.
+/// present coordinator-owned sheets and covers. Screen view models are built
+/// once from the container and held in `@State` so scene switches don't
+/// reset their loading/error state.
 struct RootView: View {
-    @Bindable var coordinator: AppCoordinator
-    /// Built once from the coordinator; survives auth↔main switches so the
-    /// screen's loading/error state isn't reset by re-renders.
+    @Bindable private var coordinator: AppCoordinator
     @State private var authViewModel: AuthViewModel
+    @State private var homeViewModel: HomeViewModel
 
-    init(coordinator: AppCoordinator) {
-        _coordinator = Bindable(coordinator)
-        _authViewModel = State(initialValue: coordinator.makeAuthViewModel())
+    init(container: AppContainer) {
+        _coordinator = Bindable(container.coordinator)
+        _authViewModel = State(initialValue: container.coordinator.makeAuthViewModel())
+        _homeViewModel = State(initialValue: container.makeHomeViewModel())
     }
 
     var body: some View {
@@ -46,13 +49,13 @@ struct RootView: View {
         case .auth:
             AuthView(viewModel: authViewModel)
         case .main:
-            MainTabView(coordinator: coordinator)
+            MainTabView(coordinator: coordinator, homeViewModel: homeViewModel)
         }
     }
 }
 
 #if DEBUG
     #Preview {
-        RootView(coordinator: AppCoordinator(auth: .stub))
+        RootView(container: AppContainer())
     }
 #endif

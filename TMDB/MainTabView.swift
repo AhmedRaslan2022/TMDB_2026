@@ -15,6 +15,7 @@ import SwiftUI
 /// child coordinator's path. All pushes go through the coordinators.
 struct MainTabView: View {
     @Bindable var coordinator: AppCoordinator
+    let homeViewModel: HomeViewModel
 
     var body: some View {
         TabView(selection: $coordinator.selectedTab) {
@@ -64,7 +65,10 @@ struct MainTabView: View {
         @Bindable var home = coordinator.home
         return NavigationStack(path: $home.path) {
             RouteDestinations.attach(
-                to: HomeView(onSelectMovie: { coordinator.home.push(.movieDetails(movieID: $0)) })
+                to: HomeView(
+                    viewModel: homeViewModel,
+                    onSelectMovie: { coordinator.home.push(.movieDetails(movieID: $0)) }
+                )
             )
         }
     }
@@ -104,6 +108,12 @@ struct MainTabView: View {
 
 #if DEBUG
     #Preview {
-        MainTabView(coordinator: AppCoordinator(auth: .stub))
+        MainTabView(
+            coordinator: AppCoordinator(auth: .stub),
+            homeViewModel: HomeViewModel(
+                fetchMovieList: StubFetchMovieListUseCase(),
+                imageBaseURL: URL(fileURLWithPath: "/")
+            )
+        )
     }
 #endif

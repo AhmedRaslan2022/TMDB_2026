@@ -17,9 +17,9 @@ final class TMDBUITests: XCTestCase {
     @MainActor
     func testAuthGateTabSwitchAndPushNavigation() {
         let app = XCUIApplication()
-        // Real TMDB auth needs web approval / network, so bypass it with the
-        // inert stub module — the guest path then enters the shell offline.
-        app.launchArguments += ["-uitest-auth-bypass"]
+        // Real TMDB auth needs web approval and Home needs the network, so
+        // run against the offline stub modules (auth + movie lists).
+        app.launchArguments += ["-uitest-stubs"]
         app.launch()
 
         // Auth gate → main shell via the guest path.
@@ -30,8 +30,10 @@ final class TMDBUITests: XCTestCase {
         // Tab shell appears on Home.
         XCTAssertTrue(app.tabBars.buttons["Home"].waitForExistence(timeout: 5))
 
-        // Coordinator-driven push from Home.
-        app.buttons["Open a movie (test push)"].tap()
+        // Coordinator-driven push from a stubbed Home poster card.
+        let firstPoster = app.buttons["home.movie.550"].firstMatch
+        XCTAssertTrue(firstPoster.waitForExistence(timeout: 5), "Stubbed home carousel should show")
+        firstPoster.tap()
         XCTAssertTrue(app.staticTexts["movieID: 550"].waitForExistence(timeout: 5), "Push should land on details")
         app.navigationBars.buttons.firstMatch.tap() // back
 

@@ -32,6 +32,7 @@ public final class HomeViewModel {
     public private(set) var trendingWindow: TrendingWindow = .day
 
     private let fetchMovieList: any FetchMovieListUseCase
+    private let imageBaseURL: URL
     /// Sections with a fetch in flight. Guards every non-preempting fetch —
     /// including refresh, whose sections never show `.loading`.
     private var inFlight: Set<HomeSection> = []
@@ -40,18 +41,33 @@ public final class HomeViewModel {
     /// toggle) makes any in-flight result stale instead of racing it.
     private var generations: [HomeSection: Int] = [:]
 
-    public init(fetchMovieList: any FetchMovieListUseCase) {
+    /// - Parameter imageBaseURL: TMDB image root (e.g. `…/t/p`) from the
+    ///   environment; the VM composes per-size URLs so views stay dumb.
+    public init(fetchMovieList: any FetchMovieListUseCase, imageBaseURL: URL) {
         self.fetchMovieList = fetchMovieList
+        self.imageBaseURL = imageBaseURL
         sectionStates = Dictionary(uniqueKeysWithValues: HomeSection.allCases.map { ($0, .idle) })
+    }
+
+    /// The w342 poster URL for carousel cards, or `nil` without a poster.
+    public func posterURL(for movie: Movie) -> URL? {
+        guard let path = movie.posterPath else { return nil }
+        return imageBaseURL
+            .appending(path: "w342")
+            .appending(path: String(path.drop(while: { $0 == "/" })))
     }
 
     public func state(for section: HomeSection) -> SectionState {
         sectionStates[section] ?? .idle
     }
 
-    /// Initial load: every section in parallel, with loading placeholders.
+    /// Initial load: fetches sections still untouched (`.idle`), in parallel,
+    /// with loading placeholders. Safe to call from `.task` on every
+    /// re-appearance — resolved sections (loaded or error) are left alone, so
+    /// popping back from details never collapses the screen into spinners.
+    /// Freshness comes from `refresh()`; failed sections from `retry`.
     public func load() async {
-        await fetch(sections: HomeSection.allCases, showLoading: true)
+        await fetch(sections: HomeSection.allCases.filter { state(for: $0) == .idle }, showLoading: true)
     }
 
     /// Pull-to-refresh: re-fetches everything but keeps current content on
