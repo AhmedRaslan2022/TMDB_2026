@@ -108,9 +108,10 @@ final class AppCoordinator {
     }
 
     /// Returns to the auth gate, e.g. after logout, resetting all tab and
-    /// modal state. Navigation resets immediately; session teardown (remote
-    /// delete + keychain wipe) runs in the background — the local wipe happens
-    /// first inside the use case, so the next launch cannot restore it.
+    /// modal state. Navigation resets immediately; session teardown (local
+    /// wipe first, then remote delete) runs in the background via the auth
+    /// module's barrier, so a new login/guest attempt waits for it and can
+    /// never be clobbered by the wipe.
     func signOut() {
         rootScene = .auth
         selectedTab = .home
@@ -119,12 +120,8 @@ final class AppCoordinator {
         search.popToRoot()
         favorites.popToRoot()
         profile.popToRoot()
-        Task {
-            do {
-                try await auth.logOut()
-            } catch {
-                logger.error("Logout teardown failed: \(error)")
-            }
+        auth.beginLogout { [logger] error in
+            logger.error("Logout teardown failed: \(error)")
         }
     }
 }
