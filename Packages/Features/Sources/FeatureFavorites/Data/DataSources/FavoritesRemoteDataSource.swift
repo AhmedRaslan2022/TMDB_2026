@@ -8,19 +8,6 @@
 import CoreModels
 import Networking
 
-/// Account credentials the favorites endpoints require. Built by the sync
-/// layer (task 4.6) from the persisted session; only authenticated (non-guest)
-/// accounts have one.
-public struct FavoritesAccount: Sendable, Hashable {
-    public let accountID: Int
-    public let sessionID: String
-
-    public init(accountID: Int, sessionID: String) {
-        self.accountID = accountID
-        self.sessionID = sessionID
-    }
-}
-
 /// Raw TMDB account-favorites calls. Internal: only the sync layer consumes
 /// it; the protocol exists so its tests can mock the wire.
 protocol FavoritesRemoteDataSource: Sendable {

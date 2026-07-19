@@ -15,6 +15,10 @@ public protocol FavoritesRepository: Sendable {
     func favorites() async throws -> [Movie]
     /// Whether `movieID` is currently favorited.
     func isFavorite(movieID: Int) async throws -> Bool
-    /// Adds or removes `movie` from favorites.
+    /// Adds or removes `movie` from favorites. Applied locally first
+    /// (offline-first), then pushed to the account when authenticated.
     func setFavorite(_ movie: Movie, isFavorite: Bool) async throws
+    /// Reconciles local favorites with the account's remote favorites when
+    /// authenticated. A no-op for guests / logged-out users.
+    func synchronize() async throws
 }
