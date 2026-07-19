@@ -131,7 +131,7 @@ Task checklist mirroring `docs/SPRINTS.md`. One line per deviation/decision.
 ## Sprint 4 — Search & Favorites
 
 - [x] 4.1 Search domain/data (SearchMoviesUseCase, Discover-ready)
-- [ ] 4.2 SearchViewModel: AsyncStream debounce, cancellation of in-flight tasks
+- [x] 4.2 SearchViewModel: AsyncStream debounce, cancellation of in-flight tasks
 - [ ] 4.3 Recent searches CRUD via SwiftData (create/read/delete)
 - [ ] 4.4 Search UI: results grid, recent list, empty/no-results/error states
 - [ ] 4.5 Favorites domain/data: SwiftData local source + TMDB remote source
@@ -141,6 +141,7 @@ Task checklist mirroring `docs/SPRINTS.md`. One line per deviation/decision.
 - [ ] 4.9 [test] SearchViewModel debounce/cancel, Favorites sync + SwiftData in-memory
 
 ### Sprint 4 Decisions / Deviations
+- 4.2: Keystrokes feed an `AsyncStream` via the bound `query`'s didSet; the pipeline consumer cancels the previous debounce child per element — and since that child IS the search task, a newer keystroke cancels the in-flight network call too (3.10's CancellationError normalization makes that clean). States: idle (blank → recents UI) / searching / results / noResults(query) / error; existing results stay on screen while a new query resolves (no flash); post-await `Task.isCancelled` + query-match guards drop stale search and stale load-more results. Pagination: Content tracks `currentPage` explicitly (dedupe makes count-based page math wrong). Debounce `Duration` injected for tests (no third-party clocks). No deinit — dropping the continuation finishes the stream; weak-self children no-op after dealloc (Swift 6: deinit can't touch MainActor state anyway). 11 tests across two suites (SwiftLint length split): real-sleep debounce coalescing, supersede-in-flight, kept-results, stale load-more drop, etc. Review-driven: `activeQuery` guard so a no-op edit (trailing whitespace) doesn't cancel+re-search and discard loaded pages (retype still retries after an error); debounce test bumped to 200ms for CI margin.
 - 4.1: `MovieSearchRepository.search(query:page:)` returns the shared `MoviePage`; "Discover-ready" recorded as a seam decision — Discover (Sprint 5) gets its own repository/use case since filter-based discovery and text search have different shapes, but reuses the same page/DTO/mapper pattern. Use case trims whitespace and short-circuits blank queries to an empty page without touching the API (tested). `include_adult=false` pinned in the endpoint. DTO/date-parser twins remain feature-local by design. 6 tests incl. unicode/space query-encoding roundtrip. Tracked (review): `URLComponents.queryItems` leaves literal `+` unescaped and TMDB decodes `+` as space — a "C++" search silently becomes "C  "; fix belongs in Networking's RequestBuilder (percentEncodedQuery re-escape) and should land before 4.4 ships the real search box.
 
 ## Sprint 5 — Profile, Watchlist, Ratings & Discovery
