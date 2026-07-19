@@ -5,6 +5,7 @@
 //  Created by Ahmed Raslan on 14/07/2026.
 //
 
+import CoreUI
 import SwiftData
 import SwiftUI
 
@@ -17,6 +18,7 @@ struct TMDBApp: App {
     var body: some Scene {
         WindowGroup {
             RootView(container: container)
+                .environment(\.imageCache, container.imageCache)
             #if DEBUG
                 .task {
                     await DebugSmokeCheck.run(

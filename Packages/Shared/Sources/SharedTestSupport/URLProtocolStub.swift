@@ -2,7 +2,7 @@
 //  URLProtocolStub.swift
 //  TMDB
 //
-//  Created by Ahmed Raslan on 17/07/2026.
+//  Created by Ahmed Raslan on 15/07/2026.
 //
 
 import Foundation
@@ -26,6 +26,7 @@ public final class URLProtocolStub: URLProtocol {
         private let lock = NSLock()
         private var _stub = Stub()
         private var _lastRequest: URLRequest?
+        private var _requestCount = 0
 
         public func stub(statusCode: Int = 200, data: Data = Data(), error: URLError? = nil) {
             lock.lock(); defer { lock.unlock() }
@@ -37,6 +38,12 @@ public final class URLProtocolStub: URLProtocol {
             return _lastRequest
         }
 
+        /// Total requests this session has served.
+        public var requestCount: Int {
+            lock.lock(); defer { lock.unlock() }
+            return _requestCount
+        }
+
         fileprivate var current: Stub {
             lock.lock(); defer { lock.unlock() }
             return _stub
@@ -45,6 +52,7 @@ public final class URLProtocolStub: URLProtocol {
         fileprivate func record(_ request: URLRequest) {
             lock.lock(); defer { lock.unlock() }
             _lastRequest = request
+            _requestCount += 1
         }
     }
 

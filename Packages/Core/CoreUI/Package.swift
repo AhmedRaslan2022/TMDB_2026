@@ -11,12 +11,20 @@ let package = Package(
     ],
     dependencies: [
         .package(path: "../CoreUtilities"),
+        .package(path: "../../Shared"),
     ],
     targets: [
         .target(
             name: "CoreUI",
             dependencies: [
                 .product(name: "CoreUtilities", package: "CoreUtilities"),
+            ]
+        ),
+        .testTarget(
+            name: "CoreUITests",
+            dependencies: [
+                "CoreUI",
+                .product(name: "SharedTestSupport", package: "Shared"),
             ]
         ),
     ]

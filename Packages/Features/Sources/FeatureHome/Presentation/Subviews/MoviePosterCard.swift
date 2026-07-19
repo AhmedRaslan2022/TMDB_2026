@@ -38,16 +38,12 @@ struct MoviePosterCard: View {
     }
 
     private var poster: some View {
-        // AsyncImage is an interim: task 3.6 swaps in the actor-cached
-        // loader without touching this card's layout.
-        AsyncImage(url: posterURL) { phase in
-            if case let .success(image) = phase {
-                image
-                    .resizable()
-                    .scaledToFill()
-            } else {
-                placeholder
-            }
+        RemoteImage(url: posterURL) { image in
+            image
+                .resizable()
+                .scaledToFill()
+        } placeholder: {
+            placeholder
         }
         .frame(width: Layout.posterWidth, height: Layout.posterHeight)
         .clipShape(RoundedRectangle(cornerRadius: AppRadius.md))

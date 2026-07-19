@@ -7,6 +7,7 @@
 
 import CoreEnvironment
 import CoreModels
+import CoreUI
 import CoreUtilities
 import FeatureAuth
 import FeatureHome
@@ -33,6 +34,9 @@ final class AppContainer {
     let secureStorage: any SecureStorage
     /// SwiftData container for app data (favorites, recents, cache).
     let modelContainer: ModelContainer
+    /// Poster/backdrop cache, injected into the view environment at the root
+    /// so every screen shares one memory layer and in-flight coalescing.
+    let imageCache = ImageCache()
     /// Auth use cases + session store, composed once here.
     let authModule: AuthModule
     /// Root coordinator, composed with the auth module so navigation stays
