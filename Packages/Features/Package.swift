@@ -52,5 +52,12 @@ let package = Package(
                 .product(name: "SharedTestSupport", package: "Shared"),
             ]
         ),
+        .testTarget(
+            name: "FeatureMovieDetailsTests",
+            dependencies: [
+                "FeatureMovieDetails",
+                .product(name: "SharedTestSupport", package: "Shared"),
+            ]
+        ),
     ]
 )
