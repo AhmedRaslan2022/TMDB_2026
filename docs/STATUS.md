@@ -129,7 +129,19 @@ Task checklist mirroring `docs/SPRINTS.md`. One line per deviation/decision.
 - 3.1: Shared movie entities (`Movie`, `MoviePage` with `hasMorePages`, `TrendingWindow`) live in CoreModels — Home/Details/Search/Favorites all consume them and features can't import each other. One parameterized `FetchMovieListUseCase(list:page:)` over a `MovieList` enum instead of five clone use cases (deviation from the backlog's naming; 3.2's TaskGroup fans out over the enum). Mapper is lenient: missing/unparseable release_date → nil, absent optionals get zero-values — TMDB list items routinely ship partial data. Repository is network-only; offline caching is a later sprint's task. FeatureHomeTests target added; repository+data source tested together through URLProtocol-stubbed URLSessionAPIClient.
 
 ## Sprint 4 — Search & Favorites
-- [ ] 4.1 – 4.9 (not started)
+
+- [x] 4.1 Search domain/data (SearchMoviesUseCase, Discover-ready)
+- [ ] 4.2 SearchViewModel: AsyncStream debounce, cancellation of in-flight tasks
+- [ ] 4.3 Recent searches CRUD via SwiftData (create/read/delete)
+- [ ] 4.4 Search UI: results grid, recent list, empty/no-results/error states
+- [ ] 4.5 Favorites domain/data: SwiftData local source + TMDB remote source
+- [ ] 4.6 Sync strategy: local favorites ↔ account favorites when authenticated
+- [ ] 4.7 Favorite toggle with optimistic UI + rollback on failure
+- [ ] 4.8 Favorites UI: grid, swipe-to-remove, offline support
+- [ ] 4.9 [test] SearchViewModel debounce/cancel, Favorites sync + SwiftData in-memory
+
+### Sprint 4 Decisions / Deviations
+- 4.1: `MovieSearchRepository.search(query:page:)` returns the shared `MoviePage`; "Discover-ready" recorded as a seam decision — Discover (Sprint 5) gets its own repository/use case since filter-based discovery and text search have different shapes, but reuses the same page/DTO/mapper pattern. Use case trims whitespace and short-circuits blank queries to an empty page without touching the API (tested). `include_adult=false` pinned in the endpoint. DTO/date-parser twins remain feature-local by design. 6 tests incl. unicode/space query-encoding roundtrip. Tracked (review): `URLComponents.queryItems` leaves literal `+` unescaped and TMDB decodes `+` as space — a "C++" search silently becomes "C  "; fix belongs in Networking's RequestBuilder (percentEncodedQuery re-escape) and should land before 4.4 ships the real search box.
 
 ## Sprint 5 — Profile, Watchlist, Ratings & Discovery
 - [ ] 5.1 – 5.7 (not started)
