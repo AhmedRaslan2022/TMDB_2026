@@ -12,6 +12,7 @@ import CoreUtilities
 import FeatureAuth
 import FeatureHome
 import FeatureMovieDetails
+import FeatureSearch
 import Foundation
 import KeychainStorage
 import Networking
@@ -109,6 +110,26 @@ final class AppContainer {
             fetchMovieList: FetchMovieListUseCaseImpl(
                 repository: MovieListRepositoryImpl(apiClient: apiClient)
             ),
+            imageBaseURL: environment.imageBaseURL
+        )
+    }
+
+    /// Builds the Search screen's view model. Screen-scoped, one per shell.
+    func makeSearchViewModel() -> SearchViewModel {
+        #if DEBUG
+            if UITestStubs.isActive {
+                return SearchViewModel(
+                    searchMovies: StubSearchMoviesUseCase(),
+                    recentSearches: StubRecentSearchesRepository(),
+                    imageBaseURL: environment.imageBaseURL
+                )
+            }
+        #endif
+        return SearchViewModel(
+            searchMovies: SearchMoviesUseCaseImpl(
+                repository: MovieSearchRepositoryImpl(apiClient: apiClient)
+            ),
+            recentSearches: RecentSearchesRepositoryImpl(modelContainer: modelContainer),
             imageBaseURL: environment.imageBaseURL
         )
     }

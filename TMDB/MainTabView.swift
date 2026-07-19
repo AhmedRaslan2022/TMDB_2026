@@ -18,6 +18,7 @@ import SwiftUI
 struct MainTabView: View {
     @Bindable var coordinator: AppCoordinator
     let homeViewModel: HomeViewModel
+    let searchViewModel: SearchViewModel
     let makeMovieListViewModel: @MainActor (HomeSection, TrendingWindow) -> MovieListViewModel
     let makeMovieDetailsViewModel: @MainActor (Int) -> MovieDetailsViewModel
 
@@ -89,7 +90,10 @@ struct MainTabView: View {
     private var searchTab: some View {
         @Bindable var search = coordinator.search
         return NavigationStack(path: $search.path) {
-            attached(SearchView(onSelectMovie: { coordinator.search.push(.movieDetails(movieID: $0)) }))
+            attached(SearchView(
+                viewModel: searchViewModel,
+                onSelectMovie: { coordinator.search.push(.movieDetails(movieID: $0)) }
+            ))
         }
     }
 
@@ -119,6 +123,11 @@ struct MainTabView: View {
             coordinator: AppCoordinator(auth: .stub),
             homeViewModel: HomeViewModel(
                 fetchMovieList: StubFetchMovieListUseCase(),
+                imageBaseURL: URL(fileURLWithPath: "/")
+            ),
+            searchViewModel: SearchViewModel(
+                searchMovies: StubSearchMoviesUseCase(),
+                recentSearches: StubRecentSearchesRepository(),
                 imageBaseURL: URL(fileURLWithPath: "/")
             ),
             makeMovieListViewModel: { section, window in

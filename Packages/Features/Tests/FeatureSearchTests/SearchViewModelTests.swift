@@ -16,10 +16,12 @@ import Testing
 @Suite("SearchViewModel")
 struct SearchViewModelTests {
     private let useCase = SearchUseCaseMock()
+    private let recents = RecentSearchesRepositoryMock()
 
     private func makeViewModel(debounce: Duration = .zero) throws -> SearchViewModel {
         try SearchViewModel(
             searchMovies: useCase,
+            recentSearches: recents,
             imageBaseURL: #require(URL(string: "https://img.invalid/t/p")),
             debounce: debounce
         )

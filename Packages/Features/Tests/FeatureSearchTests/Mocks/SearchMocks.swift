@@ -19,6 +19,35 @@ func searchTestMovie(_ id: Int) -> Movie {
     Movie(id: id, title: "Movie \(id)", overview: "")
 }
 
+/// In-memory `RecentSearchesRepository` — most-recent-first, deduping,
+/// trimming — with no SwiftData so it's usable in any test context.
+@MainActor
+final class RecentSearchesRepositoryMock: RecentSearchesRepository {
+    private var queries: [String] = []
+    private(set) var recordedCount = 0
+
+    func recent(limit: Int) async throws -> [String] {
+        guard limit > 0 else { return [] }
+        return Array(queries.prefix(limit))
+    }
+
+    func record(_ query: String) async throws {
+        let trimmed = query.trimmingCharacters(in: .whitespacesAndNewlines)
+        guard !trimmed.isEmpty else { return }
+        recordedCount += 1
+        queries.removeAll { $0 == trimmed }
+        queries.insert(trimmed, at: 0)
+    }
+
+    func delete(_ query: String) async throws {
+        queries.removeAll { $0 == query.trimmingCharacters(in: .whitespacesAndNewlines) }
+    }
+
+    func clear() async throws {
+        queries.removeAll()
+    }
+}
+
 /// Polls `condition` with tiny sleeps; fails the test on timeout instead of
 /// hanging the suite. Real sleeps are required — the debounce sleeps in wall
 /// time, so yield-spinning would never let it elapse.

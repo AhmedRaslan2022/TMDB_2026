@@ -52,4 +52,29 @@ final class TMDBUITests: XCTestCase {
         app.buttons["Sign Out"].tap()
         XCTAssertTrue(guestButton.waitForExistence(timeout: 5), "Sign out should return to auth gate")
     }
+
+    @MainActor
+    func testSearchTypeResultAndPushToDetails() {
+        let app = XCUIApplication()
+        app.launchArguments += ["-uitest-stubs"]
+        app.launch()
+
+        app.buttons["Continue as guest"].tap()
+        app.tabBars.buttons["Search"].tap()
+
+        // Type into the search field; the stubbed use case returns results.
+        let field = app.searchFields.firstMatch
+        XCTAssertTrue(field.waitForExistence(timeout: 5), "Search field should show")
+        field.tap()
+        field.typeText("dune")
+
+        // A stubbed result card appears and pushes to details.
+        let result = app.buttons["search.movie.700"].firstMatch
+        XCTAssertTrue(result.waitForExistence(timeout: 5), "Debounced search should show results")
+        result.tap()
+        XCTAssertTrue(
+            app.staticTexts["details.title"].waitForExistence(timeout: 5),
+            "Tapping a result should push details"
+        )
+    }
 }

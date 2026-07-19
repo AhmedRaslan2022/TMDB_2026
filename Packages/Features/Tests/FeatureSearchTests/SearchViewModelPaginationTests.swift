@@ -20,6 +20,7 @@ struct SearchViewModelPaginationTests {
     init() throws {
         viewModel = try SearchViewModel(
             searchMovies: useCase,
+            recentSearches: RecentSearchesRepositoryMock(),
             imageBaseURL: #require(URL(string: "https://img.invalid/t/p")),
             debounce: .zero
         )

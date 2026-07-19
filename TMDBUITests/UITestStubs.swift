@@ -9,6 +9,7 @@
     import CoreModels
     import FeatureHome
     import FeatureMovieDetails
+    import FeatureSearch
     import Foundation
 
     /// DEBUG-only seams for UI tests, which must run without network or real
@@ -31,6 +32,44 @@
                     voteCount: 42
                 )
             )
+        }
+    }
+
+    /// Deterministic offline search results, addressable by "search.movie.700".
+    struct StubSearchMoviesUseCase: SearchMoviesUseCase {
+        func execute(query: String, page: Int) async throws -> MoviePage {
+            let trimmed = query.trimmingCharacters(in: .whitespacesAndNewlines)
+            guard !trimmed.isEmpty else { return MoviePage(page: 1, movies: [], totalPages: 1) }
+            return MoviePage(
+                page: page,
+                movies: (700 ... 704).map {
+                    Movie(id: $0, title: "Result \($0) for \(trimmed)", overview: "", voteAverage: 7, voteCount: 10)
+                },
+                totalPages: 1
+            )
+        }
+    }
+
+    /// In-memory recents so UI tests don't touch the on-disk store.
+    @MainActor
+    final class StubRecentSearchesRepository: RecentSearchesRepository {
+        private var queries: [String] = []
+
+        func recent(limit: Int) async throws -> [String] {
+            Array(queries.prefix(max(0, limit)))
+        }
+
+        func record(_ query: String) async throws {
+            queries.removeAll { $0 == query }
+            queries.insert(query, at: 0)
+        }
+
+        func delete(_ query: String) async throws {
+            queries.removeAll { $0 == query }
+        }
+
+        func clear() async throws {
+            queries.removeAll()
         }
     }
 

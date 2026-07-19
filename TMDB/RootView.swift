@@ -10,6 +10,7 @@ import FeatureAuth
 import FeatureHome
 import FeatureMovieDetails
 import FeatureProfile
+import FeatureSearch
 import SwiftUI
 
 /// Root switch between the auth gate and the main shell, driven entirely by
@@ -21,6 +22,7 @@ struct RootView: View {
     @Bindable private var coordinator: AppCoordinator
     @State private var authViewModel: AuthViewModel
     @State private var homeViewModel: HomeViewModel
+    @State private var searchViewModel: SearchViewModel
     private let makeMovieListViewModel: @MainActor (HomeSection, TrendingWindow) -> MovieListViewModel
     private let makeMovieDetailsViewModel: @MainActor (Int) -> MovieDetailsViewModel
 
@@ -28,6 +30,7 @@ struct RootView: View {
         _coordinator = Bindable(container.coordinator)
         _authViewModel = State(initialValue: container.coordinator.makeAuthViewModel())
         _homeViewModel = State(initialValue: container.makeHomeViewModel())
+        _searchViewModel = State(initialValue: container.makeSearchViewModel())
         makeMovieListViewModel = container.makeMovieListViewModel
         makeMovieDetailsViewModel = container.makeMovieDetailsViewModel
     }
@@ -58,6 +61,7 @@ struct RootView: View {
             MainTabView(
                 coordinator: coordinator,
                 homeViewModel: homeViewModel,
+                searchViewModel: searchViewModel,
                 makeMovieListViewModel: makeMovieListViewModel,
                 makeMovieDetailsViewModel: makeMovieDetailsViewModel
             )

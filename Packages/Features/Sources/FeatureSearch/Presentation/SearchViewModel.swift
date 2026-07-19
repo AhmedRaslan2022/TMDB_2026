@@ -43,6 +43,9 @@ public final class SearchViewModel {
 
     public private(set) var state: ViewState = .idle
 
+    /// Recent queries, most-recent-first, shown in the `idle` state.
+    public private(set) var recentSearches: [String] = []
+
     /// Bound to the search field. Every change feeds the debounce stream;
     /// clearing resets to idle immediately (no debounce on the way out).
     public var query: String = "" {
@@ -53,8 +56,10 @@ public final class SearchViewModel {
     }
 
     private let searchMovies: any SearchMoviesUseCase
+    private let recentSearchesRepository: any RecentSearchesRepository
     private let imageBaseURL: URL
     private let debounce: Duration
+    private static let recentLimit = 10
 
     private let queryStream: AsyncStream<String>
     private let queryContinuation: AsyncStream<String>.Continuation
@@ -68,14 +73,56 @@ public final class SearchViewModel {
     /// - Parameter debounce: Keystroke settling window; tests inject shorter.
     public init(
         searchMovies: any SearchMoviesUseCase,
+        recentSearches: any RecentSearchesRepository,
         imageBaseURL: URL,
         debounce: Duration = .milliseconds(300)
     ) {
         self.searchMovies = searchMovies
+        recentSearchesRepository = recentSearches
         self.imageBaseURL = imageBaseURL
         self.debounce = debounce
         (queryStream, queryContinuation) = AsyncStream.makeStream(of: String.self)
         startPipeline()
+    }
+
+    // MARK: Recent searches
+
+    /// Loads recent searches for the idle state; call from the view's `.task`.
+    public func loadRecents() async {
+        recentSearches = await (try? recentSearchesRepository.recent(limit: Self.recentLimit)) ?? []
+    }
+
+    /// Records the current query as a deliberate search (keyboard submit),
+    /// refreshing its recency. Live search-as-you-type does NOT record, so
+    /// recents never fill with half-typed queries.
+    public func submit() async {
+        await record(query)
+    }
+
+    /// Re-runs a tapped recent query (via the debounce pipeline) and bumps
+    /// its recency.
+    public func selectRecent(_ recent: String) async {
+        query = recent
+        await record(recent)
+    }
+
+    /// Removes one recent query.
+    public func deleteRecent(_ recent: String) async {
+        try? await recentSearchesRepository.delete(recent)
+        await loadRecents()
+    }
+
+    /// Clears all recent queries.
+    public func clearRecents() async {
+        try? await recentSearchesRepository.clear()
+        await loadRecents()
+    }
+
+    private func record(_ text: String) async {
+        let trimmed = text.trimmingCharacters(in: .whitespacesAndNewlines)
+        guard !trimmed.isEmpty else { return }
+        try? await recentSearchesRepository.record(trimmed)
+        await loadRecents()
     }
 
     // No deinit needed: deallocating the VM drops the stream continuation,
