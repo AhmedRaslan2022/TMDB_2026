@@ -58,6 +58,10 @@ public final class URLSessionAPIClient: APIClient {
         let (data, response): (Data, URLResponse)
         do {
             (data, response) = try await session.data(for: request)
+        } catch let error as URLError where error.code == .cancelled {
+            // Normalize to Swift's cancellation so ViewModels can treat a
+            // dismissed screen as "back to idle" rather than an error.
+            throw CancellationError()
         } catch let error as URLError {
             throw APIError.transport(error)
         } catch {

@@ -72,6 +72,20 @@ struct URLSessionAPIClientTests {
         }
     }
 
+    @Test func normalizesCancellationToCancellationError() async {
+        stub.stub(error: URLError(.cancelled))
+
+        do {
+            try await client.sendRaw(ConfigurationEndpoint())
+            Issue.record("expected CancellationError")
+        } catch is CancellationError {
+            // expected: callers treat cancellation as "back to idle",
+            // never as a transport failure.
+        } catch {
+            Issue.record("expected CancellationError, got \(error)")
+        }
+    }
+
     @Test func mapsDecodingFailure() async {
         stub.stub(statusCode: 200, data: Data(#"{"unexpected":true}"#.utf8))
 
