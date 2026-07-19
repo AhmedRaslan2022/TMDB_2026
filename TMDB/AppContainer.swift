@@ -11,6 +11,7 @@ import CoreUI
 import CoreUtilities
 import FeatureAuth
 import FeatureHome
+import FeatureMovieDetails
 import Foundation
 import KeychainStorage
 import Networking
@@ -107,6 +108,27 @@ final class AppContainer {
             window: window,
             fetchMovieList: FetchMovieListUseCaseImpl(
                 repository: MovieListRepositoryImpl(apiClient: apiClient)
+            ),
+            imageBaseURL: environment.imageBaseURL
+        )
+    }
+
+    /// Builds a movie-details view model. Called per push — each pushed
+    /// details screen owns its own fetch state.
+    func makeMovieDetailsViewModel(movieID: Int) -> MovieDetailsViewModel {
+        #if DEBUG
+            if UITestStubs.isActive {
+                return MovieDetailsViewModel(
+                    movieID: movieID,
+                    fetchDetails: StubFetchMovieDetailsUseCase(),
+                    imageBaseURL: environment.imageBaseURL
+                )
+            }
+        #endif
+        return MovieDetailsViewModel(
+            movieID: movieID,
+            fetchDetails: FetchMovieDetailsUseCaseImpl(
+                repository: MovieDetailsRepositoryImpl(apiClient: apiClient)
             ),
             imageBaseURL: environment.imageBaseURL
         )

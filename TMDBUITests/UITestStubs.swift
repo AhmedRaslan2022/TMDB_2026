@@ -8,6 +8,7 @@
 #if DEBUG
     import CoreModels
     import FeatureHome
+    import FeatureMovieDetails
     import Foundation
 
     /// DEBUG-only seams for UI tests, which must run without network or real
@@ -15,6 +16,21 @@
     enum UITestStubs {
         static var isActive: Bool {
             ProcessInfo.processInfo.arguments.contains("-uitest-stubs")
+        }
+    }
+
+    /// Deterministic offline details bundle matching the stub list movies.
+    struct StubFetchMovieDetailsUseCase: FetchMovieDetailsUseCase {
+        func execute(movieID: Int) async throws -> MovieDetailsBundle {
+            MovieDetailsBundle(
+                details: MovieDetails(
+                    id: movieID,
+                    title: "UITest Movie \(movieID)",
+                    overview: "Offline stub overview.",
+                    voteAverage: 8.0,
+                    voteCount: 42
+                )
+            )
         }
     }
 

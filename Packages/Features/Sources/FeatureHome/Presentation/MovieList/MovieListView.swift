@@ -52,7 +52,7 @@ public struct MovieListView: View {
         ScrollView {
             LazyVGrid(columns: gridColumns, spacing: AppSpacing.lg) {
                 ForEach(0 ..< 9) { _ in
-                    MoviePosterCardSkeleton()
+                    PosterCardSkeleton()
                 }
             }
             .padding(AppSpacing.lg)
@@ -86,9 +86,11 @@ public struct MovieListView: View {
         ScrollView {
             LazyVGrid(columns: gridColumns, spacing: AppSpacing.lg) {
                 ForEach(content.movies) { movie in
-                    MoviePosterCard(
-                        movie: movie,
+                    PosterCard(
+                        title: movie.title,
                         posterURL: viewModel.posterURL(for: movie),
+                        rating: movie.voteCount > 0 ? movie.voteAverage : nil,
+                        accessibilityID: "home.movie.\(movie.id)",
                         onSelect: { onSelectMovie(movie.id) }
                     )
                     .task { await viewModel.loadMoreIfNeeded(after: movie) }

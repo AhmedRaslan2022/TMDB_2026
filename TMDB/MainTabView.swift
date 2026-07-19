@@ -8,6 +8,7 @@
 import CoreModels
 import FeatureFavorites
 import FeatureHome
+import FeatureMovieDetails
 import FeatureProfile
 import FeatureSearch
 import SwiftUI
@@ -18,13 +19,15 @@ struct MainTabView: View {
     @Bindable var coordinator: AppCoordinator
     let homeViewModel: HomeViewModel
     let makeMovieListViewModel: @MainActor (HomeSection, TrendingWindow) -> MovieListViewModel
+    let makeMovieDetailsViewModel: @MainActor (Int) -> MovieDetailsViewModel
 
     /// One place to wire the route table's dependencies for every tab.
     private func attached(_ view: some View) -> some View {
         RouteDestinations.attach(
             to: view,
             coordinator: coordinator,
-            makeMovieListViewModel: makeMovieListViewModel
+            makeMovieListViewModel: makeMovieListViewModel,
+            makeMovieDetailsViewModel: makeMovieDetailsViewModel
         )
     }
 
@@ -123,6 +126,13 @@ struct MainTabView: View {
                     section: section,
                     window: window,
                     fetchMovieList: StubFetchMovieListUseCase(),
+                    imageBaseURL: URL(fileURLWithPath: "/")
+                )
+            },
+            makeMovieDetailsViewModel: { movieID in
+                MovieDetailsViewModel(
+                    movieID: movieID,
+                    fetchDetails: StubFetchMovieDetailsUseCase(),
                     imageBaseURL: URL(fileURLWithPath: "/")
                 )
             }

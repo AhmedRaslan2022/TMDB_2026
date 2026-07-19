@@ -35,4 +35,9 @@ public struct MovieVideo: Hashable, Sendable, Identifiable {
     public var isTrailer: Bool {
         type == "Trailer"
     }
+
+    /// `true` for teasers — the fallback when a movie has no full trailer.
+    public var isTeaser: Bool {
+        type == "Teaser"
+    }
 }

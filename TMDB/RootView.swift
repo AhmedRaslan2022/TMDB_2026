@@ -8,6 +8,7 @@
 import CoreModels
 import FeatureAuth
 import FeatureHome
+import FeatureMovieDetails
 import FeatureProfile
 import SwiftUI
 
@@ -21,12 +22,14 @@ struct RootView: View {
     @State private var authViewModel: AuthViewModel
     @State private var homeViewModel: HomeViewModel
     private let makeMovieListViewModel: @MainActor (HomeSection, TrendingWindow) -> MovieListViewModel
+    private let makeMovieDetailsViewModel: @MainActor (Int) -> MovieDetailsViewModel
 
     init(container: AppContainer) {
         _coordinator = Bindable(container.coordinator)
         _authViewModel = State(initialValue: container.coordinator.makeAuthViewModel())
         _homeViewModel = State(initialValue: container.makeHomeViewModel())
         makeMovieListViewModel = container.makeMovieListViewModel
+        makeMovieDetailsViewModel = container.makeMovieDetailsViewModel
     }
 
     var body: some View {
@@ -55,7 +58,8 @@ struct RootView: View {
             MainTabView(
                 coordinator: coordinator,
                 homeViewModel: homeViewModel,
-                makeMovieListViewModel: makeMovieListViewModel
+                makeMovieListViewModel: makeMovieListViewModel,
+                makeMovieDetailsViewModel: makeMovieDetailsViewModel
             )
         }
     }

@@ -34,7 +34,9 @@ final class TMDBUITests: XCTestCase {
         let firstPoster = app.buttons["home.movie.550"].firstMatch
         XCTAssertTrue(firstPoster.waitForExistence(timeout: 5), "Stubbed home carousel should show")
         firstPoster.tap()
-        XCTAssertTrue(app.staticTexts["movieID: 550"].waitForExistence(timeout: 5), "Push should land on details")
+        let detailsTitle = app.staticTexts["details.title"]
+        XCTAssertTrue(detailsTitle.waitForExistence(timeout: 5), "Push should land on the real details screen")
+        XCTAssertEqual(detailsTitle.label, "UITest Movie 550")
         app.navigationBars.buttons.firstMatch.tap() // back
 
         // Tab switching.

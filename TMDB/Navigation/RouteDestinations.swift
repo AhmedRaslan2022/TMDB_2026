@@ -25,17 +25,21 @@ enum RouteDestinations {
     static func attach(
         to view: some View,
         coordinator: AppCoordinator,
-        makeMovieListViewModel: @escaping @MainActor (HomeSection, TrendingWindow) -> MovieListViewModel
+        makeMovieListViewModel: @escaping @MainActor (HomeSection, TrendingWindow) -> MovieListViewModel,
+        makeMovieDetailsViewModel: @escaping @MainActor (Int) -> MovieDetailsViewModel
     ) -> some View {
+        // Route values are assumed to be pushed only onto their own tab's
+        // stack (HomeRoute → home, SearchRoute → search, …) — true today
+        // because only that tab's closures emit them.
         view
             .navigationDestination(for: HomeRoute.self) { route in
                 switch route {
                 case let .movieDetails(movieID):
-                    MovieDetailsPlaceholderView(movieID: movieID)
+                    MovieDetailsView(
+                        viewModel: makeMovieDetailsViewModel(movieID),
+                        onSelectMovie: { coordinator.home.push(.movieDetails(movieID: $0)) }
+                    )
                 case let .seeAll(section, window):
-                    // Assumes HomeRoute values are only ever pushed onto the
-                    // Home tab's stack — true today because only Home's
-                    // closures emit them. Revisit if another tab gains them.
                     MovieListView(
                         viewModel: makeMovieListViewModel(section, window),
                         onSelectMovie: { coordinator.home.push(.movieDetails(movieID: $0)) }
@@ -45,13 +49,19 @@ enum RouteDestinations {
             .navigationDestination(for: SearchRoute.self) { route in
                 switch route {
                 case let .movieDetails(movieID):
-                    MovieDetailsPlaceholderView(movieID: movieID)
+                    MovieDetailsView(
+                        viewModel: makeMovieDetailsViewModel(movieID),
+                        onSelectMovie: { coordinator.search.push(.movieDetails(movieID: $0)) }
+                    )
                 }
             }
             .navigationDestination(for: FavoritesRoute.self) { route in
                 switch route {
                 case let .movieDetails(movieID):
-                    MovieDetailsPlaceholderView(movieID: movieID)
+                    MovieDetailsView(
+                        viewModel: makeMovieDetailsViewModel(movieID),
+                        onSelectMovie: { coordinator.favorites.push(.movieDetails(movieID: $0)) }
+                    )
                 }
             }
             .navigationDestination(for: ProfileRoute.self) { route in

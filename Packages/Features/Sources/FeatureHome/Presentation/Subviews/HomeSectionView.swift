@@ -103,9 +103,11 @@ struct HomeSectionView: View {
         ScrollView(.horizontal, showsIndicators: false) {
             LazyHStack(alignment: .top, spacing: AppSpacing.md) {
                 ForEach(movies) { movie in
-                    MoviePosterCard(
-                        movie: movie,
+                    PosterCard(
+                        title: movie.title,
                         posterURL: posterURL(movie),
+                        rating: movie.voteCount > 0 ? movie.voteAverage : nil,
+                        accessibilityID: "home.movie.\(movie.id)",
                         onSelect: { onSelectMovie(movie.id) }
                     )
                 }
