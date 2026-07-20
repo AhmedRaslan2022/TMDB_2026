@@ -54,7 +54,7 @@ final class TMDBUITests: XCTestCase {
     }
 
     @MainActor
-    func testSearchTypeResultAndPushToDetails() {
+    func testSearchToDetailsFavoriteAndFavoritesTab() {
         let app = XCUIApplication()
         app.launchArguments += ["-uitest-stubs"]
         app.launch()
@@ -84,5 +84,12 @@ final class TMDBUITests: XCTestCase {
         favorite.tap()
         expectation(for: NSPredicate(format: "value == %@", "Favorited"), evaluatedWith: favorite)
         waitForExpectations(timeout: 5)
+
+        // The favorited movie appears on the Favorites tab (shared store).
+        app.tabBars.buttons["Favorites"].tap()
+        XCTAssertTrue(
+            app.buttons["favorites.movie.700"].firstMatch.waitForExistence(timeout: 5),
+            "Favoriting on details should surface the movie in the Favorites tab"
+        )
     }
 }

@@ -7,6 +7,7 @@
 
 import CoreModels
 import FeatureAuth
+import FeatureFavorites
 import FeatureHome
 import FeatureMovieDetails
 import FeatureProfile
@@ -23,6 +24,7 @@ struct RootView: View {
     @State private var authViewModel: AuthViewModel
     @State private var homeViewModel: HomeViewModel
     @State private var searchViewModel: SearchViewModel
+    @State private var favoritesViewModel: FavoritesViewModel
     private let makeMovieListViewModel: @MainActor (HomeSection, TrendingWindow) -> MovieListViewModel
     private let makeMovieDetailsViewModel: @MainActor (Int) -> MovieDetailsViewModel
 
@@ -31,6 +33,7 @@ struct RootView: View {
         _authViewModel = State(initialValue: container.coordinator.makeAuthViewModel())
         _homeViewModel = State(initialValue: container.makeHomeViewModel())
         _searchViewModel = State(initialValue: container.makeSearchViewModel())
+        _favoritesViewModel = State(initialValue: container.makeFavoritesViewModel())
         makeMovieListViewModel = container.makeMovieListViewModel
         makeMovieDetailsViewModel = container.makeMovieDetailsViewModel
     }
@@ -62,6 +65,7 @@ struct RootView: View {
                 coordinator: coordinator,
                 homeViewModel: homeViewModel,
                 searchViewModel: searchViewModel,
+                favoritesViewModel: favoritesViewModel,
                 makeMovieListViewModel: makeMovieListViewModel,
                 makeMovieDetailsViewModel: makeMovieDetailsViewModel
             )

@@ -142,6 +142,19 @@ final class AppContainer {
         )
     }
 
+    /// Builds the Favorites screen's view model. Screen-scoped, one per shell.
+    func makeFavoritesViewModel() -> FavoritesViewModel {
+        #if DEBUG
+            if UITestStubs.isActive {
+                return FavoritesViewModel(
+                    repository: StubFavoritesRepository.shared,
+                    imageBaseURL: environment.imageBaseURL
+                )
+            }
+        #endif
+        return FavoritesViewModel(repository: favoritesRepository, imageBaseURL: environment.imageBaseURL)
+    }
+
     /// Builds a movie-details view model. Called per push — each pushed
     /// details screen owns its own fetch state.
     func makeMovieDetailsViewModel(movieID: Int) -> MovieDetailsViewModel {

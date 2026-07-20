@@ -2,7 +2,7 @@
 //  FavoritesMocks.swift
 //  TMDB
 //
-//  Created by Ahmed Raslan on 19/07/2026.
+//  Created by Ahmed Raslan on 20/07/2026.
 //
 
 import CoreModels
@@ -70,6 +70,44 @@ final class FavoritesRemoteMock: FavoritesRemoteDataSource {
     /// Stubs one page of favorites.
     func stubPage(_ page: Int, ids: [Int], totalPages: Int) {
         pages[page] = MoviePage(page: page, movies: ids.map(favoriteTestMovie), totalPages: totalPages)
+    }
+}
+
+/// In-memory `FavoritesRepository` for view-model tests.
+@MainActor
+final class FavoritesRepositoryMock: FavoritesRepository {
+    var movies: [Movie] = []
+    var favoritesError: Error?
+    private(set) var syncCount = 0
+    private(set) var setCalls: [(movieID: Int, isFavorite: Bool)] = []
+
+    func favorites() async throws -> [Movie] {
+        if let favoritesError {
+            throw favoritesError
+        }
+        return movies
+    }
+
+    func isFavorite(movieID: Int) async throws -> Bool {
+        movies.contains { $0.id == movieID }
+    }
+
+    func setFavorite(_ movie: Movie, isFavorite: Bool) async throws {
+        setCalls.append((movie.id, isFavorite))
+        if isFavorite {
+            movies.removeAll { $0.id == movie.id }
+            movies.insert(movie, at: 0)
+        } else {
+            movies.removeAll { $0.id == movie.id }
+        }
+    }
+
+    func synchronize() async throws {
+        syncCount += 1
+    }
+
+    func seed(_ ids: [Int]) {
+        movies = ids.map(favoriteTestMovie)
     }
 }
 

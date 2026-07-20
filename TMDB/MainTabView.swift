@@ -19,6 +19,7 @@ struct MainTabView: View {
     @Bindable var coordinator: AppCoordinator
     let homeViewModel: HomeViewModel
     let searchViewModel: SearchViewModel
+    let favoritesViewModel: FavoritesViewModel
     let makeMovieListViewModel: @MainActor (HomeSection, TrendingWindow) -> MovieListViewModel
     let makeMovieDetailsViewModel: @MainActor (Int) -> MovieDetailsViewModel
 
@@ -100,7 +101,10 @@ struct MainTabView: View {
     private var favoritesTab: some View {
         @Bindable var favorites = coordinator.favorites
         return NavigationStack(path: $favorites.path) {
-            attached(FavoritesView(onSelectMovie: { coordinator.favorites.push(.movieDetails(movieID: $0)) }))
+            attached(FavoritesView(
+                viewModel: favoritesViewModel,
+                onSelectMovie: { coordinator.favorites.push(.movieDetails(movieID: $0)) }
+            ))
         }
     }
 
@@ -128,6 +132,10 @@ struct MainTabView: View {
             searchViewModel: SearchViewModel(
                 searchMovies: StubSearchMoviesUseCase(),
                 recentSearches: StubRecentSearchesRepository(),
+                imageBaseURL: URL(fileURLWithPath: "/")
+            ),
+            favoritesViewModel: FavoritesViewModel(
+                repository: StubFavoritesRepository.shared,
                 imageBaseURL: URL(fileURLWithPath: "/")
             ),
             makeMovieListViewModel: { section, window in

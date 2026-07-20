@@ -7,6 +7,7 @@
 
 #if DEBUG
     import CoreModels
+    import FeatureFavorites
     import FeatureHome
     import FeatureMovieDetails
     import FeatureSearch
@@ -20,21 +21,41 @@
         }
     }
 
-    /// In-memory favorite toggle for UI tests — no SwiftData, no network.
+    /// Shared in-memory favorites store for UI tests, so a favorite toggled on
+    /// the details screen appears on the Favorites tab (same instance both
+    /// places). No SwiftData, no network.
     @MainActor
-    final class StubFavoriteToggling: FavoriteToggling {
-        private var favorited: Set<Int> = []
+    final class StubFavoritesRepository: FavoritesRepository {
+        static let shared = StubFavoritesRepository()
+        private var movies: [Movie] = []
 
-        func isFavorite(movieID: Int) async -> Bool {
-            favorited.contains(movieID)
+        func favorites() async throws -> [Movie] {
+            movies
+        }
+
+        func isFavorite(movieID: Int) async throws -> Bool {
+            movies.contains { $0.id == movieID }
         }
 
         func setFavorite(_ movie: Movie, isFavorite: Bool) async throws {
+            movies.removeAll { $0.id == movie.id }
             if isFavorite {
-                favorited.insert(movie.id)
-            } else {
-                favorited.remove(movie.id)
+                movies.insert(movie, at: 0)
             }
+        }
+
+        func synchronize() async throws {}
+    }
+
+    /// Details-screen favorite toggle backed by the shared favorites store.
+    @MainActor
+    struct StubFavoriteToggling: FavoriteToggling {
+        func isFavorite(movieID: Int) async -> Bool {
+            await (try? StubFavoritesRepository.shared.isFavorite(movieID: movieID)) ?? false
+        }
+
+        func setFavorite(_ movie: Movie, isFavorite: Bool) async throws {
+            try await StubFavoritesRepository.shared.setFavorite(movie, isFavorite: isFavorite)
         }
     }
 
