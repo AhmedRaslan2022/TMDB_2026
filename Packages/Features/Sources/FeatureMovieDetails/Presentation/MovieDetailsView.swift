@@ -77,6 +77,27 @@ public struct MovieDetailsView: View {
             .navigationBarTitleDisplayMode(.inline)
         #endif
             .ignoresSafeArea(edges: .top)
+            .toolbar { favoriteButton }
+    }
+
+    @ToolbarContentBuilder
+    private var favoriteButton: some ToolbarContent {
+        ToolbarItem(placement: .primaryAction) {
+            Button {
+                Task { await viewModel.toggleFavorite() }
+            } label: {
+                Label {
+                    Text("Favorite", comment: "Favorite toggle button")
+                } icon: {
+                    Image(systemName: viewModel.isFavorite ? "heart.fill" : "heart")
+                }
+            }
+            .tint(AppColors.error)
+            .accessibilityIdentifier("details.favorite")
+            .accessibilityValue(viewModel.isFavorite
+                ? Text("Favorited", comment: "Favorite button state: on")
+                : Text("Not favorited", comment: "Favorite button state: off"))
+        }
     }
 
     @ViewBuilder

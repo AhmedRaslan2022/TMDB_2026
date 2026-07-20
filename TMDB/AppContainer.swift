@@ -10,6 +10,7 @@ import CoreModels
 import CoreUI
 import CoreUtilities
 import FeatureAuth
+import FeatureFavorites
 import FeatureHome
 import FeatureMovieDetails
 import FeatureSearch
@@ -41,6 +42,8 @@ final class AppContainer {
     let imageCache = ImageCache()
     /// Auth use cases + session store, composed once here.
     let authModule: AuthModule
+    /// Offline-first favorites store (local SwiftData + best-effort TMDB sync).
+    let favoritesRepository: any FavoritesRepository
     /// Root coordinator, composed with the auth module so navigation stays
     /// decoupled from concrete auth types.
     let coordinator: AppCoordinator
@@ -68,6 +71,11 @@ final class AppContainer {
             apiClient: apiClient,
             secureStorage: secureStorage,
             modelContainer: modelContainer
+        )
+        favoritesRepository = FavoritesRepositoryImpl(
+            modelContainer: modelContainer,
+            apiClient: apiClient,
+            accountProvider: AppFavoritesAccountProvider(secureStorage: secureStorage)
         )
         coordinator = AppCoordinator(auth: authModule)
     }
@@ -142,6 +150,7 @@ final class AppContainer {
                 return MovieDetailsViewModel(
                     movieID: movieID,
                     fetchDetails: StubFetchMovieDetailsUseCase(),
+                    favorites: StubFavoriteToggling(),
                     imageBaseURL: environment.imageBaseURL
                 )
             }
@@ -151,6 +160,7 @@ final class AppContainer {
             fetchDetails: FetchMovieDetailsUseCaseImpl(
                 repository: MovieDetailsRepositoryImpl(apiClient: apiClient)
             ),
+            favorites: FavoritesToggleAdapter(repository: favoritesRepository),
             imageBaseURL: environment.imageBaseURL
         )
     }

@@ -29,12 +29,14 @@ struct MovieDetailsViewModelTests {
     }
 
     private let useCase = FetchDetailsMock()
+    private let favorites = FavoriteTogglingMock()
     private let viewModel: MovieDetailsViewModel
 
     init() throws {
         viewModel = try MovieDetailsViewModel(
             movieID: 550,
             fetchDetails: useCase,
+            favorites: favorites,
             imageBaseURL: #require(URL(string: "https://img.invalid/t/p"))
         )
     }

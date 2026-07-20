@@ -24,14 +24,23 @@ public final class MovieDetailsViewModel {
     }
 
     public private(set) var state: ViewState = .idle
+    /// Whether this movie is favorited. Optimistically updated by `toggleFavorite`.
+    public private(set) var isFavorite = false
 
     public let movieID: Int
     private let fetchDetails: any FetchMovieDetailsUseCase
+    private let favorites: any FavoriteToggling
     private let imageBaseURL: URL
 
-    public init(movieID: Int, fetchDetails: any FetchMovieDetailsUseCase, imageBaseURL: URL) {
+    public init(
+        movieID: Int,
+        fetchDetails: any FetchMovieDetailsUseCase,
+        favorites: any FavoriteToggling,
+        imageBaseURL: URL
+    ) {
         self.movieID = movieID
         self.fetchDetails = fetchDetails
+        self.favorites = favorites
         self.imageBaseURL = imageBaseURL
     }
 
@@ -45,7 +54,11 @@ public final class MovieDetailsViewModel {
         }
         state = .loading
         do {
-            state = try await .loaded(fetchDetails.execute(movieID: movieID))
+            let bundle = try await fetchDetails.execute(movieID: movieID)
+            // Read favorite state before publishing so the heart never flashes
+            // empty for an already-favorited movie.
+            isFavorite = await favorites.isFavorite(movieID: movieID)
+            state = .loaded(bundle)
         } catch is CancellationError {
             state = .idle
         } catch {
@@ -54,6 +67,29 @@ public final class MovieDetailsViewModel {
                 defaultValue: "Couldn't load this movie.",
                 comment: "Shown when the movie details fetch fails"
             ))
+        }
+    }
+
+    /// Flips the favorite state immediately, then persists it — rolling the UI
+    /// back if the write fails. No-op until the details bundle is loaded.
+    public func toggleFavorite() async {
+        guard case let .loaded(bundle) = state else { return }
+        let target = !isFavorite
+        isFavorite = target
+        do {
+            let movie = Movie(
+                id: bundle.details.id,
+                title: bundle.details.title,
+                overview: bundle.details.overview,
+                posterPath: bundle.details.posterPath
+            )
+            try await favorites.setFavorite(movie, isFavorite: target)
+        } catch {
+            // Roll back only if a newer tap hasn't already moved past `target`,
+            // so a slow failure can't clobber a fresher optimistic value.
+            if isFavorite == target {
+                isFavorite = !target
+            }
         }
     }
 

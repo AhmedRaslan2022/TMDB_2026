@@ -142,6 +142,7 @@ struct MainTabView: View {
                 MovieDetailsViewModel(
                     movieID: movieID,
                     fetchDetails: StubFetchMovieDetailsUseCase(),
+                    favorites: StubFavoriteToggling(),
                     imageBaseURL: URL(fileURLWithPath: "/")
                 )
             }

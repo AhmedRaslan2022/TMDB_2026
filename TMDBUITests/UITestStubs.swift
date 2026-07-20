@@ -20,6 +20,24 @@
         }
     }
 
+    /// In-memory favorite toggle for UI tests — no SwiftData, no network.
+    @MainActor
+    final class StubFavoriteToggling: FavoriteToggling {
+        private var favorited: Set<Int> = []
+
+        func isFavorite(movieID: Int) async -> Bool {
+            favorited.contains(movieID)
+        }
+
+        func setFavorite(_ movie: Movie, isFavorite: Bool) async throws {
+            if isFavorite {
+                favorited.insert(movie.id)
+            } else {
+                favorited.remove(movie.id)
+            }
+        }
+    }
+
     /// Deterministic offline details bundle matching the stub list movies.
     struct StubFetchMovieDetailsUseCase: FetchMovieDetailsUseCase {
         func execute(movieID: Int) async throws -> MovieDetailsBundle {

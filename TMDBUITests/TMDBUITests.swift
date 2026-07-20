@@ -76,5 +76,13 @@ final class TMDBUITests: XCTestCase {
             app.staticTexts["details.title"].waitForExistence(timeout: 5),
             "Tapping a result should push details"
         )
+
+        // Optimistic favorite toggle flips the button's accessibility value.
+        let favorite = app.buttons["details.favorite"]
+        XCTAssertTrue(favorite.waitForExistence(timeout: 5), "Details should show a favorite button")
+        XCTAssertEqual(favorite.value as? String, "Not favorited")
+        favorite.tap()
+        expectation(for: NSPredicate(format: "value == %@", "Favorited"), evaluatedWith: favorite)
+        waitForExpectations(timeout: 5)
     }
 }
