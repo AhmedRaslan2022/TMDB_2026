@@ -45,6 +45,8 @@ final class AppContainer {
     let authModule: AuthModule
     /// Offline-first favorites store (local SwiftData + best-effort TMDB sync).
     let favoritesRepository: any FavoritesRepository
+    /// Offline-first watchlist store — reuses the favorites collection engine.
+    let watchlistRepository: any WatchlistRepository
     /// Root coordinator, composed with the auth module so navigation stays
     /// decoupled from concrete auth types.
     let coordinator: AppCoordinator
@@ -73,10 +75,16 @@ final class AppContainer {
             secureStorage: secureStorage,
             modelContainer: modelContainer
         )
+        let accountProvider = AppFavoritesAccountProvider(secureStorage: secureStorage)
         favoritesRepository = FavoritesRepositoryImpl(
             modelContainer: modelContainer,
             apiClient: apiClient,
-            accountProvider: AppFavoritesAccountProvider(secureStorage: secureStorage)
+            accountProvider: accountProvider
+        )
+        watchlistRepository = WatchlistRepositoryImpl(
+            modelContainer: modelContainer,
+            apiClient: apiClient,
+            accountProvider: accountProvider
         )
         coordinator = AppCoordinator(auth: authModule)
     }
@@ -190,6 +198,7 @@ final class AppContainer {
                     movieID: movieID,
                     fetchDetails: StubFetchMovieDetailsUseCase(),
                     favorites: StubFavoriteToggling(),
+                    watchlist: StubWatchlistToggling(),
                     imageBaseURL: environment.imageBaseURL
                 )
             }
@@ -200,6 +209,7 @@ final class AppContainer {
                 repository: MovieDetailsRepositoryImpl(apiClient: apiClient)
             ),
             favorites: FavoritesToggleAdapter(repository: favoritesRepository),
+            watchlist: WatchlistToggleAdapter(repository: watchlistRepository),
             imageBaseURL: environment.imageBaseURL
         )
     }

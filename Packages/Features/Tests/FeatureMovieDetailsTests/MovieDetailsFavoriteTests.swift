@@ -28,12 +28,14 @@ struct MovieDetailsFavoriteTests {
 
     private let fetch = FetchMock()
     private let favorites = FavoriteTogglingMock()
+    private let watchlistMock = WatchlistTogglingMock()
 
     private func makeViewModel() throws -> MovieDetailsViewModel {
         try MovieDetailsViewModel(
             movieID: 550,
             fetchDetails: fetch,
             favorites: favorites,
+            watchlist: watchlistMock,
             imageBaseURL: #require(URL(string: "https://img.invalid/t/p"))
         )
     }
@@ -91,5 +93,29 @@ struct MovieDetailsFavoriteTests {
 
         #expect(favorites.setCalls.isEmpty)
         #expect(viewModel.isFavorite == false)
+    }
+
+    @Test("watchlist toggle flips optimistically and persists; rolls back on failure")
+    func watchlistToggle() async throws {
+        let viewModel = try makeViewModel()
+        await viewModel.load()
+
+        await viewModel.toggleWatchlist()
+        #expect(viewModel.isOnWatchlist)
+        #expect(watchlistMock.setCalls.map(\.isOnWatchlist) == [true])
+
+        watchlistMock.setError = MockError.write
+        await viewModel.toggleWatchlist()
+        #expect(viewModel.isOnWatchlist, "failed un-watchlist rolls back to on")
+    }
+
+    @Test("watchlist initial state is read on load")
+    func watchlistInitialState() async throws {
+        watchlistMock.initialIsOnWatchlist = true
+        let viewModel = try makeViewModel()
+
+        await viewModel.load()
+
+        #expect(viewModel.isOnWatchlist)
     }
 }

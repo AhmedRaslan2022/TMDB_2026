@@ -14,7 +14,7 @@ func favoriteTestMovie(_ id: Int) -> Movie {
 
 /// In-memory local source — most-recent-first, no SwiftData.
 @MainActor
-final class FavoritesLocalMock: FavoritesLocalDataSource {
+final class CollectionLocalMock: MovieCollectionLocalDataSource {
     private(set) var movies: [Movie] = []
     private(set) var upserted: [Movie] = []
     private(set) var removed: [Int] = []
@@ -43,37 +43,60 @@ final class FavoritesLocalMock: FavoritesLocalDataSource {
     }
 }
 
-/// Records pushes and serves stubbed remote pages.
+/// A recorded membership push.
+struct CollectionPush: Equatable {
+    let collection: MovieCollection
+    let movieID: Int
+    let isMember: Bool
+}
+
+/// Records pushes/collection and serves stubbed remote pages.
 @MainActor
-final class FavoritesRemoteMock: FavoritesRemoteDataSource {
+final class CollectionRemoteMock: MovieCollectionRemoteDataSource {
     var pages: [Int: MoviePage] = [:]
-    var favoritesError: Error?
-    var setFavoriteError: Error?
-    private(set) var pushed: [(movieID: Int, isFavorite: Bool)] = []
+    var listError: Error?
+    var setError: Error?
+    private(set) var pushed: [CollectionPush] = []
     private(set) var requestedPages: [Int] = []
 
-    func favorites(account _: FavoritesAccount, page: Int) async throws -> MoviePage {
+    func list(collection _: MovieCollection, account _: FavoritesAccount, page: Int) async throws -> MoviePage {
         requestedPages.append(page)
-        if let favoritesError {
-            throw favoritesError
+        if let listError {
+            throw listError
         }
         return pages[page] ?? MoviePage(page: page, movies: [], totalPages: page)
     }
 
-    func setFavorite(account _: FavoritesAccount, movieID: Int, isFavorite: Bool) async throws {
-        if let setFavoriteError {
-            throw setFavoriteError
+    func setMembership(collection: MovieCollection, account _: FavoritesAccount, movieID: Int, isMember: Bool) async throws {
+        if let setError {
+            throw setError
         }
-        pushed.append((movieID, isFavorite))
+        pushed.append(CollectionPush(collection: collection, movieID: movieID, isMember: isMember))
     }
 
-    /// Stubs one page of favorites.
     func stubPage(_ page: Int, ids: [Int], totalPages: Int) {
         pages[page] = MoviePage(page: page, movies: ids.map(favoriteTestMovie), totalPages: totalPages)
     }
 }
 
-/// In-memory `FavoritesRepository` for view-model tests.
+@MainActor
+final class FavoritesAccountProviderMock: FavoritesAccountProviding {
+    var account: FavoritesAccount?
+
+    init(account: FavoritesAccount? = nil) {
+        self.account = account
+    }
+
+    func currentAccount() async -> FavoritesAccount? {
+        account
+    }
+}
+
+extension FavoritesAccount {
+    static let testAccount = FavoritesAccount(accountID: 42, sessionID: "sess")
+}
+
+/// In-memory `FavoritesRepository` for favorites view-model tests.
 @MainActor
 final class FavoritesRepositoryMock: FavoritesRepository {
     var movies: [Movie] = []
@@ -94,11 +117,9 @@ final class FavoritesRepositoryMock: FavoritesRepository {
 
     func setFavorite(_ movie: Movie, isFavorite: Bool) async throws {
         setCalls.append((movie.id, isFavorite))
+        movies.removeAll { $0.id == movie.id }
         if isFavorite {
-            movies.removeAll { $0.id == movie.id }
             movies.insert(movie, at: 0)
-        } else {
-            movies.removeAll { $0.id == movie.id }
         }
     }
 
@@ -109,21 +130,4 @@ final class FavoritesRepositoryMock: FavoritesRepository {
     func seed(_ ids: [Int]) {
         movies = ids.map(favoriteTestMovie)
     }
-}
-
-@MainActor
-final class FavoritesAccountProviderMock: FavoritesAccountProviding {
-    var account: FavoritesAccount?
-
-    init(account: FavoritesAccount? = nil) {
-        self.account = account
-    }
-
-    func currentAccount() async -> FavoritesAccount? {
-        account
-    }
-}
-
-extension FavoritesAccount {
-    static let testAccount = FavoritesAccount(accountID: 42, sessionID: "sess")
 }

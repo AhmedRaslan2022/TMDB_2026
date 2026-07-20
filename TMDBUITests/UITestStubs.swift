@@ -60,6 +60,23 @@
         }
     }
 
+    /// In-memory watchlist toggle for UI tests.
+    @MainActor
+    final class StubWatchlistToggling: WatchlistToggling {
+        private var onWatchlist: Set<Int> = []
+        func isOnWatchlist(movieID: Int) async -> Bool {
+            onWatchlist.contains(movieID)
+        }
+
+        func setOnWatchlist(_ movie: Movie, isOnWatchlist: Bool) async throws {
+            if isOnWatchlist {
+                onWatchlist.insert(movie.id)
+            } else {
+                onWatchlist.remove(movie.id)
+            }
+        }
+    }
+
     /// Deterministic offline account for the Profile tab.
     struct StubProfileRepository: ProfileRepository {
         func account() async throws -> Account {

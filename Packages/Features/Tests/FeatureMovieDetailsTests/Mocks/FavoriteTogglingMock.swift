@@ -25,3 +25,21 @@ final class FavoriteTogglingMock: FavoriteToggling {
         setCalls.append((movie.id, isFavorite))
     }
 }
+
+@MainActor
+final class WatchlistTogglingMock: WatchlistToggling {
+    var initialIsOnWatchlist = false
+    var setError: Error?
+    private(set) var setCalls: [(movieID: Int, isOnWatchlist: Bool)] = []
+
+    func isOnWatchlist(movieID _: Int) async -> Bool {
+        initialIsOnWatchlist
+    }
+
+    func setOnWatchlist(_ movie: Movie, isOnWatchlist: Bool) async throws {
+        if let setError {
+            throw setError
+        }
+        setCalls.append((movie.id, isOnWatchlist))
+    }
+}

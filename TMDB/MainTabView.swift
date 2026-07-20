@@ -160,6 +160,7 @@ struct MainTabView: View {
                     movieID: movieID,
                     fetchDetails: StubFetchMovieDetailsUseCase(),
                     favorites: StubFavoriteToggling(),
+                    watchlist: StubWatchlistToggling(),
                     imageBaseURL: URL(fileURLWithPath: "/")
                 )
             }

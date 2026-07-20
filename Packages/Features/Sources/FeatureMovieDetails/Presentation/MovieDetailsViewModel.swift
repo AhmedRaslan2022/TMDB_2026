@@ -26,21 +26,26 @@ public final class MovieDetailsViewModel {
     public private(set) var state: ViewState = .idle
     /// Whether this movie is favorited. Optimistically updated by `toggleFavorite`.
     public private(set) var isFavorite = false
+    /// Whether this movie is on the watchlist. Optimistically updated by `toggleWatchlist`.
+    public private(set) var isOnWatchlist = false
 
     public let movieID: Int
     private let fetchDetails: any FetchMovieDetailsUseCase
     private let favorites: any FavoriteToggling
+    private let watchlist: any WatchlistToggling
     private let imageBaseURL: URL
 
     public init(
         movieID: Int,
         fetchDetails: any FetchMovieDetailsUseCase,
         favorites: any FavoriteToggling,
+        watchlist: any WatchlistToggling,
         imageBaseURL: URL
     ) {
         self.movieID = movieID
         self.fetchDetails = fetchDetails
         self.favorites = favorites
+        self.watchlist = watchlist
         self.imageBaseURL = imageBaseURL
     }
 
@@ -55,9 +60,10 @@ public final class MovieDetailsViewModel {
         state = .loading
         do {
             let bundle = try await fetchDetails.execute(movieID: movieID)
-            // Read favorite state before publishing so the heart never flashes
-            // empty for an already-favorited movie.
+            // Read membership before publishing so the toolbar icons never
+            // flash empty for an already-saved movie.
             isFavorite = await favorites.isFavorite(movieID: movieID)
+            isOnWatchlist = await watchlist.isOnWatchlist(movieID: movieID)
             state = .loaded(bundle)
         } catch is CancellationError {
             state = .idle
@@ -73,24 +79,42 @@ public final class MovieDetailsViewModel {
     /// Flips the favorite state immediately, then persists it — rolling the UI
     /// back if the write fails. No-op until the details bundle is loaded.
     public func toggleFavorite() async {
-        guard case let .loaded(bundle) = state else { return }
+        guard let movie = loadedMovie else { return }
         let target = !isFavorite
         isFavorite = target
         do {
-            let movie = Movie(
-                id: bundle.details.id,
-                title: bundle.details.title,
-                overview: bundle.details.overview,
-                posterPath: bundle.details.posterPath
-            )
             try await favorites.setFavorite(movie, isFavorite: target)
         } catch {
-            // Roll back only if a newer tap hasn't already moved past `target`,
-            // so a slow failure can't clobber a fresher optimistic value.
+            // Roll back only if a newer tap hasn't already moved past `target`.
             if isFavorite == target {
                 isFavorite = !target
             }
         }
+    }
+
+    /// Watchlist twin of `toggleFavorite`: optimistic flip + rollback.
+    public func toggleWatchlist() async {
+        guard let movie = loadedMovie else { return }
+        let target = !isOnWatchlist
+        isOnWatchlist = target
+        do {
+            try await watchlist.setOnWatchlist(movie, isOnWatchlist: target)
+        } catch {
+            if isOnWatchlist == target {
+                isOnWatchlist = !target
+            }
+        }
+    }
+
+    /// The loaded movie as a `Movie`, or nil before the bundle loads.
+    private var loadedMovie: Movie? {
+        guard case let .loaded(bundle) = state else { return nil }
+        return Movie(
+            id: bundle.details.id,
+            title: bundle.details.title,
+            overview: bundle.details.overview,
+            posterPath: bundle.details.posterPath
+        )
     }
 
     // MARK: Image / link URLs

@@ -16,6 +16,7 @@ public enum ModelContainerFactory {
     /// Every `@Model` type the app persists. New models must be added here.
     public static let schema = Schema([
         FavoriteMovie.self,
+        WatchlistMovie.self,
         RecentSearch.self,
         CachedMovie.self,
     ])

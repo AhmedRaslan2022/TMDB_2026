@@ -1,22 +1,21 @@
 //
-//  FavoriteMovie.swift
+//  WatchlistMovie.swift
 //  TMDB
 //
-//  Created by Ahmed Raslan on 17/07/2026.
+//  Created by Ahmed Raslan on 20/07/2026.
 //
 
 import Foundation
 import SwiftData
 
-/// A movie the user marked as favorite. Source of truth for offline-first
-/// favorites; synced with the TMDB account when authenticated (Sprint 4).
+/// A movie on the user's watchlist. Source of truth for offline-first
+/// watchlist; synced with the TMDB account when authenticated. Mirrors
+/// `FavoriteMovie` — both drive the same generic collection plumbing.
 @Model
-public final class FavoriteMovie: CollectionMovieModel {
-    /// TMDB movie identifier.
+public final class WatchlistMovie: CollectionMovieModel {
     @Attribute(.unique) public var movieID: Int
     public var title: String
     public var posterPath: String?
-    /// When the user favorited it locally — drives sort order.
     public var addedAt: Date
 
     public init(movieID: Int, title: String, posterPath: String? = nil, addedAt: Date = .now) {

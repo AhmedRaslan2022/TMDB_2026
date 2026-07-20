@@ -77,11 +77,27 @@ public struct MovieDetailsView: View {
             .navigationBarTitleDisplayMode(.inline)
         #endif
             .ignoresSafeArea(edges: .top)
-            .toolbar { favoriteButton }
+            .toolbar { savedButtons }
     }
 
     @ToolbarContentBuilder
-    private var favoriteButton: some ToolbarContent {
+    private var savedButtons: some ToolbarContent {
+        ToolbarItem(placement: .primaryAction) {
+            Button {
+                Task { await viewModel.toggleWatchlist() }
+            } label: {
+                Label {
+                    Text("Watchlist", comment: "Watchlist toggle button")
+                } icon: {
+                    Image(systemName: viewModel.isOnWatchlist ? "bookmark.fill" : "bookmark")
+                }
+            }
+            .tint(AppColors.brandSecondary)
+            .accessibilityIdentifier("details.watchlist")
+            .accessibilityValue(viewModel.isOnWatchlist
+                ? Text("On watchlist", comment: "Watchlist button state: on")
+                : Text("Not on watchlist", comment: "Watchlist button state: off"))
+        }
         ToolbarItem(placement: .primaryAction) {
             Button {
                 Task { await viewModel.toggleFavorite() }

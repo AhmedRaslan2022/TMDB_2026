@@ -88,6 +88,13 @@ final class TMDBUITests: XCTestCase {
         expectation(for: NSPredicate(format: "value == %@", "Favorited"), evaluatedWith: favorite)
         waitForExpectations(timeout: 5)
 
+        // Watchlist toggle (second synced collection) flips independently.
+        let watchlist = app.buttons["details.watchlist"]
+        XCTAssertEqual(watchlist.value as? String, "Not on watchlist")
+        watchlist.tap()
+        expectation(for: NSPredicate(format: "value == %@", "On watchlist"), evaluatedWith: watchlist)
+        waitForExpectations(timeout: 5)
+
         // The favorited movie appears on the Favorites tab (shared store).
         app.tabBars.buttons["Favorites"].tap()
         XCTAssertTrue(

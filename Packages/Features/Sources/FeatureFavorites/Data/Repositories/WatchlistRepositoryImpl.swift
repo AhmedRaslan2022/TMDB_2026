@@ -1,8 +1,8 @@
 //
-//  FavoritesRepositoryImpl.swift
+//  WatchlistRepositoryImpl.swift
 //  TMDB
 //
-//  Created by Ahmed Raslan on 19/07/2026.
+//  Created by Ahmed Raslan on 20/07/2026.
 //
 
 import CoreModels
@@ -10,11 +10,11 @@ import Networking
 import SwiftData
 import SwiftDataStorage
 
-/// `FavoritesRepository` as a thin specialization of the shared
-/// `MovieCollectionStore` (task 5.3): favorites-specific method names over the
-/// generic offline-first + sync engine.
+/// `WatchlistRepository` as a thin specialization of the shared
+/// `MovieCollectionStore` (task 5.3) — same engine as favorites, over the
+/// `WatchlistMovie` model and the `.watchlist` collection.
 @MainActor
-public struct FavoritesRepositoryImpl: FavoritesRepository {
+public struct WatchlistRepositoryImpl: WatchlistRepository {
     private let store: MovieCollectionStore
 
     /// Composition-root entry point.
@@ -24,8 +24,8 @@ public struct FavoritesRepositoryImpl: FavoritesRepository {
         accountProvider: any FavoritesAccountProviding
     ) {
         self.init(store: MovieCollectionStore(
-            collection: .favorites,
-            local: MovieCollectionLocalDataSourceImpl<FavoriteMovie>(modelContainer: modelContainer),
+            collection: .watchlist,
+            local: MovieCollectionLocalDataSourceImpl<WatchlistMovie>(modelContainer: modelContainer),
             remote: MovieCollectionRemoteDataSourceImpl(apiClient: apiClient),
             accountProvider: accountProvider
         ))
@@ -35,16 +35,16 @@ public struct FavoritesRepositoryImpl: FavoritesRepository {
         self.store = store
     }
 
-    public func favorites() async throws -> [Movie] {
+    public func watchlist() async throws -> [Movie] {
         try await store.movies()
     }
 
-    public func isFavorite(movieID: Int) async throws -> Bool {
+    public func isOnWatchlist(movieID: Int) async throws -> Bool {
         try await store.contains(movieID: movieID)
     }
 
-    public func setFavorite(_ movie: Movie, isFavorite: Bool) async throws {
-        try await store.setMembership(movie, isMember: isFavorite)
+    public func setOnWatchlist(_ movie: Movie, isOnWatchlist: Bool) async throws {
+        try await store.setMembership(movie, isMember: isOnWatchlist)
     }
 
     public func synchronize() async throws {
