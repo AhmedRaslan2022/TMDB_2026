@@ -88,7 +88,11 @@ final class AppContainer {
         )
         coordinator = AppCoordinator(auth: authModule)
     }
+}
 
+// MARK: - Screen view-model factories
+
+extension AppContainer {
     /// Builds the Home screen's view model. Screen-scoped, so a factory
     /// rather than a stored property — each shell gets a fresh one.
     func makeHomeViewModel() -> HomeViewModel {
@@ -147,6 +151,25 @@ final class AppContainer {
                 repository: MovieSearchRepositoryImpl(apiClient: apiClient)
             ),
             recentSearches: RecentSearchesRepositoryImpl(modelContainer: modelContainer),
+            imageBaseURL: environment.imageBaseURL
+        )
+    }
+
+    /// Builds the Discover (advanced-search) view model. Called per push —
+    /// each pushed Discover screen owns its own filter + pagination state.
+    func makeDiscoverViewModel() -> DiscoverViewModel {
+        #if DEBUG
+            if UITestStubs.isActive {
+                return DiscoverViewModel(
+                    discoverMovies: StubDiscoverMoviesUseCase(),
+                    imageBaseURL: environment.imageBaseURL
+                )
+            }
+        #endif
+        return DiscoverViewModel(
+            discoverMovies: DiscoverMoviesUseCaseImpl(
+                repository: DiscoverRepositoryImpl(apiClient: apiClient)
+            ),
             imageBaseURL: environment.imageBaseURL
         )
     }

@@ -15,10 +15,16 @@ import SwiftUI
 public struct SearchView: View {
     @State private var viewModel: SearchViewModel
     private let onSelectMovie: (Int) -> Void
+    private let onOpenDiscover: () -> Void
 
-    public init(viewModel: SearchViewModel, onSelectMovie: @escaping (Int) -> Void) {
+    public init(
+        viewModel: SearchViewModel,
+        onSelectMovie: @escaping (Int) -> Void,
+        onOpenDiscover: @escaping () -> Void
+    ) {
         _viewModel = State(initialValue: viewModel)
         self.onSelectMovie = onSelectMovie
+        self.onOpenDiscover = onOpenDiscover
     }
 
     public var body: some View {
@@ -31,6 +37,18 @@ public struct SearchView: View {
             )
             .onSubmit(of: .search) {
                 Task { await viewModel.submit() }
+            }
+            .toolbar {
+                ToolbarItem(placement: .primaryAction) {
+                    Button(action: onOpenDiscover) {
+                        Label {
+                            Text("Filters", comment: "Opens the advanced-search filters screen")
+                        } icon: {
+                            Image(systemName: "line.3.horizontal.decrease.circle")
+                        }
+                    }
+                    .accessibilityIdentifier("search.discover")
+                }
             }
             .task { await viewModel.loadRecents() }
     }
@@ -128,7 +146,8 @@ public struct SearchView: View {
                     recentSearches: PreviewRecentsRepository(),
                     imageBaseURL: URL(fileURLWithPath: "/")
                 ),
-                onSelectMovie: { _ in }
+                onSelectMovie: { _ in },
+                onOpenDiscover: {}
             )
         }
     }

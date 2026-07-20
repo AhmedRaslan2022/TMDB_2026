@@ -110,4 +110,36 @@ final class TMDBUITests: XCTestCase {
             "Favoriting on details should surface the movie in the Favorites tab"
         )
     }
+
+    @MainActor
+    func testDiscoverFiltersReturnResults() {
+        let app = XCUIApplication()
+        app.launchArguments += ["-uitest-stubs"]
+        app.launch()
+
+        app.buttons["Continue as guest"].tap()
+        app.tabBars.buttons["Search"].tap()
+
+        // Open the advanced-search (Discover) screen from the search toolbar.
+        let filters = app.buttons["search.discover"]
+        XCTAssertTrue(filters.waitForExistence(timeout: 5), "Search should offer a Filters entry")
+        filters.tap()
+
+        // The default browse shows stubbed results (base id 900).
+        XCTAssertTrue(
+            app.buttons["discover.movie.900"].firstMatch.waitForExistence(timeout: 5),
+            "Discover should load a default result set"
+        )
+
+        // Toggling the Action genre (id 28) shifts the stubbed result set (base 928).
+        app.buttons["discover.genre.28"].tap()
+        XCTAssertTrue(
+            app.buttons["discover.movie.928"].firstMatch.waitForExistence(timeout: 5),
+            "A genre filter should change the results"
+        )
+
+        // Tapping a result pushes to details.
+        app.buttons["discover.movie.928"].firstMatch.tap()
+        XCTAssertTrue(app.staticTexts["details.title"].waitForExistence(timeout: 5))
+    }
 }

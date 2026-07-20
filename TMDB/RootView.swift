@@ -29,6 +29,7 @@ struct RootView: View {
     private let debugEnvironmentName: String?
     private let makeMovieListViewModel: @MainActor (HomeSection, TrendingWindow) -> MovieListViewModel
     private let makeMovieDetailsViewModel: @MainActor (Int) -> MovieDetailsViewModel
+    private let makeDiscoverViewModel: @MainActor () -> DiscoverViewModel
 
     init(container: AppContainer) {
         _coordinator = Bindable(container.coordinator)
@@ -40,6 +41,7 @@ struct RootView: View {
         debugEnvironmentName = container.debugEnvironmentName
         makeMovieListViewModel = container.makeMovieListViewModel
         makeMovieDetailsViewModel = container.makeMovieDetailsViewModel
+        makeDiscoverViewModel = container.makeDiscoverViewModel
     }
 
     var body: some View {
@@ -73,7 +75,8 @@ struct RootView: View {
                 profileViewModel: profileViewModel,
                 debugEnvironmentName: debugEnvironmentName,
                 makeMovieListViewModel: makeMovieListViewModel,
-                makeMovieDetailsViewModel: makeMovieDetailsViewModel
+                makeMovieDetailsViewModel: makeMovieDetailsViewModel,
+                makeDiscoverViewModel: makeDiscoverViewModel
             )
         }
     }

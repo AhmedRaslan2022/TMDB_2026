@@ -24,6 +24,7 @@ struct MainTabView: View {
     let debugEnvironmentName: String?
     let makeMovieListViewModel: @MainActor (HomeSection, TrendingWindow) -> MovieListViewModel
     let makeMovieDetailsViewModel: @MainActor (Int) -> MovieDetailsViewModel
+    let makeDiscoverViewModel: @MainActor () -> DiscoverViewModel
 
     /// One place to wire the route table's dependencies for every tab.
     private func attached(_ view: some View) -> some View {
@@ -31,7 +32,8 @@ struct MainTabView: View {
             to: view,
             coordinator: coordinator,
             makeMovieListViewModel: makeMovieListViewModel,
-            makeMovieDetailsViewModel: makeMovieDetailsViewModel
+            makeMovieDetailsViewModel: makeMovieDetailsViewModel,
+            makeDiscoverViewModel: makeDiscoverViewModel
         )
     }
 
@@ -95,7 +97,8 @@ struct MainTabView: View {
         return NavigationStack(path: $search.path) {
             attached(SearchView(
                 viewModel: searchViewModel,
-                onSelectMovie: { coordinator.search.push(.movieDetails(movieID: $0)) }
+                onSelectMovie: { coordinator.search.push(.movieDetails(movieID: $0)) },
+                onOpenDiscover: { coordinator.search.push(.discover) }
             ))
         }
     }
@@ -162,6 +165,12 @@ struct MainTabView: View {
                     favorites: StubFavoriteToggling(),
                     watchlist: StubWatchlistToggling(),
                     rating: StubMovieRatingRepository(),
+                    imageBaseURL: URL(fileURLWithPath: "/")
+                )
+            },
+            makeDiscoverViewModel: {
+                DiscoverViewModel(
+                    discoverMovies: StubDiscoverMoviesUseCase(),
                     imageBaseURL: URL(fileURLWithPath: "/")
                 )
             }

@@ -61,6 +61,38 @@ func waitUntil(_ description: String, condition: () -> Bool) async {
     }
 }
 
+/// Records the filters/pages Discover was asked for and serves stubbed pages
+/// keyed by page number. Genres are stubbed independently.
+@MainActor
+final class DiscoverUseCaseMock: DiscoverMoviesUseCase {
+    var stubbedGenres: [MovieGenre] = []
+    var genresError: Error?
+    var pages: [Int: MoviePage] = [:]
+    var discoverError: Error?
+    private(set) var requestedFilters: [DiscoverFilters] = []
+    private(set) var requestedPages: [Int] = []
+
+    func genres() async throws -> [MovieGenre] {
+        if let genresError {
+            throw genresError
+        }
+        return stubbedGenres
+    }
+
+    func execute(filters: DiscoverFilters, page: Int) async throws -> MoviePage {
+        requestedFilters.append(filters)
+        requestedPages.append(page)
+        if let discoverError {
+            throw discoverError
+        }
+        return pages[page] ?? MoviePage(page: page, movies: [], totalPages: page)
+    }
+
+    func stubPage(_ page: Int, ids: ClosedRange<Int>, totalPages: Int = 1) {
+        pages[page] = MoviePage(page: page, movies: ids.map(searchTestMovie), totalPages: totalPages)
+    }
+}
+
 /// Results and gates keyed by "query#page" so tests can hold one search in
 /// flight while another lands.
 @MainActor

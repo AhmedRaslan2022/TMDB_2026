@@ -132,6 +132,27 @@
         }
     }
 
+    /// Deterministic offline Discover results, addressable by
+    /// "discover.movie.900". Reflects the genre filter so a UI test can prove a
+    /// toggle changes the result set.
+    struct StubDiscoverMoviesUseCase: DiscoverMoviesUseCase {
+        func genres() async throws -> [MovieGenre] {
+            [MovieGenre(id: 28, name: "Action"), MovieGenre(id: 35, name: "Comedy")]
+        }
+
+        func execute(filters: DiscoverFilters, page: Int) async throws -> MoviePage {
+            // A selected genre shifts the ID base so the grid visibly changes.
+            let base = 900 + (filters.genreIDs.first ?? 0)
+            return MoviePage(
+                page: page,
+                movies: (base ... base + 4).map {
+                    Movie(id: $0, title: "Discover \($0)", overview: "", voteAverage: 7, voteCount: 500)
+                },
+                totalPages: 1
+            )
+        }
+    }
+
     /// In-memory recents so UI tests don't touch the on-disk store.
     @MainActor
     final class StubRecentSearchesRepository: RecentSearchesRepository {

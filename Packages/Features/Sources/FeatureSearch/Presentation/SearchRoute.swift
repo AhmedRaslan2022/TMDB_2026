@@ -10,4 +10,6 @@
 public enum SearchRoute: Hashable, Sendable {
     /// Movie details for a TMDB movie ID.
     case movieDetails(movieID: Int)
+    /// The advanced-search (Discover) screen with genre/year/rating/sort filters.
+    case discover
 }
