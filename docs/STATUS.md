@@ -159,7 +159,17 @@ Task checklist mirroring `docs/SPRINTS.md`. One line per deviation/decision.
 - 4.1: `MovieSearchRepository.search(query:page:)` returns the shared `MoviePage`; "Discover-ready" recorded as a seam decision — Discover (Sprint 5) gets its own repository/use case since filter-based discovery and text search have different shapes, but reuses the same page/DTO/mapper pattern. Use case trims whitespace and short-circuits blank queries to an empty page without touching the API (tested). `include_adult=false` pinned in the endpoint. DTO/date-parser twins remain feature-local by design. 6 tests incl. unicode/space query-encoding roundtrip. Tracked (review): `URLComponents.queryItems` leaves literal `+` unescaped and TMDB decodes `+` as space — a "C++" search silently becomes "C  "; fix belongs in Networking's RequestBuilder (percentEncodedQuery re-escape) and should land before 4.4 ships the real search box.
 
 ## Sprint 5 — Profile, Watchlist, Ratings & Discovery
-- [ ] 5.1 – 5.7 (not started)
+
+- [x] 5.1 Profile domain/data: account details, favorites/watchlist counts
+- [ ] 5.2 Profile UI: avatar, username, stats, settings entry, env indicator (debug)
+- [ ] 5.3 Watchlist feature: reuse favorites plumbing for second synced collection
+- [ ] 5.4 Movie rating: POST rating with optimistic UI (write demo)
+- [ ] 5.5 Advanced search filters via Discover endpoint (genre, year, rating, sort)
+- [ ] 5.6 Settings screen: theme toggle, language, cache clear, logout
+- [ ] 5.7 [test] Watchlist/ratings repositories, Discover query building
+
+### Sprint 5 Decisions / Deviations
+- 5.1: `Account` + `AccountStats` entities, `ProfileRepository` (account + stats), feature-local Data (account/count endpoints, nested-avatar DTOs). KEY: `ProfileRepositoryImpl.account()` reads `.sessionID` from the keychain and, after fetching, writes `.accountID` — this is what ACTIVATES the favorites remote sync built inert in Sprint 4 (AppFavoritesAccountProvider now resolves once profile is loaded). Guests (no `.sessionID`) → `ProfileError.notAuthenticated`. Added a `ProfileRemoteDataSource` (unlike a direct-apiClient repo) specifically so `stats()`'s two parallel count calls (favorite vs watchlist) can be tested with distinct values — a single URLProtocol stub serves one response. TMDB has no stats endpoint: counts = `total_results` of the favorites/watchlist lists (page 1), fetched with `async let`. 9 tests (repo via mock data source + in-memory keychain; data source via URLProtocol stub). App-target wiring (construct ProfileRepository, trigger account fetch on login/profile-load) lands with Profile UI (5.2).
 
 ## Sprint 6 — TV Shows & Person Details
 - [ ] 6.1 – 6.6 (not started)
