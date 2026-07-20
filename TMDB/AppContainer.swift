@@ -199,6 +199,7 @@ final class AppContainer {
                     fetchDetails: StubFetchMovieDetailsUseCase(),
                     favorites: StubFavoriteToggling(),
                     watchlist: StubWatchlistToggling(),
+                    rating: StubMovieRatingRepository(),
                     imageBaseURL: environment.imageBaseURL
                 )
             }
@@ -210,6 +211,10 @@ final class AppContainer {
             ),
             favorites: FavoritesToggleAdapter(repository: favoritesRepository),
             watchlist: WatchlistToggleAdapter(repository: watchlistRepository),
+            rating: MovieRatingRepositoryImpl(
+                apiClient: apiClient,
+                sessionProvider: AppRatingSessionProvider(secureStorage: secureStorage)
+            ),
             imageBaseURL: environment.imageBaseURL
         )
     }

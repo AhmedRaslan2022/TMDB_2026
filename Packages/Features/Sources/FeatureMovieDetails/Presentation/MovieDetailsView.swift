@@ -48,26 +48,18 @@ public struct MovieDetailsView: View {
                     backdropURL: viewModel.backdropURL(for: bundle.details)
                 )
                 overviewSection(bundle.details)
+                UserRatingSection(
+                    rating: viewModel.userRating,
+                    onRate: { value in Task { await viewModel.rate(value) } },
+                    onClear: { Task { await viewModel.clearRating() } }
+                )
                 CastSection(cast: bundle.cast, profileURL: viewModel.profileURL(for:))
                 VideosSection(
                     videos: viewModel.featuredVideos(in: bundle),
                     watchURL: viewModel.watchURL(for:),
                     thumbnailURL: viewModel.thumbnailURL(for:)
                 )
-                RelatedSection(
-                    title: Text("Similar", comment: "Similar movies section title"),
-                    accessibilityPrefix: "details.similar",
-                    movies: bundle.similar,
-                    posterURL: viewModel.posterURL(for:),
-                    onSelectMovie: onSelectMovie
-                )
-                RelatedSection(
-                    title: Text("Recommended", comment: "Recommended movies section title"),
-                    accessibilityPrefix: "details.recommended",
-                    movies: bundle.recommendations,
-                    posterURL: viewModel.posterURL(for:),
-                    onSelectMovie: onSelectMovie
-                )
+                relatedSections(bundle)
             }
             .padding(.bottom, AppSpacing.xxl)
         }
@@ -114,6 +106,24 @@ public struct MovieDetailsView: View {
                 ? Text("Favorited", comment: "Favorite button state: on")
                 : Text("Not favorited", comment: "Favorite button state: off"))
         }
+    }
+
+    @ViewBuilder
+    private func relatedSections(_ bundle: MovieDetailsBundle) -> some View {
+        RelatedSection(
+            title: Text("Similar", comment: "Similar movies section title"),
+            accessibilityPrefix: "details.similar",
+            movies: bundle.similar,
+            posterURL: viewModel.posterURL(for:),
+            onSelectMovie: onSelectMovie
+        )
+        RelatedSection(
+            title: Text("Recommended", comment: "Recommended movies section title"),
+            accessibilityPrefix: "details.recommended",
+            movies: bundle.recommendations,
+            posterURL: viewModel.posterURL(for:),
+            onSelectMovie: onSelectMovie
+        )
     }
 
     @ViewBuilder

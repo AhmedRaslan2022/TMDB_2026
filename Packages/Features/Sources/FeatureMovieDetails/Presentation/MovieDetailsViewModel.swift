@@ -28,11 +28,15 @@ public final class MovieDetailsViewModel {
     public private(set) var isFavorite = false
     /// Whether this movie is on the watchlist. Optimistically updated by `toggleWatchlist`.
     public private(set) var isOnWatchlist = false
+    /// The user's rating (0.5–10), or `nil` when unrated. Optimistically updated
+    /// by `rate`/`clearRating`.
+    public private(set) var userRating: Double?
 
     public let movieID: Int
     private let fetchDetails: any FetchMovieDetailsUseCase
     private let favorites: any FavoriteToggling
     private let watchlist: any WatchlistToggling
+    private let rating: any MovieRatingRepository
     private let imageBaseURL: URL
 
     public init(
@@ -40,12 +44,14 @@ public final class MovieDetailsViewModel {
         fetchDetails: any FetchMovieDetailsUseCase,
         favorites: any FavoriteToggling,
         watchlist: any WatchlistToggling,
+        rating: any MovieRatingRepository,
         imageBaseURL: URL
     ) {
         self.movieID = movieID
         self.fetchDetails = fetchDetails
         self.favorites = favorites
         self.watchlist = watchlist
+        self.rating = rating
         self.imageBaseURL = imageBaseURL
     }
 
@@ -64,6 +70,9 @@ public final class MovieDetailsViewModel {
             // flash empty for an already-saved movie.
             isFavorite = await favorites.isFavorite(movieID: movieID)
             isOnWatchlist = await watchlist.isOnWatchlist(movieID: movieID)
+            // A rating read failure shouldn't block the screen — fall back to
+            // unrated. `try?` flattens the optional, so no double-optional here.
+            userRating = try? await rating.rating(movieID: movieID)
             state = .loaded(bundle)
         } catch is CancellationError {
             state = .idle
@@ -103,6 +112,41 @@ public final class MovieDetailsViewModel {
             if isOnWatchlist == target {
                 isOnWatchlist = !target
             }
+        }
+    }
+
+    /// Sets the user's rating, updating the stars immediately and rolling back
+    /// if the write fails. No-op until the details bundle is loaded.
+    public func rate(_ value: Double) async {
+        await applyRating(value)
+    }
+
+    /// Clears the user's rating (optimistic + rollback). No-op if unrated or
+    /// before the bundle loads.
+    public func clearRating() async {
+        guard userRating != nil else { return }
+        await applyRating(nil)
+    }
+
+    private func applyRating(_ value: Double?) async {
+        guard isLoaded else { return }
+        let previous = userRating
+        userRating = value
+        do {
+            try await rating.setRating(value, movieID: movieID)
+        } catch {
+            // Roll back only if a newer change hasn't already moved past `value`.
+            if userRating == value {
+                userRating = previous
+            }
+        }
+    }
+
+    private var isLoaded: Bool {
+        if case .loaded = state {
+            true
+        } else {
+            false
         }
     }
 

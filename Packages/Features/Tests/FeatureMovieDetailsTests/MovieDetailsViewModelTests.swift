@@ -31,6 +31,7 @@ struct MovieDetailsViewModelTests {
     private let useCase = FetchDetailsMock()
     private let favorites = FavoriteTogglingMock()
     private let watchlistMock = WatchlistTogglingMock()
+    private let ratingMock = MovieRatingRepositoryMock()
     private let viewModel: MovieDetailsViewModel
 
     init() throws {
@@ -39,6 +40,7 @@ struct MovieDetailsViewModelTests {
             fetchDetails: useCase,
             favorites: favorites,
             watchlist: watchlistMock,
+            rating: ratingMock,
             imageBaseURL: #require(URL(string: "https://img.invalid/t/p"))
         )
     }

@@ -27,6 +27,28 @@ final class FavoriteTogglingMock: FavoriteToggling {
 }
 
 @MainActor
+final class MovieRatingRepositoryMock: MovieRatingRepository {
+    var initialRating: Double?
+    var ratingError: Error?
+    var setError: Error?
+    private(set) var setCalls: [Double?] = []
+
+    func rating(movieID _: Int) async throws -> Double? {
+        if let ratingError {
+            throw ratingError
+        }
+        return initialRating
+    }
+
+    func setRating(_ value: Double?, movieID _: Int) async throws {
+        if let setError {
+            throw setError
+        }
+        setCalls.append(value)
+    }
+}
+
+@MainActor
 final class WatchlistTogglingMock: WatchlistToggling {
     var initialIsOnWatchlist = false
     var setError: Error?

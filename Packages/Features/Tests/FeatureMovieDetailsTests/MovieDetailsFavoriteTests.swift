@@ -29,6 +29,7 @@ struct MovieDetailsFavoriteTests {
     private let fetch = FetchMock()
     private let favorites = FavoriteTogglingMock()
     private let watchlistMock = WatchlistTogglingMock()
+    private let ratingMock = MovieRatingRepositoryMock()
 
     private func makeViewModel() throws -> MovieDetailsViewModel {
         try MovieDetailsViewModel(
@@ -36,6 +37,7 @@ struct MovieDetailsFavoriteTests {
             fetchDetails: fetch,
             favorites: favorites,
             watchlist: watchlistMock,
+            rating: ratingMock,
             imageBaseURL: #require(URL(string: "https://img.invalid/t/p"))
         )
     }
@@ -117,5 +119,84 @@ struct MovieDetailsFavoriteTests {
         await viewModel.load()
 
         #expect(viewModel.isOnWatchlist)
+    }
+
+    @Test("existing rating is read on load")
+    func ratingInitialState() async throws {
+        ratingMock.initialRating = 8
+        let viewModel = try makeViewModel()
+
+        await viewModel.load()
+
+        #expect(viewModel.userRating == 8)
+    }
+
+    @Test("a failed rating read still loads the screen as unrated")
+    func ratingReadFailureIsTolerated() async throws {
+        ratingMock.ratingError = MockError.write
+        let viewModel = try makeViewModel()
+
+        await viewModel.load()
+
+        #expect(viewModel.userRating == nil)
+        guard case .loaded = viewModel.state else {
+            Issue.record("expected .loaded despite the rating read failing")
+            return
+        }
+    }
+
+    @Test("rating flips optimistically and persists")
+    func ratePersists() async throws {
+        let viewModel = try makeViewModel()
+        await viewModel.load()
+
+        await viewModel.rate(8)
+
+        #expect(viewModel.userRating == 8)
+        #expect(ratingMock.setCalls == [8])
+    }
+
+    @Test("clearing an existing rating persists the removal")
+    func clearRating() async throws {
+        ratingMock.initialRating = 6
+        let viewModel = try makeViewModel()
+        await viewModel.load()
+
+        await viewModel.clearRating()
+
+        #expect(viewModel.userRating == nil)
+        #expect(ratingMock.setCalls == [Double?.none])
+    }
+
+    @Test("clearing when unrated is a no-op")
+    func clearWhenUnratedNoOp() async throws {
+        let viewModel = try makeViewModel()
+        await viewModel.load()
+
+        await viewModel.clearRating()
+
+        #expect(ratingMock.setCalls.isEmpty)
+    }
+
+    @Test("a failed rating write rolls the optimistic value back")
+    func rateRollback() async throws {
+        ratingMock.initialRating = 4
+        let viewModel = try makeViewModel()
+        await viewModel.load()
+        ratingMock.setError = MockError.write
+
+        await viewModel.rate(10)
+
+        #expect(viewModel.userRating == 4, "rolled back to the pre-rating value")
+    }
+
+    @Test("rating is a no-op before the bundle loads")
+    func rateBeforeLoadNoOp() async throws {
+        let viewModel = try makeViewModel()
+
+        await viewModel.rate(8)
+
+        #expect(ratingMock.setCalls.isEmpty)
+        #expect(viewModel.userRating == nil)
     }
 }

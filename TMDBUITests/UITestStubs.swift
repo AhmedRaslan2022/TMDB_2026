@@ -77,6 +77,20 @@
         }
     }
 
+    /// In-memory rating store for UI tests — accepts writes and reflects them.
+    @MainActor
+    final class StubMovieRatingRepository: MovieRatingRepository {
+        private var ratings: [Int: Double] = [:]
+
+        func rating(movieID: Int) async throws -> Double? {
+            ratings[movieID]
+        }
+
+        func setRating(_ value: Double?, movieID: Int) async throws {
+            ratings[movieID] = value
+        }
+    }
+
     /// Deterministic offline account for the Profile tab.
     struct StubProfileRepository: ProfileRepository {
         func account() async throws -> Account {

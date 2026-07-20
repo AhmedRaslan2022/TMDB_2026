@@ -95,6 +95,14 @@ final class TMDBUITests: XCTestCase {
         expectation(for: NSPredicate(format: "value == %@", "On watchlist"), evaluatedWith: watchlist)
         waitForExpectations(timeout: 5)
 
+        // Rating: tapping the 4th star writes an optimistic 8/10.
+        let ratingControl = app.otherElements["details.rating"]
+        XCTAssertTrue(ratingControl.waitForExistence(timeout: 5), "Details should show the user rating control")
+        XCTAssertEqual(ratingControl.value as? String, "Not rated")
+        app.buttons["details.rating.star.4"].tap()
+        expectation(for: NSPredicate(format: "value == %@", "8 out of 10"), evaluatedWith: ratingControl)
+        waitForExpectations(timeout: 5)
+
         // The favorited movie appears on the Favorites tab (shared store).
         app.tabBars.buttons["Favorites"].tap()
         XCTAssertTrue(
