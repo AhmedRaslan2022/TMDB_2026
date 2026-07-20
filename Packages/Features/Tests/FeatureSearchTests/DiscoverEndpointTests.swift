@@ -74,6 +74,22 @@ struct DiscoverEndpointTests {
         #expect(value(endpoint, "vote_count.gte") == "200")
     }
 
+    @Test("all filters combined build one coherent query with a single vote floor")
+    func allFiltersCombined() {
+        let endpoint = DiscoverEndpoint(
+            filters: DiscoverFilters(genreIDs: [18, 53], year: 1999, minimumRating: 8, sort: .rating),
+            page: 3
+        )
+
+        #expect(value(endpoint, "sort_by") == "vote_average.desc")
+        #expect(value(endpoint, "with_genres") == "18,53")
+        #expect(value(endpoint, "primary_release_year") == "1999")
+        #expect(value(endpoint, "vote_average.gte") == "8.0")
+        #expect(value(endpoint, "page") == "3")
+        // Rating filter AND rating sort both request the floor — it appears once.
+        #expect(names(endpoint).filter { $0 == "vote_count.gte" } == ["vote_count.gte"])
+    }
+
     @Test("genres endpoint routes to the movie genre list")
     func genresEndpoint() {
         #expect(GenresEndpoint().path == "/genre/movie/list")

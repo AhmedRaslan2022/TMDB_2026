@@ -8,6 +8,7 @@
 import CoreModels
 import Foundation
 import Networking
+import SharedTestSupport
 import SwiftData
 import SwiftDataStorage
 import Testing
@@ -70,6 +71,25 @@ struct CollectionIntegrationTests {
         let movies = try await store.movies()
         #expect(movies.map(\.id) == [2, 1], "re-adding must not reorder by re-stamping addedAt")
         #expect(movies.first(where: { $0.id == 1 })?.title == "Renamed", "upsert refreshes the title")
+    }
+
+    @Test("the production watchlist repository pushes an authenticated toggle to the /watchlist route")
+    func watchlistProductionInitPushesToWatchlistRoute() async throws {
+        let (session, stub) = URLProtocolStub.makeSession()
+        stub.stub(data: Data(#"{"success": true}"#.utf8))
+        let baseURL = try #require(URL(string: "https://stub.invalid/3"))
+        let watchlist = WatchlistRepositoryImpl(
+            modelContainer: container,
+            apiClient: URLSessionAPIClient(baseURL: baseURL, session: session),
+            accountProvider: FavoritesAccountProviderMock(account: .testAccount)
+        )
+
+        try await watchlist.setOnWatchlist(Movie(id: 550, title: "W", overview: ""), isOnWatchlist: true)
+
+        // The production init must wire the `.watchlist` collection, not favorites.
+        let url = try #require(stub.lastRequest?.url)
+        #expect(stub.lastRequest?.httpMethod == "POST")
+        #expect(url.path() == "/3/account/42/watchlist")
     }
 
     @Test("watchlist persists to its own model, isolated from favorites")

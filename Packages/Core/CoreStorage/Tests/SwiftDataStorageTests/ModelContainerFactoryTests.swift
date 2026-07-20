@@ -17,7 +17,7 @@ struct ModelContainerFactoryTests {
         let container = try ModelContainerFactory.make(inMemory: true)
 
         let entityNames = container.schema.entities.map(\.name).sorted()
-        #expect(entityNames == ["CachedMovie", "FavoriteMovie", "RecentSearch"])
+        #expect(entityNames == ["CachedMovie", "FavoriteMovie", "RecentSearch", "WatchlistMovie"])
         let allInMemory = container.configurations.allSatisfy(\.isStoredInMemoryOnly)
         #expect(allInMemory)
     }
