@@ -25,6 +25,8 @@ struct RootView: View {
     @State private var homeViewModel: HomeViewModel
     @State private var searchViewModel: SearchViewModel
     @State private var favoritesViewModel: FavoritesViewModel
+    @State private var profileViewModel: ProfileViewModel
+    private let debugEnvironmentName: String?
     private let makeMovieListViewModel: @MainActor (HomeSection, TrendingWindow) -> MovieListViewModel
     private let makeMovieDetailsViewModel: @MainActor (Int) -> MovieDetailsViewModel
 
@@ -34,6 +36,8 @@ struct RootView: View {
         _homeViewModel = State(initialValue: container.makeHomeViewModel())
         _searchViewModel = State(initialValue: container.makeSearchViewModel())
         _favoritesViewModel = State(initialValue: container.makeFavoritesViewModel())
+        _profileViewModel = State(initialValue: container.makeProfileViewModel())
+        debugEnvironmentName = container.debugEnvironmentName
         makeMovieListViewModel = container.makeMovieListViewModel
         makeMovieDetailsViewModel = container.makeMovieDetailsViewModel
     }
@@ -66,6 +70,8 @@ struct RootView: View {
                 homeViewModel: homeViewModel,
                 searchViewModel: searchViewModel,
                 favoritesViewModel: favoritesViewModel,
+                profileViewModel: profileViewModel,
+                debugEnvironmentName: debugEnvironmentName,
                 makeMovieListViewModel: makeMovieListViewModel,
                 makeMovieDetailsViewModel: makeMovieDetailsViewModel
             )

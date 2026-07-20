@@ -39,12 +39,15 @@ final class TMDBUITests: XCTestCase {
         XCTAssertEqual(detailsTitle.label, "UITest Movie 550")
         app.navigationBars.buttons.firstMatch.tap() // back
 
-        // Tab switching.
+        // Tab switching — Profile shows the stubbed account.
         app.tabBars.buttons["Profile"].tap()
         XCTAssertTrue(app.buttons["Sign Out"].waitForExistence(timeout: 5))
+        XCTAssertTrue(app.staticTexts["profile.username"].waitForExistence(timeout: 5), "Profile shows the account")
+        XCTAssertEqual(app.staticTexts["profile.username"].label, "UI Tester")
+        XCTAssertTrue(app.otherElements["profile.stat.favorites"].exists || app.staticTexts["Favorites"].exists)
 
         // Coordinator-driven sheet.
-        app.buttons["About (sheet)"].tap()
+        app.buttons["About"].tap()
         XCTAssertTrue(app.buttons["Done"].waitForExistence(timeout: 5))
         app.buttons["Done"].tap()
 

@@ -20,6 +20,8 @@ struct MainTabView: View {
     let homeViewModel: HomeViewModel
     let searchViewModel: SearchViewModel
     let favoritesViewModel: FavoritesViewModel
+    let profileViewModel: ProfileViewModel
+    let debugEnvironmentName: String?
     let makeMovieListViewModel: @MainActor (HomeSection, TrendingWindow) -> MovieListViewModel
     let makeMovieDetailsViewModel: @MainActor (Int) -> MovieDetailsViewModel
 
@@ -112,6 +114,8 @@ struct MainTabView: View {
         @Bindable var profile = coordinator.profile
         return NavigationStack(path: $profile.path) {
             attached(ProfileView(
+                viewModel: profileViewModel,
+                debugEnvironmentName: debugEnvironmentName,
                 onOpenSettings: { coordinator.profile.push(.settings) },
                 onShowAbout: { coordinator.presentSheet(.about) },
                 onShowWhatsNew: { coordinator.presentFullScreenCover(.whatsNew) },
@@ -138,6 +142,11 @@ struct MainTabView: View {
                 repository: StubFavoritesRepository.shared,
                 imageBaseURL: URL(fileURLWithPath: "/")
             ),
+            profileViewModel: ProfileViewModel(
+                repository: StubProfileRepository(),
+                imageBaseURL: URL(fileURLWithPath: "/")
+            ),
+            debugEnvironmentName: "Dev",
             makeMovieListViewModel: { section, window in
                 MovieListViewModel(
                     section: section,

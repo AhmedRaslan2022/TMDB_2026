@@ -161,7 +161,7 @@ Task checklist mirroring `docs/SPRINTS.md`. One line per deviation/decision.
 ## Sprint 5 — Profile, Watchlist, Ratings & Discovery
 
 - [x] 5.1 Profile domain/data: account details, favorites/watchlist counts
-- [ ] 5.2 Profile UI: avatar, username, stats, settings entry, env indicator (debug)
+- [x] 5.2 Profile UI: avatar, username, stats, settings entry, env indicator (debug)
 - [ ] 5.3 Watchlist feature: reuse favorites plumbing for second synced collection
 - [ ] 5.4 Movie rating: POST rating with optimistic UI (write demo)
 - [ ] 5.5 Advanced search filters via Discover endpoint (genre, year, rating, sort)
@@ -169,6 +169,7 @@ Task checklist mirroring `docs/SPRINTS.md`. One line per deviation/decision.
 - [ ] 5.7 [test] Watchlist/ratings repositories, Discover query building
 
 ### Sprint 5 Decisions / Deviations
+- 5.2: `ProfileViewModel` (loading/guest/loaded(Account,AccountStats)/error) + real `ProfileView` (List: `AccountHeaderView` avatar/name/@username + favorites/watchlist stat tiles, entries for Settings/About/What's-New, Sign Out). Guest sessions (notAuthenticated) → guest header + sign-in prompt; a stats failure degrades to the account with zeroed counts (doesn't blank the page). Avatar URL: TMDB avatar (w185) → Gravatar fallback → nil. Debug env badge passed from the app (`AppContainer.debugEnvironmentName`, `#if DEBUG`) — FeatureProfile can't read CoreEnvironment, so the label is injected. This wiring makes visiting Profile trigger `account()`, which stores `.accountID` and ACTIVATES favorites sync (the 5.1→4.6 connection, now live in-app). Kept the Sign Out / About affordances the existing UI test drives; UI test now also asserts `profile.username` == the stub account. 6 VM tests. StubProfileRepository for the -uitest-stubs path.
 - 5.1: `Account` + `AccountStats` entities, `ProfileRepository` (account + stats), feature-local Data (account/count endpoints, nested-avatar DTOs). KEY: `ProfileRepositoryImpl.account()` reads `.sessionID` from the keychain and, after fetching, writes `.accountID` — this is what ACTIVATES the favorites remote sync built inert in Sprint 4 (AppFavoritesAccountProvider now resolves once profile is loaded). Guests (no `.sessionID`) → `ProfileError.notAuthenticated`. Added a `ProfileRemoteDataSource` (unlike a direct-apiClient repo) specifically so `stats()`'s two parallel count calls (favorite vs watchlist) can be tested with distinct values — a single URLProtocol stub serves one response. TMDB has no stats endpoint: counts = `total_results` of the favorites/watchlist lists (page 1), fetched with `async let`. 9 tests (repo via mock data source + in-memory keychain; data source via URLProtocol stub). App-target wiring (construct ProfileRepository, trigger account fetch on login/profile-load) lands with Profile UI (5.2).
 
 ## Sprint 6 — TV Shows & Person Details

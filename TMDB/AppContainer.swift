@@ -13,6 +13,7 @@ import FeatureAuth
 import FeatureFavorites
 import FeatureHome
 import FeatureMovieDetails
+import FeatureProfile
 import FeatureSearch
 import Foundation
 import KeychainStorage
@@ -140,6 +141,31 @@ final class AppContainer {
             recentSearches: RecentSearchesRepositoryImpl(modelContainer: modelContainer),
             imageBaseURL: environment.imageBaseURL
         )
+    }
+
+    /// Builds the Profile screen's view model. Screen-scoped, one per shell.
+    func makeProfileViewModel() -> ProfileViewModel {
+        #if DEBUG
+            if UITestStubs.isActive {
+                return ProfileViewModel(
+                    repository: StubProfileRepository(),
+                    imageBaseURL: environment.imageBaseURL
+                )
+            }
+        #endif
+        return ProfileViewModel(
+            repository: ProfileRepositoryImpl(apiClient: apiClient, secureStorage: secureStorage),
+            imageBaseURL: environment.imageBaseURL
+        )
+    }
+
+    /// The environment name shown as a debug badge on the profile.
+    var debugEnvironmentName: String? {
+        #if DEBUG
+            environment.name.rawValue.capitalized
+        #else
+            nil
+        #endif
     }
 
     /// Builds the Favorites screen's view model. Screen-scoped, one per shell.

@@ -10,6 +10,7 @@
     import FeatureFavorites
     import FeatureHome
     import FeatureMovieDetails
+    import FeatureProfile
     import FeatureSearch
     import Foundation
 
@@ -56,6 +57,17 @@
 
         func setFavorite(_ movie: Movie, isFavorite: Bool) async throws {
             try await StubFavoritesRepository.shared.setFavorite(movie, isFavorite: isFavorite)
+        }
+    }
+
+    /// Deterministic offline account for the Profile tab.
+    struct StubProfileRepository: ProfileRepository {
+        func account() async throws -> Account {
+            Account(id: 1, username: "uitester", name: "UI Tester", gravatarHash: "hash")
+        }
+
+        func stats(for _: Int) async throws -> AccountStats {
+            AccountStats(favoriteCount: 3, watchlistCount: 2)
         }
     }
 
