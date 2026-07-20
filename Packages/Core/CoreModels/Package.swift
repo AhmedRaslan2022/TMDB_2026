@@ -11,5 +11,6 @@ let package = Package(
     ],
     targets: [
         .target(name: "CoreModels"),
+        .testTarget(name: "CoreModelsTests", dependencies: ["CoreModels"]),
     ]
 )

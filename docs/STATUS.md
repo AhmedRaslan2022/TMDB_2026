@@ -186,7 +186,15 @@ Task checklist mirroring `docs/SPRINTS.md`. One line per deviation/decision.
 - 5.1: `Account` + `AccountStats` entities, `ProfileRepository` (account + stats), feature-local Data (account/count endpoints, nested-avatar DTOs). KEY: `ProfileRepositoryImpl.account()` reads `.sessionID` from the keychain and, after fetching, writes `.accountID` — this is what ACTIVATES the favorites remote sync built inert in Sprint 4 (AppFavoritesAccountProvider now resolves once profile is loaded). Guests (no `.sessionID`) → `ProfileError.notAuthenticated`. Added a `ProfileRemoteDataSource` (unlike a direct-apiClient repo) specifically so `stats()`'s two parallel count calls (favorite vs watchlist) can be tested with distinct values — a single URLProtocol stub serves one response. TMDB has no stats endpoint: counts = `total_results` of the favorites/watchlist lists (page 1), fetched with `async let`. 9 tests (repo via mock data source + in-memory keychain; data source via URLProtocol stub). App-target wiring (construct ProfileRepository, trigger account fetch on login/profile-load) lands with Profile UI (5.2).
 
 ## Sprint 6 — TV Shows & Person Details
-- [ ] 6.1 – 6.6 (not started)
+- [x] 6.1 Generalize movie domain to reuse for TV (generic media entity or protocol)
+- [ ] 6.2 TV domain/data: on-air, popular, top-rated, TV details
+- [ ] 6.3 Home: segmented Movies/TV OR a dedicated TV tab
+- [ ] 6.4 Person/Actor details: domain/data (bio, filmography, images)
+- [ ] 6.5 Person UI + navigation from cast carousel → person → their movies (deep graph)
+- [ ] 6.6 [test] reuse-safety tests: same use cases across movie/TV
+
+### Sprint 6 Decisions / Deviations
+- 6.1: Chose a GENERIC ENTITY over a protocol — the summary `Movie` already carried the exact media-neutral shape TV needs (id/title/overview/poster/backdrop/date/votes/genreIDs), so it was promoted to `MediaItem` with a `MediaKind` discriminator (`.movie`/`.tv`), keeping every use case, repository, and the poster grid working on one type (no per-kind pipeline). TV's `name`/`first_air_date` map into `title`/`releaseDate` in each feature's mapper. `mediaType` defaults to `.movie` (all 15 movie construction sites unchanged) and participates in equality (same id, different kind are distinct). To keep this a small, low-risk foundational PR (31 files reference `Movie`), added `public typealias Movie = MediaItem` as a documented compatibility bridge rather than a big-bang rename — new TV code (6.2+) uses `MediaItem(mediaType: .tv, …)`. `MoviePage` left as-is (it now holds `[MediaItem]`); page naming revisited in 6.2 if TV lists need it. Added CoreModels' first test target (5 tests: default kind, alias, TV construction, equality-includes-kind, MediaKind exhaustiveness). 229 Features + 5 CoreModels tests green; app + all 4 UI tests pass (purely additive — alias keeps behavior identical).
 
 ## Sprint 7 — Platform Integration
 - [ ] 7.1 – 7.7 (not started)
