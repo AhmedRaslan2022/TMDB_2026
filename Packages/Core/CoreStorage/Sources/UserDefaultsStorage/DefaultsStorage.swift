@@ -10,6 +10,10 @@
 /// Credentials and tokens belong in `KeychainStorage`, never here.
 public enum DefaultsKey: String, CaseIterable, Sendable {
     case hasSeenOnboarding = "tmdb.has-seen-onboarding"
+    /// Appearance preference (`AppTheme` raw value).
+    case appTheme = "tmdb.app-theme"
+    /// Content-language preference (`AppLanguage` raw value).
+    case appLanguage = "tmdb.app-language"
 }
 
 /// Key-value persistence for lightweight preferences. Implemented by

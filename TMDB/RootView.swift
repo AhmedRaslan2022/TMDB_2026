@@ -30,6 +30,8 @@ struct RootView: View {
     private let makeMovieListViewModel: @MainActor (HomeSection, TrendingWindow) -> MovieListViewModel
     private let makeMovieDetailsViewModel: @MainActor (Int) -> MovieDetailsViewModel
     private let makeDiscoverViewModel: @MainActor () -> DiscoverViewModel
+    private let makeSettingsViewModel: @MainActor () -> SettingsViewModel
+    private let appSettings: AppSettings
 
     init(container: AppContainer) {
         _coordinator = Bindable(container.coordinator)
@@ -42,10 +44,13 @@ struct RootView: View {
         makeMovieListViewModel = container.makeMovieListViewModel
         makeMovieDetailsViewModel = container.makeMovieDetailsViewModel
         makeDiscoverViewModel = container.makeDiscoverViewModel
+        makeSettingsViewModel = container.makeSettingsViewModel
+        appSettings = container.appSettings
     }
 
     var body: some View {
         content
+            .preferredColorScheme(appSettings.theme.colorScheme)
             .task { await coordinator.restoreSession() }
             .sheet(item: $coordinator.presentedSheet) { sheet in
                 switch sheet {
@@ -76,7 +81,8 @@ struct RootView: View {
                 debugEnvironmentName: debugEnvironmentName,
                 makeMovieListViewModel: makeMovieListViewModel,
                 makeMovieDetailsViewModel: makeMovieDetailsViewModel,
-                makeDiscoverViewModel: makeDiscoverViewModel
+                makeDiscoverViewModel: makeDiscoverViewModel,
+                makeSettingsViewModel: makeSettingsViewModel
             )
         }
     }

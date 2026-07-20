@@ -112,6 +112,30 @@ final class TMDBUITests: XCTestCase {
     }
 
     @MainActor
+    func testSettingsThemeSelectionAndSignOut() {
+        let app = XCUIApplication()
+        app.launchArguments += ["-uitest-stubs"]
+        app.launch()
+
+        let guestButton = app.buttons["Continue as guest"]
+        guestButton.tap()
+
+        // Profile → Settings.
+        app.tabBars.buttons["Profile"].tap()
+        app.buttons["Settings"].firstMatch.tap()
+
+        // Selecting the Dark theme marks that row selected.
+        let dark = app.buttons["settings.theme.dark"]
+        XCTAssertTrue(dark.waitForExistence(timeout: 5), "Settings should show theme options")
+        dark.tap()
+        XCTAssertTrue(dark.isSelected, "Tapping a theme should select it")
+
+        // Signing out from Settings returns to the auth gate.
+        app.buttons["settings.signOut"].tap()
+        XCTAssertTrue(guestButton.waitForExistence(timeout: 5), "Sign out should return to the auth gate")
+    }
+
+    @MainActor
     func testDiscoverFiltersReturnResults() {
         let app = XCUIApplication()
         app.launchArguments += ["-uitest-stubs"]

@@ -25,15 +25,19 @@ struct MainTabView: View {
     let makeMovieListViewModel: @MainActor (HomeSection, TrendingWindow) -> MovieListViewModel
     let makeMovieDetailsViewModel: @MainActor (Int) -> MovieDetailsViewModel
     let makeDiscoverViewModel: @MainActor () -> DiscoverViewModel
+    let makeSettingsViewModel: @MainActor () -> SettingsViewModel
 
     /// One place to wire the route table's dependencies for every tab.
     private func attached(_ view: some View) -> some View {
         RouteDestinations.attach(
             to: view,
             coordinator: coordinator,
-            makeMovieListViewModel: makeMovieListViewModel,
-            makeMovieDetailsViewModel: makeMovieDetailsViewModel,
-            makeDiscoverViewModel: makeDiscoverViewModel
+            factories: RouteViewModelFactories(
+                movieList: makeMovieListViewModel,
+                movieDetails: makeMovieDetailsViewModel,
+                discover: makeDiscoverViewModel,
+                settings: makeSettingsViewModel
+            )
         )
     }
 
@@ -173,7 +177,18 @@ struct MainTabView: View {
                     discoverMovies: StubDiscoverMoviesUseCase(),
                     imageBaseURL: URL(fileURLWithPath: "/")
                 )
+            },
+            makeSettingsViewModel: {
+                SettingsViewModel(store: PreviewSettingsStore(), onSignOut: {})
             }
         )
+    }
+
+    /// Inert settings store for the preview.
+    @MainActor
+    private final class PreviewSettingsStore: SettingsStore {
+        var theme: AppTheme = .system
+        var language: AppLanguage = .english
+        func clearCache() async {}
     }
 #endif

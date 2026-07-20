@@ -20,6 +20,7 @@ import KeychainStorage
 import Networking
 import SwiftData
 import SwiftDataStorage
+import UserDefaultsStorage
 
 /// Composition root for the whole app.
 ///
@@ -47,6 +48,9 @@ final class AppContainer {
     let favoritesRepository: any FavoritesRepository
     /// Offline-first watchlist store — reuses the favorites collection engine.
     let watchlistRepository: any WatchlistRepository
+    /// App-wide preferences (theme, content language); observed by the root to
+    /// apply the theme and read by the API client's language interceptor.
+    let appSettings: AppSettings
     /// Root coordinator, composed with the auth module so navigation stays
     /// decoupled from concrete auth types.
     let coordinator: AppCoordinator
@@ -54,13 +58,6 @@ final class AppContainer {
     init() {
         let environment = AppEnvironment.load()
         self.environment = environment
-        let apiClient = URLSessionAPIClient(
-            baseURL: environment.apiBaseURL,
-            interceptors: [
-                BearerAuthInterceptor(tokenProvider: { environment.accessToken }),
-            ]
-        )
-        self.apiClient = apiClient
         let secureStorage = KeychainManager()
         self.secureStorage = secureStorage
         do {
@@ -69,6 +66,20 @@ final class AppContainer {
         } catch {
             preconditionFailure("Could not create ModelContainer: \(error)")
         }
+        let appSettings = AppSettings(
+            defaults: UserDefaultsManager(),
+            imageCache: imageCache,
+            modelContainer: modelContainer
+        )
+        self.appSettings = appSettings
+        let apiClient = URLSessionAPIClient(
+            baseURL: environment.apiBaseURL,
+            interceptors: [
+                BearerAuthInterceptor(tokenProvider: { environment.accessToken }),
+                LanguageQueryInterceptor(languageProvider: appSettings.languageCodeProvider),
+            ]
+        )
+        self.apiClient = apiClient
 
         authModule = Self.makeAuthModule(
             apiClient: apiClient,
@@ -188,6 +199,12 @@ extension AppContainer {
             repository: ProfileRepositoryImpl(apiClient: apiClient, secureStorage: secureStorage),
             imageBaseURL: environment.imageBaseURL
         )
+    }
+
+    /// Builds the Settings screen's view model over the shared `appSettings`
+    /// store, so theme changes made here are reflected at the app root.
+    func makeSettingsViewModel() -> SettingsViewModel {
+        SettingsViewModel(store: appSettings, onSignOut: { [coordinator] in coordinator.signOut() })
     }
 
     /// The environment name shown as a debug badge on the profile.
