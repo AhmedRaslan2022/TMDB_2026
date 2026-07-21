@@ -23,6 +23,7 @@ let featureNames = [
     "FeatureFavorites",
     "FeatureProfile",
     "FeatureTV",
+    "FeaturePerson",
 ]
 
 let package = Package(
@@ -85,6 +86,13 @@ let package = Package(
             name: "FeatureTVTests",
             dependencies: [
                 "FeatureTV",
+                .product(name: "SharedTestSupport", package: "Shared"),
+            ]
+        ),
+        .testTarget(
+            name: "FeaturePersonTests",
+            dependencies: [
+                "FeaturePerson",
                 .product(name: "SharedTestSupport", package: "Shared"),
             ]
         ),
