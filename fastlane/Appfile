@@ -1,0 +1,19 @@
+# Appfile — app + team identity for fastlane.
+#
+# UNVERIFIED SCAFFOLDING (Sprint 9.6): authored without access to the Apple
+# Developer account, so nothing here has run. Set FASTLANE_APPLE_ID and, if
+# your account belongs to multiple App Store Connect teams, itc_team_id, then
+# validate on a signing-capable machine.
+#
+# Identity values come from the project's xcconfig:
+#   Live:    com.rasslan.github.TMDB
+#   Staging: com.rasslan.github.TMDB.staging
+#   Dev:     com.rasslan.github.TMDB.dev
+#   Test:    com.rasslan.github.TMDB.test
+
+app_identifier("com.rasslan.github.TMDB") # default (Live / App Store) bundle id
+apple_id(ENV["FASTLANE_APPLE_ID"])        # Apple Developer email — from env, never committed
+team_id("R6RXWLTM3U")                      # Developer Portal team
+
+# App Store Connect team id (numeric) — uncomment if the account has several:
+# itc_team_id("XXXXXXXX")

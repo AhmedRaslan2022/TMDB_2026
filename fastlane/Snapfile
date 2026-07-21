@@ -1,0 +1,26 @@
+# Snapfile — automated App Store screenshots in English + Arabic (Sprint 9.7).
+#
+# UNVERIFIED SCAFFOLDING: requires SnapshotHelper.swift + a ScreenshotUITests
+# class in the TMDBUITests target. Run `fastlane snapshot init` to generate the
+# helper, then add the test from fastlane/SETUP.md. `fastlane screenshots`
+# drives it across the device + language matrix below.
+
+workspace("TMDB.xcworkspace")
+scheme("TMDB-Test") # the offline Test scheme; the UI test uses -uitest-stubs
+
+devices([
+  "iPhone 16 Pro Max", # 6.9" App Store screenshot set
+  "iPhone 16 Pro",     # 6.3" set
+])
+
+languages([
+  "en-US",
+  "ar-SA", # exercises the RTL layout for the Arabic App Store listing
+])
+
+# Only the screenshot test class, not the whole UI suite.
+only_testing(["TMDBUITests/ScreenshotUITests"])
+
+output_directory("./fastlane/screenshots")
+clear_previous_screenshots(true)
+concurrent_simulators(true)

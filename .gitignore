@@ -21,3 +21,12 @@ Configs/Secrets.xcconfig
 fastlane/report.xml
 fastlane/screenshots/**/*.png
 fastlane/test_output
+
+# Fastlane — generated artifacts (screenshots are added deliberately if needed)
+fastlane/report.xml
+fastlane/README.md
+fastlane/test_output/
+fastlane/screenshots/
+fastlane/*.p8
+vendor/bundle/
+.bundle/
