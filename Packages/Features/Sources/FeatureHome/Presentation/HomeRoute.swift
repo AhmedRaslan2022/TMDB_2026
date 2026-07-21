@@ -15,4 +15,9 @@ public enum HomeRoute: Hashable, Sendable {
     /// Paginated "see all" list for a home section. The trending window is
     /// captured at push time.
     case seeAll(section: HomeSection, window: TrendingWindow)
+    /// TV show details — reachable when a person's filmography credit is a TV
+    /// title (the cast → person → their-titles deep graph, Sprint 6.5).
+    case tvDetails(showID: Int)
+    /// Person/actor details for a TMDB person ID.
+    case person(personID: Int)
 }

@@ -21,6 +21,7 @@
 		BEEF0000000000000000001E /* FeatureFavorites in Frameworks */ = {isa = PBXBuildFile; productRef = CAFE0000000000000000001E /* FeatureFavorites */; };
 		BEEF0000000000000000001F /* FeatureProfile in Frameworks */ = {isa = PBXBuildFile; productRef = CAFE0000000000000000001F /* FeatureProfile */; };
 		BEEF00000000000000000020 /* FeatureTV in Frameworks */ = {isa = PBXBuildFile; productRef = CAFE00000000000000000020 /* FeatureTV */; };
+		BEEF00000000000000000021 /* FeaturePerson in Frameworks */ = {isa = PBXBuildFile; productRef = CAFE00000000000000000021 /* FeaturePerson */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -137,6 +138,7 @@
 				BEEF0000000000000000001E /* FeatureFavorites in Frameworks */,
 				BEEF0000000000000000001F /* FeatureProfile in Frameworks */,
 				BEEF00000000000000000020 /* FeatureTV in Frameworks */,
+				BEEF00000000000000000021 /* FeaturePerson in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -226,6 +228,7 @@
 				CAFE0000000000000000001E /* FeatureFavorites */,
 				CAFE0000000000000000001F /* FeatureProfile */,
 				CAFE00000000000000000020 /* FeatureTV */,
+				CAFE00000000000000000021 /* FeaturePerson */,
 			);
 			productName = TMDB;
 			productReference = A37BE8973006C0D00047E68A /* TMDB.app */;
@@ -1013,6 +1016,10 @@
 		CAFE00000000000000000020 /* FeatureTV */ = {
 			isa = XCSwiftPackageProductDependency;
 			productName = FeatureTV;
+		};
+		CAFE00000000000000000021 /* FeaturePerson */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = FeaturePerson;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};

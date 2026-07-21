@@ -12,4 +12,8 @@ public enum SearchRoute: Hashable, Sendable {
     case movieDetails(movieID: Int)
     /// The advanced-search (Discover) screen with genre/year/rating/sort filters.
     case discover
+    /// TV show details — reachable via a person's TV filmography credit (6.5).
+    case tvDetails(showID: Int)
+    /// Person/actor details for a TMDB person ID.
+    case person(personID: Int)
 }

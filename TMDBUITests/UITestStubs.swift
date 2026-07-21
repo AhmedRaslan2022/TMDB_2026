@@ -10,6 +10,7 @@
     import FeatureFavorites
     import FeatureHome
     import FeatureMovieDetails
+    import FeaturePerson
     import FeatureProfile
     import FeatureSearch
     import FeatureTV
@@ -123,6 +124,30 @@
         }
     }
 
+    /// Deterministic offline person with a mixed movie/TV filmography.
+    struct StubFetchPersonDetailsUseCase: FetchPersonDetailsUseCase {
+        func execute(personID: Int) async throws -> PersonDetailsBundle {
+            PersonDetailsBundle(
+                person: Person(
+                    id: personID,
+                    name: "UITest Person \(personID)",
+                    biography: "Offline stub biography.",
+                    knownForDepartment: "Acting"
+                ),
+                filmography: [
+                    PersonCredit(
+                        media: MediaItem(id: 550, mediaType: .movie, title: "Credit Movie 550", overview: "", voteCount: 100),
+                        character: "Self"
+                    ),
+                    PersonCredit(
+                        media: MediaItem(id: 800, mediaType: .tv, title: "Credit Show 800", overview: "", voteCount: 90),
+                        character: "Self"
+                    ),
+                ]
+            )
+        }
+    }
+
     /// Deterministic offline account for the Profile tab.
     struct StubProfileRepository: ProfileRepository {
         func account() async throws -> Account {
@@ -134,7 +159,8 @@
         }
     }
 
-    /// Deterministic offline details bundle matching the stub list movies.
+    /// Deterministic offline details bundle matching the stub list movies,
+    /// with one cast member so the cast → person deep graph is testable.
     struct StubFetchMovieDetailsUseCase: FetchMovieDetailsUseCase {
         func execute(movieID: Int) async throws -> MovieDetailsBundle {
             MovieDetailsBundle(
@@ -144,7 +170,8 @@
                     overview: "Offline stub overview.",
                     voteAverage: 8.0,
                     voteCount: 42
-                )
+                ),
+                cast: [CastMember(id: "c1", personID: 287, name: "UITest Actor", character: "Self", profilePath: nil)]
             )
         }
     }

@@ -15,12 +15,18 @@ import SwiftUI
 public struct MovieDetailsView: View {
     @State private var viewModel: MovieDetailsViewModel
     private let onSelectMovie: (Int) -> Void
+    private let onSelectPerson: (Int) -> Void
 
     /// The view model moves into `@State` so repeated destination-builder
     /// evaluations for the same push reuse one instance.
-    public init(viewModel: MovieDetailsViewModel, onSelectMovie: @escaping (Int) -> Void) {
+    public init(
+        viewModel: MovieDetailsViewModel,
+        onSelectMovie: @escaping (Int) -> Void,
+        onSelectPerson: @escaping (Int) -> Void = { _ in }
+    ) {
         _viewModel = State(initialValue: viewModel)
         self.onSelectMovie = onSelectMovie
+        self.onSelectPerson = onSelectPerson
     }
 
     public var body: some View {
@@ -53,7 +59,11 @@ public struct MovieDetailsView: View {
                     onRate: { value in Task { await viewModel.rate(value) } },
                     onClear: { Task { await viewModel.clearRating() } }
                 )
-                CastSection(cast: bundle.cast, profileURL: viewModel.profileURL(for:))
+                CastSection(
+                    cast: bundle.cast,
+                    profileURL: viewModel.profileURL(for:),
+                    onSelectPerson: onSelectPerson
+                )
                 VideosSection(
                     videos: viewModel.featuredVideos(in: bundle),
                     watchURL: viewModel.watchURL(for:),

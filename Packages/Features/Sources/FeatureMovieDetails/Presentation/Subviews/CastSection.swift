@@ -13,6 +13,9 @@ import SwiftUI
 struct CastSection: View {
     let cast: [CastMember]
     let profileURL: (CastMember) -> URL?
+    /// Reports a tapped cast member's TMDB person ID; the coordinator pushes
+    /// the person screen.
+    let onSelectPerson: (Int) -> Void
 
     /// Billing beyond this rarely matters on a phone screen.
     private static let displayLimit = 15
@@ -26,7 +29,11 @@ struct CastSection: View {
                 ScrollView(.horizontal, showsIndicators: false) {
                     LazyHStack(alignment: .top, spacing: AppSpacing.md) {
                         ForEach(cast.prefix(Self.displayLimit)) { member in
-                            CastCard(member: member, profileURL: profileURL(member))
+                            CastCard(
+                                member: member,
+                                profileURL: profileURL(member),
+                                onSelect: { onSelectPerson(member.personID) }
+                            )
                         }
                     }
                     .padding(.horizontal, AppSpacing.lg)
@@ -39,38 +46,44 @@ struct CastSection: View {
 private struct CastCard: View {
     let member: CastMember
     let profileURL: URL?
+    let onSelect: () -> Void
 
     var body: some View {
-        VStack(spacing: AppSpacing.sm) {
-            RemoteImage(url: profileURL) { image in
-                image
-                    .resizable()
-                    .scaledToFill()
-            } placeholder: {
-                Circle()
-                    .fill(AppColors.brandPrimary.opacity(0.15))
-                    .overlay {
-                        Image(systemName: "person.fill")
-                            .font(.title2)
-                            .foregroundStyle(AppColors.textSecondary)
-                            .accessibilityHidden(true)
-                    }
-            }
-            .frame(width: 80, height: 80)
-            .clipShape(Circle())
+        Button(action: onSelect) {
+            VStack(spacing: AppSpacing.sm) {
+                RemoteImage(url: profileURL) { image in
+                    image
+                        .resizable()
+                        .scaledToFill()
+                } placeholder: {
+                    Circle()
+                        .fill(AppColors.brandPrimary.opacity(0.15))
+                        .overlay {
+                            Image(systemName: "person.fill")
+                                .font(.title2)
+                                .foregroundStyle(AppColors.textSecondary)
+                                .accessibilityHidden(true)
+                        }
+                }
+                .frame(width: 80, height: 80)
+                .clipShape(Circle())
 
-            Text(member.name)
-                .font(AppTypography.label)
-                .lineLimit(2, reservesSpace: true)
-                .multilineTextAlignment(.center)
-            if let character = member.character {
-                Text(character)
-                    .font(AppTypography.caption)
-                    .foregroundStyle(AppColors.textSecondary)
-                    .lineLimit(1)
+                Text(member.name)
+                    .font(AppTypography.label)
+                    .foregroundStyle(AppColors.textPrimary)
+                    .lineLimit(2, reservesSpace: true)
+                    .multilineTextAlignment(.center)
+                if let character = member.character {
+                    Text(character)
+                        .font(AppTypography.caption)
+                        .foregroundStyle(AppColors.textSecondary)
+                        .lineLimit(1)
+                }
             }
+            .frame(width: 100)
         }
-        .frame(width: 100)
+        .buttonStyle(.plain)
         .accessibilityElement(children: .combine)
+        .accessibilityIdentifier("details.cast.\(member.personID)")
     }
 }

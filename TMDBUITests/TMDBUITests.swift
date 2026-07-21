@@ -112,6 +112,37 @@ final class TMDBUITests: XCTestCase {
     }
 
     @MainActor
+    func testCastToPersonToTitleDeepNavigation() {
+        let app = XCUIApplication()
+        app.launchArguments += ["-uitest-stubs"]
+        app.launch()
+
+        app.buttons["Continue as guest"].tap()
+
+        // Home → a movie's details.
+        let poster = app.buttons["home.movie.550"].firstMatch
+        XCTAssertTrue(poster.waitForExistence(timeout: 5))
+        poster.tap()
+        XCTAssertTrue(app.staticTexts["details.title"].waitForExistence(timeout: 5))
+
+        // Tap the cast member → person screen.
+        let castMember = app.buttons["details.cast.287"]
+        XCTAssertTrue(castMember.waitForExistence(timeout: 5), "Details should show a tappable cast member")
+        castMember.tap()
+        let personName = app.staticTexts["person.name"]
+        XCTAssertTrue(personName.waitForExistence(timeout: 5), "Tapping cast should push the person screen")
+
+        // Tap a filmography credit → that title's details (deep graph).
+        let credit = app.buttons["person.credit.550"].firstMatch
+        XCTAssertTrue(credit.waitForExistence(timeout: 5), "Person should show their filmography")
+        credit.tap()
+        XCTAssertTrue(
+            app.staticTexts["details.title"].waitForExistence(timeout: 5),
+            "Tapping a movie credit should push movie details"
+        )
+    }
+
+    @MainActor
     func testTVTabBrowseToShowDetails() {
         let app = XCUIApplication()
         app.launchArguments += ["-uitest-stubs"]

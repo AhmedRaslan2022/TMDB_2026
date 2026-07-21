@@ -10,6 +10,7 @@ import FeatureAuth
 import FeatureFavorites
 import FeatureHome
 import FeatureMovieDetails
+import FeaturePerson
 import FeatureProfile
 import FeatureSearch
 import FeatureTV
@@ -34,6 +35,7 @@ struct RootView: View {
     private let makeDiscoverViewModel: @MainActor () -> DiscoverViewModel
     private let makeSettingsViewModel: @MainActor () -> SettingsViewModel
     private let makeTVDetailsViewModel: @MainActor (Int) -> TVDetailsViewModel
+    private let makePersonViewModel: @MainActor (Int) -> PersonViewModel
     private let appSettings: AppSettings
 
     init(container: AppContainer) {
@@ -50,6 +52,7 @@ struct RootView: View {
         makeDiscoverViewModel = container.makeDiscoverViewModel
         makeSettingsViewModel = container.makeSettingsViewModel
         makeTVDetailsViewModel = container.makeTVDetailsViewModel
+        makePersonViewModel = container.makePersonViewModel
         appSettings = container.appSettings
     }
 
@@ -89,7 +92,8 @@ struct RootView: View {
                 makeMovieDetailsViewModel: makeMovieDetailsViewModel,
                 makeDiscoverViewModel: makeDiscoverViewModel,
                 makeSettingsViewModel: makeSettingsViewModel,
-                makeTVDetailsViewModel: makeTVDetailsViewModel
+                makeTVDetailsViewModel: makeTVDetailsViewModel,
+                makePersonViewModel: makePersonViewModel
             )
         }
     }

@@ -9,6 +9,7 @@ import CoreModels
 import FeatureFavorites
 import FeatureHome
 import FeatureMovieDetails
+import FeaturePerson
 import FeatureProfile
 import FeatureSearch
 import FeatureTV
@@ -29,6 +30,7 @@ struct MainTabView: View {
     let makeDiscoverViewModel: @MainActor () -> DiscoverViewModel
     let makeSettingsViewModel: @MainActor () -> SettingsViewModel
     let makeTVDetailsViewModel: @MainActor (Int) -> TVDetailsViewModel
+    let makePersonViewModel: @MainActor (Int) -> PersonViewModel
 
     /// One place to wire the route table's dependencies for every tab.
     private func attached(_ view: some View) -> some View {
@@ -40,7 +42,8 @@ struct MainTabView: View {
                 movieDetails: makeMovieDetailsViewModel,
                 discover: makeDiscoverViewModel,
                 settings: makeSettingsViewModel,
-                tvDetails: makeTVDetailsViewModel
+                tvDetails: makeTVDetailsViewModel,
+                person: makePersonViewModel
             )
         )
     }
@@ -213,6 +216,13 @@ struct MainTabView: View {
                 TVDetailsViewModel(
                     showID: showID,
                     fetchDetails: StubFetchTVDetailsUseCase(),
+                    imageBaseURL: URL(fileURLWithPath: "/")
+                )
+            },
+            makePersonViewModel: { personID in
+                PersonViewModel(
+                    personID: personID,
+                    fetchDetails: StubFetchPersonDetailsUseCase(),
                     imageBaseURL: URL(fileURLWithPath: "/")
                 )
             }

@@ -9,6 +9,7 @@ import CoreModels
 import FeatureFavorites
 import FeatureHome
 import FeatureMovieDetails
+import FeaturePerson
 import FeatureProfile
 import FeatureSearch
 import FeatureTV
@@ -23,11 +24,13 @@ struct RouteViewModelFactories {
     let discover: @MainActor () -> DiscoverViewModel
     let settings: @MainActor () -> SettingsViewModel
     let tvDetails: @MainActor (Int) -> TVDetailsViewModel
+    let person: @MainActor (Int) -> PersonViewModel
 }
 
 /// Route → view mapping for every feature. This is the only place feature
 /// routes are resolved to concrete screens, which is what lets features stay
-/// ignorant of each other (e.g. Home pushing MovieDetails).
+/// ignorant of each other (e.g. Home pushing MovieDetails, or a person's TV
+/// credit pushing TV details within the same tab — the 6.5 deep graph).
 enum RouteDestinations {
     /// Attaches every feature's `navigationDestination` mapping to a tab's
     /// `NavigationStack` content. Destinations that need dependencies get
@@ -49,21 +52,15 @@ enum RouteDestinations {
             .navigationDestination(for: SearchRoute.self) { route in
                 searchDestination(route, coordinator, factories)
             }
+            .navigationDestination(for: FavoritesRoute.self) { route in
+                favoritesDestination(route, coordinator, factories)
+            }
             .navigationDestination(for: TVRoute.self) { route in
                 switch route {
                 case let .showDetails(showID):
                     TVDetailsView(
                         viewModel: factories.tvDetails(showID),
                         onSelectShow: { coordinator.tv.push(.showDetails(showID: $0)) }
-                    )
-                }
-            }
-            .navigationDestination(for: FavoritesRoute.self) { route in
-                switch route {
-                case let .movieDetails(movieID):
-                    MovieDetailsView(
-                        viewModel: factories.movieDetails(movieID),
-                        onSelectMovie: { coordinator.favorites.push(.movieDetails(movieID: $0)) }
                     )
                 }
             }
@@ -81,16 +78,33 @@ enum RouteDestinations {
         _ coordinator: AppCoordinator,
         _ factories: RouteViewModelFactories
     ) -> some View {
+        let home = coordinator.home
         switch route {
         case let .movieDetails(movieID):
             MovieDetailsView(
                 viewModel: factories.movieDetails(movieID),
-                onSelectMovie: { coordinator.home.push(.movieDetails(movieID: $0)) }
+                onSelectMovie: { home.push(.movieDetails(movieID: $0)) },
+                onSelectPerson: { home.push(.person(personID: $0)) }
             )
         case let .seeAll(section, window):
             MovieListView(
                 viewModel: factories.movieList(section, window),
-                onSelectMovie: { coordinator.home.push(.movieDetails(movieID: $0)) }
+                onSelectMovie: { home.push(.movieDetails(movieID: $0)) }
+            )
+        case let .tvDetails(showID):
+            TVDetailsView(
+                viewModel: factories.tvDetails(showID),
+                onSelectShow: { home.push(.tvDetails(showID: $0)) }
+            )
+        case let .person(personID):
+            PersonView(
+                viewModel: factories.person(personID),
+                onSelectTitle: { media in
+                    switch media.mediaType {
+                    case .movie: home.push(.movieDetails(movieID: media.id))
+                    case .tv: home.push(.tvDetails(showID: media.id))
+                    }
+                }
             )
         }
     }
@@ -101,16 +115,65 @@ enum RouteDestinations {
         _ coordinator: AppCoordinator,
         _ factories: RouteViewModelFactories
     ) -> some View {
+        let search = coordinator.search
         switch route {
         case let .movieDetails(movieID):
             MovieDetailsView(
                 viewModel: factories.movieDetails(movieID),
-                onSelectMovie: { coordinator.search.push(.movieDetails(movieID: $0)) }
+                onSelectMovie: { search.push(.movieDetails(movieID: $0)) },
+                onSelectPerson: { search.push(.person(personID: $0)) }
             )
         case .discover:
             DiscoverView(
                 viewModel: factories.discover(),
-                onSelectMovie: { coordinator.search.push(.movieDetails(movieID: $0)) }
+                onSelectMovie: { search.push(.movieDetails(movieID: $0)) }
+            )
+        case let .tvDetails(showID):
+            TVDetailsView(
+                viewModel: factories.tvDetails(showID),
+                onSelectShow: { search.push(.tvDetails(showID: $0)) }
+            )
+        case let .person(personID):
+            PersonView(
+                viewModel: factories.person(personID),
+                onSelectTitle: { media in
+                    switch media.mediaType {
+                    case .movie: search.push(.movieDetails(movieID: media.id))
+                    case .tv: search.push(.tvDetails(showID: media.id))
+                    }
+                }
+            )
+        }
+    }
+
+    @MainActor @ViewBuilder
+    private static func favoritesDestination(
+        _ route: FavoritesRoute,
+        _ coordinator: AppCoordinator,
+        _ factories: RouteViewModelFactories
+    ) -> some View {
+        let favorites = coordinator.favorites
+        switch route {
+        case let .movieDetails(movieID):
+            MovieDetailsView(
+                viewModel: factories.movieDetails(movieID),
+                onSelectMovie: { favorites.push(.movieDetails(movieID: $0)) },
+                onSelectPerson: { favorites.push(.person(personID: $0)) }
+            )
+        case let .tvDetails(showID):
+            TVDetailsView(
+                viewModel: factories.tvDetails(showID),
+                onSelectShow: { favorites.push(.tvDetails(showID: $0)) }
+            )
+        case let .person(personID):
+            PersonView(
+                viewModel: factories.person(personID),
+                onSelectTitle: { media in
+                    switch media.mediaType {
+                    case .movie: favorites.push(.movieDetails(movieID: media.id))
+                    case .tv: favorites.push(.tvDetails(showID: media.id))
+                    }
+                }
             )
         }
     }
