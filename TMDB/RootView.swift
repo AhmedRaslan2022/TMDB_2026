@@ -59,6 +59,7 @@ struct RootView: View {
     var body: some View {
         content
             .preferredColorScheme(appSettings.theme.colorScheme)
+            .onOpenURL { coordinator.handle(url: $0) }
             .task { await coordinator.restoreSession() }
             .sheet(item: $coordinator.presentedSheet) { sheet in
                 switch sheet {

@@ -12,6 +12,7 @@ import FeatureHome
 import FeatureProfile
 import FeatureSearch
 import FeatureTV
+import Foundation
 import Observation
 
 /// The five root tabs of the main shell.
@@ -62,6 +63,10 @@ final class AppCoordinator {
     var selectedTab: AppTab = .home
     var presentedSheet: Sheet?
     var presentedFullScreenCover: FullScreenCover?
+    /// A deep link received before the main shell was ready (e.g. a cold-start
+    /// link arriving at the auth gate). Applied once the shell appears, so the
+    /// link still lands on the right screen with a correct back stack.
+    private var pendingDeepLink: DeepLink?
 
     let home = TabCoordinator<HomeRoute>()
     let tv = TabCoordinator<TVRoute>()
@@ -89,12 +94,64 @@ final class AppCoordinator {
     func restoreSession() async {
         if await auth.hasPersistedSession() {
             rootScene = .main
+            applyPendingDeepLink()
         }
     }
 
     /// Called when auth completes; enters the main shell.
     func completeAuthGate() {
         rootScene = .main
+        applyPendingDeepLink()
+    }
+
+    // MARK: Deep linking
+
+    /// Entry point for an incoming URL (custom scheme or universal link).
+    /// Returns whether the URL was a recognized deep link.
+    @discardableResult
+    func handle(url: URL) -> Bool {
+        guard let deepLink = DeepLinkParser.parse(url) else { return false }
+        handle(deepLink)
+        return true
+    }
+
+    /// Applies a deep link: on the main shell it selects the tab and rebuilds
+    /// that tab's stack immediately; at the auth gate it's deferred until the
+    /// shell appears (cold start).
+    func handle(_ deepLink: DeepLink) {
+        guard rootScene == .main else {
+            pendingDeepLink = deepLink
+            return
+        }
+        dismissModal()
+        switch deepLink {
+        case let .movie(id):
+            selectedTab = .home
+            home.popToRoot()
+            home.push(.movieDetails(movieID: id))
+        case let .tvShow(id):
+            selectedTab = .tv
+            tv.popToRoot()
+            tv.push(.showDetails(showID: id))
+        case let .person(id):
+            selectedTab = .home
+            home.popToRoot()
+            home.push(.person(personID: id))
+        case .search:
+            // A query pre-seed needs the SearchViewModel; selecting the tab is
+            // the coordinator's part. Query injection is a later refinement.
+            selectedTab = .search
+            search.popToRoot()
+        case let .tab(tab):
+            selectedTab = tab
+        }
+    }
+
+    /// Applies and clears any link deferred while at the auth gate.
+    private func applyPendingDeepLink() {
+        guard let deepLink = pendingDeepLink else { return }
+        pendingDeepLink = nil
+        handle(deepLink)
     }
 
     func presentSheet(_ sheet: Sheet) {

@@ -10,5 +10,16 @@
 	<string>$(TMDB_API_BASE_URL)</string>
 	<key>TMDB_IMAGE_BASE_URL</key>
 	<string>$(TMDB_IMAGE_BASE_URL)</string>
+	<key>CFBundleURLTypes</key>
+	<array>
+		<dict>
+			<key>CFBundleURLName</key>
+			<string>com.rasslan.github.TMDB.deeplink</string>
+			<key>CFBundleURLSchemes</key>
+			<array>
+				<string>tmdbapp</string>
+			</array>
+		</dict>
+	</array>
 </dict>
 </plist>
