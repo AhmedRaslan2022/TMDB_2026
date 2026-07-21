@@ -36,7 +36,15 @@ final class MovieCollectionLocalDataSourceImpl<Model: CollectionMovieModel>: Mov
     }
 
     func all() async throws -> [Movie] {
-        try fetchAll().map { Movie(id: $0.movieID, title: $0.title, overview: "", posterPath: $0.posterPath) }
+        // Sort in Swift, most-recently-added first — NOT via a SwiftData
+        // `SortDescriptor`: on a generic `Model`, `\Model.addedAt` resolves to a
+        // protocol-witness (computed) keypath that SwiftData can't match to the
+        // concrete stored property, crashing on-device ("Couldn't find
+        // \FavoriteMovie.<computed …(Date)>"). The macOS host test runner
+        // tolerated the bad keypath, which hid this — hence the plain fetch here.
+        try fetchAll()
+            .sorted { $0.addedAt > $1.addedAt }
+            .map { Movie(id: $0.movieID, title: $0.title, overview: "", posterPath: $0.posterPath) }
     }
 
     func contains(movieID: Int) async throws -> Bool {
@@ -60,7 +68,9 @@ final class MovieCollectionLocalDataSourceImpl<Model: CollectionMovieModel>: Mov
         try context.save()
     }
 
+    /// Unsorted fetch — ordering is applied in Swift by callers that need it
+    /// (see `all()`). `contains`/`upsert`/`remove` don't care about order.
     private func fetchAll() throws -> [Model] {
-        try context.fetch(FetchDescriptor<Model>(sortBy: [SortDescriptor(\.addedAt, order: .reverse)]))
+        try context.fetch(FetchDescriptor<Model>())
     }
 }
