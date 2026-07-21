@@ -32,6 +32,7 @@ struct HomeSectionView: View {
         HStack(spacing: AppSpacing.md) {
             Text(section.title)
                 .font(AppTypography.title)
+                .accessibilityAddTraits(.isHeader)
             Spacer()
             if section == .trending {
                 windowPicker

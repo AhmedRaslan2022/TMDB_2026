@@ -22,6 +22,7 @@ struct TVSectionView: View {
         VStack(alignment: .leading, spacing: AppSpacing.md) {
             Self.title(for: list)
                 .font(AppTypography.title)
+                .accessibilityAddTraits(.isHeader)
                 .padding(.horizontal, AppSpacing.lg)
             content
         }

@@ -24,6 +24,11 @@ public struct PosterCard: View {
     private let accessibilityID: String?
     private let onSelect: () -> Void
 
+    /// The card scales with Dynamic Type so larger accessibility text sizes get
+    /// a proportionally larger poster instead of truncating the title.
+    @ScaledMetric(relativeTo: .body) private var posterWidth = PosterCardLayout.posterWidth
+    @ScaledMetric(relativeTo: .body) private var posterHeight = PosterCardLayout.posterHeight
+
     /// - Parameters:
     ///   - rating: 0–10 score; pass `nil` to hide the rating row.
     ///   - accessibilityID: Stable identifier for UI tests.
@@ -51,10 +56,11 @@ public struct PosterCard: View {
                     .lineLimit(2, reservesSpace: true)
                 ratingRow
             }
-            .frame(width: PosterCardLayout.posterWidth)
+            .frame(width: posterWidth)
         }
         .buttonStyle(.plain)
         .accessibilityElement(children: .combine)
+        .accessibilityAddTraits(.isButton)
         .accessibilityIdentifier(accessibilityID ?? "")
     }
 
@@ -73,7 +79,7 @@ public struct PosterCard: View {
                         .accessibilityHidden(true)
                 }
         }
-        .frame(width: PosterCardLayout.posterWidth, height: PosterCardLayout.posterHeight)
+        .frame(width: posterWidth, height: posterHeight)
         .clipShape(RoundedRectangle(cornerRadius: AppRadius.md))
     }
 
@@ -99,17 +105,23 @@ public struct PosterCard: View {
 /// Skeleton twin of `PosterCard` — matches its footprint so content landing
 /// doesn't shift surrounding layout.
 public struct PosterCardSkeleton: View {
+    // Scales with Dynamic Type in lockstep with `PosterCard` so the skeleton →
+    // content swap never shifts surrounding layout at any text size.
+    @ScaledMetric(relativeTo: .body) private var posterWidth = PosterCardLayout.posterWidth
+    @ScaledMetric(relativeTo: .body) private var posterHeight = PosterCardLayout.posterHeight
+
     public init() {}
 
     public var body: some View {
         VStack(alignment: .leading, spacing: AppSpacing.sm) {
             SkeletonBox(cornerRadius: AppRadius.md)
-                .frame(width: PosterCardLayout.posterWidth, height: PosterCardLayout.posterHeight)
+                .frame(width: posterWidth, height: posterHeight)
             SkeletonBox()
                 .frame(width: 110, height: 32)
             SkeletonBox()
                 .frame(width: 70, height: 14)
         }
+        .accessibilityHidden(true)
     }
 }
 

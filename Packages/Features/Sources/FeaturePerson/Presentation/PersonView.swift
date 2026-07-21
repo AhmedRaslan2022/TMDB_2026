@@ -104,6 +104,7 @@ public struct PersonView: View {
             VStack(alignment: .leading, spacing: AppSpacing.md) {
                 Text("Known For", comment: "Person filmography section title")
                     .font(AppTypography.title)
+                    .accessibilityAddTraits(.isHeader)
                     .padding(.horizontal, AppSpacing.lg)
                 LazyVGrid(
                     columns: [GridItem(.adaptive(minimum: 130), spacing: AppSpacing.md, alignment: .top)],

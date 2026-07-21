@@ -25,6 +25,7 @@ struct RelatedSection: View {
             VStack(alignment: .leading, spacing: AppSpacing.md) {
                 title
                     .font(AppTypography.title)
+                    .accessibilityAddTraits(.isHeader)
                     .padding(.horizontal, AppSpacing.lg)
                 ScrollView(.horizontal, showsIndicators: false) {
                     LazyHStack(alignment: .top, spacing: AppSpacing.md) {

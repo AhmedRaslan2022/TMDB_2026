@@ -104,6 +104,7 @@ public struct TVDetailsView: View {
             VStack(alignment: .leading, spacing: AppSpacing.md) {
                 Text("More Like This", comment: "Similar TV shows section title")
                     .font(AppTypography.title)
+                    .accessibilityAddTraits(.isHeader)
                     .padding(.horizontal, AppSpacing.lg)
                 ScrollView(.horizontal, showsIndicators: false) {
                     LazyHStack(alignment: .top, spacing: AppSpacing.md) {
