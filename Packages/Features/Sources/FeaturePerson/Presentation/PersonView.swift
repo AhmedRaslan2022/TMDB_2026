@@ -115,7 +115,7 @@ public struct PersonView: View {
                             title: credit.media.title,
                             posterURL: viewModel.posterURL(for: credit),
                             rating: credit.media.voteCount > 0 ? credit.media.voteAverage : nil,
-                            accessibilityID: "person.credit.\(credit.media.id)",
+                            accessibilityID: "person.credit.\(credit.id)",
                             onSelect: { onSelectTitle(credit.media) }
                         )
                     }

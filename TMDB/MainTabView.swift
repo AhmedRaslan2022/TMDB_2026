@@ -15,8 +15,9 @@ import FeatureSearch
 import FeatureTV
 import SwiftUI
 
-/// The main shell: four tabs, each owning a `NavigationStack` bound to its
-/// child coordinator's path. All pushes go through the coordinators.
+/// The main shell: five tabs (Home · TV · Search · Favorites · Profile), each
+/// owning a `NavigationStack` bound to its child coordinator's path. All pushes
+/// go through the coordinators.
 struct MainTabView: View {
     @Bindable var coordinator: AppCoordinator
     let homeViewModel: HomeViewModel

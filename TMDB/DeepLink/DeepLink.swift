@@ -46,11 +46,12 @@ enum DeepLinkParser {
         case "movie":
             return id(from: segments).map(DeepLink.movie)
         case "tv":
-            // `tv/<id>` → a show; bare `tv` → the TV tab.
-            if let id = id(from: segments) {
-                return .tvShow(id: id)
+            // `tv/<id>` → a show; bare `tv` → the TV tab; `tv/<invalid>` → nil
+            // (consistent with movie/person rejecting a bad id).
+            if segments.isEmpty {
+                return .tab(.tv)
             }
-            return .tab(.tv)
+            return id(from: segments).map(DeepLink.tvShow)
         case "person":
             return id(from: segments).map(DeepLink.person)
         case "search":

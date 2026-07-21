@@ -132,8 +132,9 @@ final class TMDBUITests: XCTestCase {
         let personName = app.staticTexts["person.name"]
         XCTAssertTrue(personName.waitForExistence(timeout: 5), "Tapping cast should push the person screen")
 
-        // Tap a filmography credit → that title's details (deep graph).
-        let credit = app.buttons["person.credit.550"].firstMatch
+        // Tap a filmography credit → that title's details (deep graph). The id
+        // is kind-qualified so a movie and TV title sharing a TMDB id don't collide.
+        let credit = app.buttons["person.credit.movie.550"].firstMatch
         XCTAssertTrue(credit.waitForExistence(timeout: 5), "Person should show their filmography")
         credit.tap()
         XCTAssertTrue(

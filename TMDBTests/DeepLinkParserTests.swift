@@ -47,6 +47,8 @@ struct DeepLinkParserTests {
         "tmdbapp://movie/abc", // non-numeric id
         "tmdbapp://movie/0", // non-positive id
         "tmdbapp://movie/-5",
+        "tmdbapp://tv/abc", // tv with a bad id rejects (not a bare-tv fallback)
+        "tmdbapp://tv/0",
         "tmdbapp://unknown/1", // unknown host
         "tmdbapp://",
     ])
