@@ -12,6 +12,7 @@ import FeatureHome
 import FeatureMovieDetails
 import FeatureProfile
 import FeatureSearch
+import FeatureTV
 import SwiftUI
 
 /// Root switch between the auth gate and the main shell, driven entirely by
@@ -23,6 +24,7 @@ struct RootView: View {
     @Bindable private var coordinator: AppCoordinator
     @State private var authViewModel: AuthViewModel
     @State private var homeViewModel: HomeViewModel
+    @State private var tvHomeViewModel: TVHomeViewModel
     @State private var searchViewModel: SearchViewModel
     @State private var favoritesViewModel: FavoritesViewModel
     @State private var profileViewModel: ProfileViewModel
@@ -31,12 +33,14 @@ struct RootView: View {
     private let makeMovieDetailsViewModel: @MainActor (Int) -> MovieDetailsViewModel
     private let makeDiscoverViewModel: @MainActor () -> DiscoverViewModel
     private let makeSettingsViewModel: @MainActor () -> SettingsViewModel
+    private let makeTVDetailsViewModel: @MainActor (Int) -> TVDetailsViewModel
     private let appSettings: AppSettings
 
     init(container: AppContainer) {
         _coordinator = Bindable(container.coordinator)
         _authViewModel = State(initialValue: container.coordinator.makeAuthViewModel())
         _homeViewModel = State(initialValue: container.makeHomeViewModel())
+        _tvHomeViewModel = State(initialValue: container.makeTVHomeViewModel())
         _searchViewModel = State(initialValue: container.makeSearchViewModel())
         _favoritesViewModel = State(initialValue: container.makeFavoritesViewModel())
         _profileViewModel = State(initialValue: container.makeProfileViewModel())
@@ -45,6 +49,7 @@ struct RootView: View {
         makeMovieDetailsViewModel = container.makeMovieDetailsViewModel
         makeDiscoverViewModel = container.makeDiscoverViewModel
         makeSettingsViewModel = container.makeSettingsViewModel
+        makeTVDetailsViewModel = container.makeTVDetailsViewModel
         appSettings = container.appSettings
     }
 
@@ -75,6 +80,7 @@ struct RootView: View {
             MainTabView(
                 coordinator: coordinator,
                 homeViewModel: homeViewModel,
+                tvHomeViewModel: tvHomeViewModel,
                 searchViewModel: searchViewModel,
                 favoritesViewModel: favoritesViewModel,
                 profileViewModel: profileViewModel,
@@ -82,7 +88,8 @@ struct RootView: View {
                 makeMovieListViewModel: makeMovieListViewModel,
                 makeMovieDetailsViewModel: makeMovieDetailsViewModel,
                 makeDiscoverViewModel: makeDiscoverViewModel,
-                makeSettingsViewModel: makeSettingsViewModel
+                makeSettingsViewModel: makeSettingsViewModel,
+                makeTVDetailsViewModel: makeTVDetailsViewModel
             )
         }
     }

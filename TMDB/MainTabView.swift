@@ -11,6 +11,7 @@ import FeatureHome
 import FeatureMovieDetails
 import FeatureProfile
 import FeatureSearch
+import FeatureTV
 import SwiftUI
 
 /// The main shell: four tabs, each owning a `NavigationStack` bound to its
@@ -18,6 +19,7 @@ import SwiftUI
 struct MainTabView: View {
     @Bindable var coordinator: AppCoordinator
     let homeViewModel: HomeViewModel
+    let tvHomeViewModel: TVHomeViewModel
     let searchViewModel: SearchViewModel
     let favoritesViewModel: FavoritesViewModel
     let profileViewModel: ProfileViewModel
@@ -26,6 +28,7 @@ struct MainTabView: View {
     let makeMovieDetailsViewModel: @MainActor (Int) -> MovieDetailsViewModel
     let makeDiscoverViewModel: @MainActor () -> DiscoverViewModel
     let makeSettingsViewModel: @MainActor () -> SettingsViewModel
+    let makeTVDetailsViewModel: @MainActor (Int) -> TVDetailsViewModel
 
     /// One place to wire the route table's dependencies for every tab.
     private func attached(_ view: some View) -> some View {
@@ -36,7 +39,8 @@ struct MainTabView: View {
                 movieList: makeMovieListViewModel,
                 movieDetails: makeMovieDetailsViewModel,
                 discover: makeDiscoverViewModel,
-                settings: makeSettingsViewModel
+                settings: makeSettingsViewModel,
+                tvDetails: makeTVDetailsViewModel
             )
         )
     }
@@ -52,6 +56,16 @@ struct MainTabView: View {
                     }
                 }
                 .tag(AppTab.home)
+
+            tvTab
+                .tabItem {
+                    Label {
+                        Text("TV", comment: "TV tab label")
+                    } icon: {
+                        Image(systemName: "tv")
+                    }
+                }
+                .tag(AppTab.tv)
 
             searchTab
                 .tabItem {
@@ -92,6 +106,16 @@ struct MainTabView: View {
                 viewModel: homeViewModel,
                 onSelectMovie: { coordinator.home.push(.movieDetails(movieID: $0)) },
                 onSeeAll: { coordinator.home.push(.seeAll(section: $0, window: $1)) }
+            ))
+        }
+    }
+
+    private var tvTab: some View {
+        @Bindable var tv = coordinator.tv
+        return NavigationStack(path: $tv.path) {
+            attached(TVHomeView(
+                viewModel: tvHomeViewModel,
+                onSelectShow: { coordinator.tv.push(.showDetails(showID: $0)) }
             ))
         }
     }
@@ -140,6 +164,10 @@ struct MainTabView: View {
                 fetchMovieList: StubFetchMovieListUseCase(),
                 imageBaseURL: URL(fileURLWithPath: "/")
             ),
+            tvHomeViewModel: TVHomeViewModel(
+                fetchTVList: StubFetchTVListUseCase(),
+                imageBaseURL: URL(fileURLWithPath: "/")
+            ),
             searchViewModel: SearchViewModel(
                 searchMovies: StubSearchMoviesUseCase(),
                 recentSearches: StubRecentSearchesRepository(),
@@ -180,6 +208,13 @@ struct MainTabView: View {
             },
             makeSettingsViewModel: {
                 SettingsViewModel(store: PreviewSettingsStore(), onSignOut: {})
+            },
+            makeTVDetailsViewModel: { showID in
+                TVDetailsViewModel(
+                    showID: showID,
+                    fetchDetails: StubFetchTVDetailsUseCase(),
+                    imageBaseURL: URL(fileURLWithPath: "/")
+                )
             }
         )
     }

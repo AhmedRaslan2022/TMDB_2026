@@ -11,6 +11,7 @@ import FeatureHome
 import FeatureMovieDetails
 import FeatureProfile
 import FeatureSearch
+import FeatureTV
 import SwiftUI
 
 /// The screen-scoped view-model factories the route table needs, bundled so the
@@ -21,6 +22,7 @@ struct RouteViewModelFactories {
     let movieDetails: @MainActor (Int) -> MovieDetailsViewModel
     let discover: @MainActor () -> DiscoverViewModel
     let settings: @MainActor () -> SettingsViewModel
+    let tvDetails: @MainActor (Int) -> TVDetailsViewModel
 }
 
 /// Route → view mapping for every feature. This is the only place feature
@@ -46,6 +48,15 @@ enum RouteDestinations {
             }
             .navigationDestination(for: SearchRoute.self) { route in
                 searchDestination(route, coordinator, factories)
+            }
+            .navigationDestination(for: TVRoute.self) { route in
+                switch route {
+                case let .showDetails(showID):
+                    TVDetailsView(
+                        viewModel: factories.tvDetails(showID),
+                        onSelectShow: { coordinator.tv.push(.showDetails(showID: $0)) }
+                    )
+                }
             }
             .navigationDestination(for: FavoritesRoute.self) { route in
                 switch route {

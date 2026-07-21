@@ -11,11 +11,13 @@ import FeatureFavorites
 import FeatureHome
 import FeatureProfile
 import FeatureSearch
+import FeatureTV
 import Observation
 
-/// The four root tabs of the main shell.
+/// The five root tabs of the main shell.
 enum AppTab: Hashable, CaseIterable {
     case home
+    case tv
     case search
     case favorites
     case profile
@@ -62,6 +64,7 @@ final class AppCoordinator {
     var presentedFullScreenCover: FullScreenCover?
 
     let home = TabCoordinator<HomeRoute>()
+    let tv = TabCoordinator<TVRoute>()
     let search = TabCoordinator<SearchRoute>()
     let favorites = TabCoordinator<FavoritesRoute>()
     let profile = TabCoordinator<ProfileRoute>()
@@ -117,6 +120,7 @@ final class AppCoordinator {
         selectedTab = .home
         dismissModal()
         home.popToRoot()
+        tv.popToRoot()
         search.popToRoot()
         favorites.popToRoot()
         profile.popToRoot()

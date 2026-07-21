@@ -12,6 +12,7 @@
     import FeatureMovieDetails
     import FeatureProfile
     import FeatureSearch
+    import FeatureTV
     import Foundation
 
     /// DEBUG-only seams for UI tests, which must run without network or real
@@ -88,6 +89,37 @@
 
         func setRating(_ value: Double?, movieID: Int) async throws {
             ratings[movieID] = value
+        }
+    }
+
+    /// Deterministic offline TV lists, addressable by "tv.show.800".
+    struct StubFetchTVListUseCase: FetchTVListUseCase {
+        func execute(list _: TVList, page: Int) async throws -> MoviePage {
+            MoviePage(
+                page: page,
+                movies: (800 ... 804).map {
+                    MediaItem(id: $0, mediaType: .tv, title: "UITest Show \($0)", overview: "", voteAverage: 8, voteCount: 40)
+                },
+                totalPages: 1
+            )
+        }
+    }
+
+    /// Deterministic offline TV details matching the stub list shows.
+    struct StubFetchTVDetailsUseCase: FetchTVDetailsUseCase {
+        func execute(showID: Int) async throws -> TVShowDetailsBundle {
+            TVShowDetailsBundle(
+                details: TVShowDetails(
+                    id: showID,
+                    name: "UITest Show \(showID)",
+                    overview: "Offline stub overview.",
+                    numberOfSeasons: 3,
+                    numberOfEpisodes: 24,
+                    genres: ["Drama"],
+                    voteAverage: 8,
+                    voteCount: 40
+                )
+            )
         }
     }
 

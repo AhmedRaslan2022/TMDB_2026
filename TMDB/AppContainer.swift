@@ -15,6 +15,7 @@ import FeatureHome
 import FeatureMovieDetails
 import FeatureProfile
 import FeatureSearch
+import FeatureTV
 import Foundation
 import KeychainStorage
 import Networking

@@ -112,6 +112,25 @@ final class TMDBUITests: XCTestCase {
     }
 
     @MainActor
+    func testTVTabBrowseToShowDetails() {
+        let app = XCUIApplication()
+        app.launchArguments += ["-uitest-stubs"]
+        app.launch()
+
+        app.buttons["Continue as guest"].tap()
+        app.tabBars.buttons["TV"].tap()
+
+        // A stubbed show card appears and pushes to TV details.
+        let show = app.buttons["tv.show.800"].firstMatch
+        XCTAssertTrue(show.waitForExistence(timeout: 5), "TV tab should show stubbed carousels")
+        show.tap()
+
+        let title = app.staticTexts["tv.details.title"]
+        XCTAssertTrue(title.waitForExistence(timeout: 5), "Tapping a show should push TV details")
+        XCTAssertEqual(title.label, "UITest Show 800")
+    }
+
+    @MainActor
     func testSettingsThemeSelectionAndSignOut() {
         let app = XCUIApplication()
         app.launchArguments += ["-uitest-stubs"]
