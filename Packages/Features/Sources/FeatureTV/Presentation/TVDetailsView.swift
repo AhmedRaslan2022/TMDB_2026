@@ -31,7 +31,7 @@ public struct TVDetailsView: View {
         case .idle, .loading:
             ProgressView()
                 .frame(maxWidth: .infinity, maxHeight: .infinity)
-                .accessibilityLabel(Text("Loading", comment: "VoiceOver label while TV details load"))
+                .accessibilityLabel(Text("Loading", bundle: .module, comment: "VoiceOver label while TV details load"))
         case let .error(message):
             errorView(message)
         case let .loaded(bundle):
@@ -102,7 +102,7 @@ public struct TVDetailsView: View {
     private func relatedCarousel(_ shows: [MediaItem]) -> some View {
         if !shows.isEmpty {
             VStack(alignment: .leading, spacing: AppSpacing.md) {
-                Text("More Like This", comment: "Similar TV shows section title")
+                Text("More Like This", bundle: .module, comment: "Similar TV shows section title")
                     .font(AppTypography.title)
                     .accessibilityAddTraits(.isHeader)
                     .padding(.horizontal, AppSpacing.lg)
@@ -130,7 +130,7 @@ public struct TVDetailsView: View {
                 .font(AppTypography.body)
                 .foregroundStyle(AppColors.textSecondary)
             Button { Task { await viewModel.load() } } label: {
-                Text("Retry", comment: "Retry loading TV details")
+                Text("Retry", bundle: .module, comment: "Retry loading TV details")
                     .font(AppTypography.label)
             }
             .buttonStyle(.bordered)

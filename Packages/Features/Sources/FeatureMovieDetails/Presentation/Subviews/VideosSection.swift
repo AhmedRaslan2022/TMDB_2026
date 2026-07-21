@@ -18,7 +18,7 @@ struct VideosSection: View {
     var body: some View {
         if !videos.isEmpty {
             VStack(alignment: .leading, spacing: AppSpacing.md) {
-                Text("Trailers", comment: "Trailers section title")
+                Text("Trailers", bundle: .module, comment: "Trailers section title")
                     .font(AppTypography.title)
                     .padding(.horizontal, AppSpacing.lg)
                 ScrollView(.horizontal, showsIndicators: false) {

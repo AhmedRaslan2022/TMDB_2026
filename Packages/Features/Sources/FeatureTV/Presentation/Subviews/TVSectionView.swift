@@ -69,13 +69,13 @@ struct TVSectionView: View {
         .scrollDisabled(true)
         .shimmering()
         .accessibilityElement()
-        .accessibilityLabel(Text("Loading", comment: "VoiceOver label while a TV section loads"))
+        .accessibilityLabel(Text("Loading", bundle: .module, comment: "VoiceOver label while a TV section loads"))
     }
 
     private var emptyRow: some View {
         HStack(spacing: AppSpacing.sm) {
             Image(systemName: "tv").accessibilityHidden(true)
-            Text("Nothing here right now.", comment: "Empty TV section body")
+            Text("Nothing here right now.", bundle: .module, comment: "Empty TV section body")
                 .font(AppTypography.body)
         }
         .foregroundStyle(AppColors.textSecondary)
@@ -88,7 +88,7 @@ struct TVSectionView: View {
                 .font(AppTypography.body)
                 .foregroundStyle(AppColors.textSecondary)
             Button(action: onRetry) {
-                Text("Retry", comment: "Retry a failed TV section")
+                Text("Retry", bundle: .module, comment: "Retry a failed TV section")
                     .font(AppTypography.label)
             }
             .buttonStyle(.bordered)
@@ -99,9 +99,9 @@ struct TVSectionView: View {
 
     private static func title(for list: TVList) -> Text {
         switch list {
-        case .onTheAir: Text("On The Air", comment: "TV section: currently airing")
-        case .popular: Text("Popular", comment: "TV section: popular shows")
-        case .topRated: Text("Top Rated", comment: "TV section: highest rated shows")
+        case .onTheAir: Text("On The Air", bundle: .module, comment: "TV section: currently airing")
+        case .popular: Text("Popular", bundle: .module, comment: "TV section: popular shows")
+        case .topRated: Text("Top Rated", bundle: .module, comment: "TV section: highest rated shows")
         }
     }
 }

@@ -1,0 +1,51 @@
+{
+  "sourceLanguage" : "en",
+  "strings" : {
+    "Cast" : {
+      "localizations" : { "ar" : { "stringUnit" : { "state" : "translated", "value" : "طاقم العمل" } } }
+    },
+    "Favorite" : {
+      "localizations" : { "ar" : { "stringUnit" : { "state" : "translated", "value" : "المفضّلة" } } }
+    },
+    "Favorited" : {
+      "localizations" : { "ar" : { "stringUnit" : { "state" : "translated", "value" : "في المفضّلة" } } }
+    },
+    "Loading" : {
+      "localizations" : { "ar" : { "stringUnit" : { "state" : "translated", "value" : "جارٍ التحميل" } } }
+    },
+    "Not favorited" : {
+      "localizations" : { "ar" : { "stringUnit" : { "state" : "translated", "value" : "ليس في المفضّلة" } } }
+    },
+    "Not on watchlist" : {
+      "localizations" : { "ar" : { "stringUnit" : { "state" : "translated", "value" : "ليس في قائمة المشاهدة" } } }
+    },
+    "Not rated" : {
+      "localizations" : { "ar" : { "stringUnit" : { "state" : "translated", "value" : "غير مُقيَّم" } } }
+    },
+    "On watchlist" : {
+      "localizations" : { "ar" : { "stringUnit" : { "state" : "translated", "value" : "في قائمة المشاهدة" } } }
+    },
+    "Recommended" : {
+      "localizations" : { "ar" : { "stringUnit" : { "state" : "translated", "value" : "موصى بها" } } }
+    },
+    "Retry" : {
+      "localizations" : { "ar" : { "stringUnit" : { "state" : "translated", "value" : "إعادة المحاولة" } } }
+    },
+    "Similar" : {
+      "localizations" : { "ar" : { "stringUnit" : { "state" : "translated", "value" : "أعمال مشابهة" } } }
+    },
+    "Trailers" : {
+      "localizations" : { "ar" : { "stringUnit" : { "state" : "translated", "value" : "المقاطع الدعائية" } } }
+    },
+    "Watchlist" : {
+      "localizations" : { "ar" : { "stringUnit" : { "state" : "translated", "value" : "قائمة المشاهدة" } } }
+    },
+    "Your rating" : {
+      "localizations" : { "ar" : { "stringUnit" : { "state" : "translated", "value" : "تقييمك" } } }
+    },
+    "details.error" : {
+      "localizations" : { "ar" : { "stringUnit" : { "state" : "translated", "value" : "تعذّر تحميل هذا الفيلم." } } }
+    }
+  },
+  "version" : "1.0"
+}

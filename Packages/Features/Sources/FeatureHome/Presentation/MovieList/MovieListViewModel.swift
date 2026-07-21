@@ -123,8 +123,10 @@ public final class MovieListViewModel {
 
     private static var errorMessage: LocalizedStringResource {
         LocalizedStringResource(
+            moduleKey:
             "movieList.error",
             defaultValue: "Couldn't load this list.",
+            bundle: .module,
             comment: "Shown when a see-all movie list fails to load"
         )
     }

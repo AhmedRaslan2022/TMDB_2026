@@ -23,7 +23,7 @@ struct CastSection: View {
     var body: some View {
         if !cast.isEmpty {
             VStack(alignment: .leading, spacing: AppSpacing.md) {
-                Text("Cast", comment: "Cast section title")
+                Text("Cast", bundle: .module, comment: "Cast section title")
                     .font(AppTypography.title)
                     .accessibilityAddTraits(.isHeader)
                     .padding(.horizontal, AppSpacing.lg)

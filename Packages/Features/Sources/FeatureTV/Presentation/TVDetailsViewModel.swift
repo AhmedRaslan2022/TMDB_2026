@@ -48,8 +48,10 @@ public final class TVDetailsViewModel {
             state = .idle
         } catch {
             state = .error(LocalizedStringResource(
+                moduleKey:
                 "tv.details.error",
                 defaultValue: "Couldn't load this show.",
+                bundle: .module,
                 comment: "Shown when the TV details fetch fails"
             ))
         }

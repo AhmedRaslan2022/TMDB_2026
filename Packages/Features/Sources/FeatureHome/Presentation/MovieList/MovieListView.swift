@@ -60,20 +60,20 @@ public struct MovieListView: View {
         .scrollDisabled(true)
         .shimmering()
         .accessibilityElement()
-        .accessibilityLabel(Text("Loading", comment: "VoiceOver label while a movie list loads"))
+        .accessibilityLabel(Text("Loading", bundle: .module, comment: "VoiceOver label while a movie list loads"))
     }
 
     private var emptyView: some View {
         ContentUnavailableView(
             label: {
                 Label {
-                    Text("No Movies", comment: "Empty see-all list title")
+                    Text("No Movies", bundle: .module, comment: "Empty see-all list title")
                 } icon: {
                     Image(systemName: "film.stack")
                 }
             },
             description: {
-                Text("This list has nothing in it right now.", comment: "Empty see-all list description")
+                Text("This list has nothing in it right now.", bundle: .module, comment: "Empty see-all list description")
             }
         )
     }
@@ -113,7 +113,7 @@ public struct MovieListView: View {
             Button {
                 Task { await viewModel.loadFirstPage() }
             } label: {
-                Text("Retry", comment: "Retry loading a see-all movie list")
+                Text("Retry", bundle: .module, comment: "Retry loading a see-all movie list")
                     .font(AppTypography.label)
             }
             .buttonStyle(.bordered)

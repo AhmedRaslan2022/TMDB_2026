@@ -24,7 +24,7 @@ struct UserRatingSection: View {
 
     var body: some View {
         VStack(alignment: .leading, spacing: AppSpacing.sm) {
-            Text("Your rating", comment: "Section title for the user's own movie rating")
+            Text("Your rating", bundle: .module, comment: "Section title for the user's own movie rating")
                 .font(AppTypography.label)
                 .foregroundStyle(AppColors.textSecondary)
 
@@ -56,14 +56,14 @@ struct UserRatingSection: View {
         }
         .buttonStyle(.plain)
         .accessibilityIdentifier("details.rating.star.\(star)")
-        .accessibilityLabel(Text("\(star) star", comment: "VoiceOver label for a rating star"))
+        .accessibilityLabel(Text("\(star) star", bundle: .module, comment: "VoiceOver label for a rating star"))
     }
 
     private var ratingDescription: Text {
         if let rating {
-            Text("\(Int(rating.rounded())) out of 10", comment: "VoiceOver value for the current rating")
+            Text("\(Int(rating.rounded())) out of 10", bundle: .module, comment: "VoiceOver value for the current rating")
         } else {
-            Text("Not rated", comment: "VoiceOver value when the user hasn't rated the movie")
+            Text("Not rated", bundle: .module, comment: "VoiceOver value when the user hasn't rated the movie")
         }
     }
 }

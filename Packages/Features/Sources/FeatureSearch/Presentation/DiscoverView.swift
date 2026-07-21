@@ -37,7 +37,7 @@ public struct DiscoverView: View {
             Divider()
             content
         }
-        .navigationTitle(Text("Discover", comment: "Advanced-search screen title"))
+        .navigationTitle(Text("Discover", bundle: .module, comment: "Advanced-search screen title"))
         #if os(iOS)
             .navigationBarTitleDisplayMode(.inline)
         #endif
@@ -97,25 +97,25 @@ public struct DiscoverView: View {
         .scrollDisabled(true)
         .shimmering()
         .accessibilityElement()
-        .accessibilityLabel(Text("Loading results", comment: "VoiceOver label while Discover loads"))
+        .accessibilityLabel(Text("Loading results", bundle: .module, comment: "VoiceOver label while Discover loads"))
     }
 
     private var emptyView: some View {
         ContentUnavailableView {
             Label {
-                Text("No Matches", comment: "Discover empty-results title")
+                Text("No Matches", bundle: .module, comment: "Discover empty-results title")
             } icon: {
                 Image(systemName: "movieclapper")
             }
         } description: {
-            Text("No movies match these filters. Try loosening them.", comment: "Discover empty-results hint")
+            Text("No movies match these filters. Try loosening them.", bundle: .module, comment: "Discover empty-results hint")
         }
     }
 
     private func errorView(_ message: LocalizedStringResource) -> some View {
         ContentUnavailableView {
             Label {
-                Text("Couldn't Load", comment: "Discover error title")
+                Text("Couldn't Load", bundle: .module, comment: "Discover error title")
             } icon: {
                 Image(systemName: "exclamationmark.triangle")
             }

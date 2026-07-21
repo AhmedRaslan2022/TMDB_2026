@@ -25,15 +25,40 @@ public enum HomeSection: CaseIterable, Hashable, Identifiable, Sendable {
     public var title: LocalizedStringResource {
         switch self {
         case .trending:
-            LocalizedStringResource("home.section.trending", defaultValue: "Trending", comment: "Home section title")
+            LocalizedStringResource(
+                moduleKey: "home.section.trending",
+                defaultValue: "Trending",
+                bundle: .module,
+                comment: "Home section title"
+            )
         case .nowPlaying:
-            LocalizedStringResource("home.section.nowPlaying", defaultValue: "Now Playing", comment: "Home section title")
+            LocalizedStringResource(
+                moduleKey: "home.section.nowPlaying",
+                defaultValue: "Now Playing",
+                bundle: .module,
+                comment: "Home section title"
+            )
         case .popular:
-            LocalizedStringResource("home.section.popular", defaultValue: "Popular", comment: "Home section title")
+            LocalizedStringResource(
+                moduleKey: "home.section.popular",
+                defaultValue: "Popular",
+                bundle: .module,
+                comment: "Home section title"
+            )
         case .topRated:
-            LocalizedStringResource("home.section.topRated", defaultValue: "Top Rated", comment: "Home section title")
+            LocalizedStringResource(
+                moduleKey: "home.section.topRated",
+                defaultValue: "Top Rated",
+                bundle: .module,
+                comment: "Home section title"
+            )
         case .upcoming:
-            LocalizedStringResource("home.section.upcoming", defaultValue: "Upcoming", comment: "Home section title")
+            LocalizedStringResource(
+                moduleKey: "home.section.upcoming",
+                defaultValue: "Upcoming",
+                bundle: .module,
+                comment: "Home section title"
+            )
         }
     }
 

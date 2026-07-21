@@ -48,8 +48,10 @@ public final class PersonViewModel {
             state = .idle
         } catch {
             state = .error(LocalizedStringResource(
+                moduleKey:
                 "person.error",
                 defaultValue: "Couldn't load this person.",
+                bundle: .module,
                 comment: "Shown when the person details fetch fails"
             ))
         }

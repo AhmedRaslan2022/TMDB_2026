@@ -77,14 +77,18 @@ public final class AuthViewModel {
         switch error {
         case AuthError.tokenNotApproved:
             LocalizedStringResource(
+                moduleKey:
                 "auth.error.notApproved",
                 defaultValue: "The sign-in wasn't approved. Please try again.",
+                bundle: .module,
                 comment: "Shown when the user's TMDB request token was not approved"
             )
         default:
             LocalizedStringResource(
+                moduleKey:
                 "auth.error.generic",
                 defaultValue: "Something went wrong. Please try again.",
+                bundle: .module,
                 comment: "Generic auth failure message"
             )
         }

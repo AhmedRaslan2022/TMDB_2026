@@ -32,7 +32,7 @@ public struct PersonView: View {
         case .idle, .loading:
             ProgressView()
                 .frame(maxWidth: .infinity, maxHeight: .infinity)
-                .accessibilityLabel(Text("Loading", comment: "VoiceOver label while person details load"))
+                .accessibilityLabel(Text("Loading", bundle: .module, comment: "VoiceOver label while person details load"))
         case let .error(message):
             errorView(message)
         case let .loaded(bundle):
@@ -102,7 +102,7 @@ public struct PersonView: View {
     private func filmography(_ credits: [PersonCredit]) -> some View {
         if !credits.isEmpty {
             VStack(alignment: .leading, spacing: AppSpacing.md) {
-                Text("Known For", comment: "Person filmography section title")
+                Text("Known For", bundle: .module, comment: "Person filmography section title")
                     .font(AppTypography.title)
                     .accessibilityAddTraits(.isHeader)
                     .padding(.horizontal, AppSpacing.lg)
@@ -131,7 +131,7 @@ public struct PersonView: View {
                 .font(AppTypography.body)
                 .foregroundStyle(AppColors.textSecondary)
             Button { Task { await viewModel.load() } } label: {
-                Text("Retry", comment: "Retry loading person details")
+                Text("Retry", bundle: .module, comment: "Retry loading person details")
                     .font(AppTypography.label)
             }
             .buttonStyle(.bordered)

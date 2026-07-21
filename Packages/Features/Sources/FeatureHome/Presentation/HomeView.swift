@@ -49,7 +49,7 @@ public struct HomeView: View {
             }
             .padding(.vertical, AppSpacing.lg)
         }
-        .navigationTitle(Text("Home", comment: "Home tab title"))
+        .navigationTitle(Text("Home", bundle: .module, comment: "Home tab title"))
         .refreshable { await viewModel.refresh() }
         .task { await viewModel.load() }
     }

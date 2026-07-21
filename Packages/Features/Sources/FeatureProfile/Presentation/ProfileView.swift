@@ -44,7 +44,7 @@ public struct ProfileView: View {
             entriesSection
             Section {
                 Button(role: .destructive, action: onSignOut) {
-                    Text("Sign Out", comment: "Sign out button")
+                    Text("Sign Out", bundle: .module, comment: "Sign out button")
                 }
             } footer: {
                 if let debugEnvironmentName {
@@ -53,7 +53,7 @@ public struct ProfileView: View {
                 }
             }
         }
-        .navigationTitle(Text("Profile", comment: "Profile tab title"))
+        .navigationTitle(Text("Profile", bundle: .module, comment: "Profile tab title"))
         .task { await viewModel.load() }
     }
 
@@ -74,7 +74,7 @@ public struct ProfileView: View {
                 Button {
                     Task { await viewModel.load() }
                 } label: {
-                    Text("Retry", comment: "Retry loading the profile")
+                    Text("Retry", bundle: .module, comment: "Retry loading the profile")
                         .font(AppTypography.label)
                 }
                 .buttonStyle(.bordered)
@@ -88,21 +88,21 @@ public struct ProfileView: View {
         Section {
             Button(action: onOpenSettings) {
                 Label {
-                    Text("Settings", comment: "Open settings button")
+                    Text("Settings", bundle: .module, comment: "Open settings button")
                 } icon: {
                     Image(systemName: "gearshape")
                 }
             }
             Button(action: onShowAbout) {
                 Label {
-                    Text("About", comment: "Show about sheet button")
+                    Text("About", bundle: .module, comment: "Show about sheet button")
                 } icon: {
                     Image(systemName: "info.circle")
                 }
             }
             Button(action: onShowWhatsNew) {
                 Label {
-                    Text("What's New", comment: "Show what's-new cover button")
+                    Text("What's New", bundle: .module, comment: "Show what's-new cover button")
                 } icon: {
                     Image(systemName: "sparkles")
                 }

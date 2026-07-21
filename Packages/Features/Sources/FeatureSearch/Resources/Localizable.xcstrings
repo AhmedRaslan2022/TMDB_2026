@@ -1,0 +1,33 @@
+{
+  "sourceLanguage" : "en",
+  "strings" : {
+    "A–Z" : { "localizations" : { "ar" : { "stringUnit" : { "state" : "translated", "value" : "أ–ي" } } } },
+    "Any Rating" : { "localizations" : { "ar" : { "stringUnit" : { "state" : "translated", "value" : "أي تقييم" } } } },
+    "Any Year" : { "localizations" : { "ar" : { "stringUnit" : { "state" : "translated", "value" : "أي سنة" } } } },
+    "Clear" : { "localizations" : { "ar" : { "stringUnit" : { "state" : "translated", "value" : "مسح" } } } },
+    "Clear All" : { "localizations" : { "ar" : { "stringUnit" : { "state" : "translated", "value" : "مسح الكل" } } } },
+    "Couldn't Load" : { "localizations" : { "ar" : { "stringUnit" : { "state" : "translated", "value" : "تعذّر التحميل" } } } },
+    "Delete" : { "localizations" : { "ar" : { "stringUnit" : { "state" : "translated", "value" : "حذف" } } } },
+    "Discover" : { "localizations" : { "ar" : { "stringUnit" : { "state" : "translated", "value" : "استكشاف" } } } },
+    "Filters" : { "localizations" : { "ar" : { "stringUnit" : { "state" : "translated", "value" : "عوامل التصفية" } } } },
+    "Find movies by title." : { "localizations" : { "ar" : { "stringUnit" : { "state" : "translated", "value" : "ابحث عن الأفلام بالعنوان." } } } },
+    "Loading results" : { "localizations" : { "ar" : { "stringUnit" : { "state" : "translated", "value" : "جارٍ تحميل النتائج" } } } },
+    "Newest" : { "localizations" : { "ar" : { "stringUnit" : { "state" : "translated", "value" : "الأحدث" } } } },
+    "No Matches" : { "localizations" : { "ar" : { "stringUnit" : { "state" : "translated", "value" : "لا توجد نتائج" } } } },
+    "No movies match these filters. Try loosening them." : { "localizations" : { "ar" : { "stringUnit" : { "state" : "translated", "value" : "لا توجد أفلام مطابقة لعوامل التصفية هذه. جرّب تخفيفها." } } } },
+    "Popularity" : { "localizations" : { "ar" : { "stringUnit" : { "state" : "translated", "value" : "الرواج" } } } },
+    "Rating" : { "localizations" : { "ar" : { "stringUnit" : { "state" : "translated", "value" : "التقييم" } } } },
+    "Recent" : { "localizations" : { "ar" : { "stringUnit" : { "state" : "translated", "value" : "عمليات البحث الأخيرة" } } } },
+    "Search" : { "localizations" : { "ar" : { "stringUnit" : { "state" : "translated", "value" : "بحث" } } } },
+    "Search Failed" : { "localizations" : { "ar" : { "stringUnit" : { "state" : "translated", "value" : "فشل البحث" } } } },
+    "Search Movies" : { "localizations" : { "ar" : { "stringUnit" : { "state" : "translated", "value" : "البحث عن الأفلام" } } } },
+    "Search movies" : { "localizations" : { "ar" : { "stringUnit" : { "state" : "translated", "value" : "ابحث عن الأفلام" } } } },
+    "Searching" : { "localizations" : { "ar" : { "stringUnit" : { "state" : "translated", "value" : "جارٍ البحث" } } } },
+    "Sort" : { "localizations" : { "ar" : { "stringUnit" : { "state" : "translated", "value" : "الترتيب" } } } },
+    "Top Rated" : { "localizations" : { "ar" : { "stringUnit" : { "state" : "translated", "value" : "الأعلى تقييمًا" } } } },
+    "Year" : { "localizations" : { "ar" : { "stringUnit" : { "state" : "translated", "value" : "السنة" } } } },
+    "discover.error" : { "localizations" : { "ar" : { "stringUnit" : { "state" : "translated", "value" : "تعذّر تحميل النتائج. جرّب تعديل عوامل التصفية." } } } },
+    "search.error" : { "localizations" : { "ar" : { "stringUnit" : { "state" : "translated", "value" : "حدث خطأ ما. حاول البحث مرة أخرى." } } } }
+  },
+  "version" : "1.0"
+}

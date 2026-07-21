@@ -69,8 +69,10 @@ public final class FavoritesViewModel {
             state = movies.isEmpty ? .empty : .loaded(movies)
         } catch {
             state = .error(LocalizedStringResource(
+                moduleKey:
                 "favorites.error",
                 defaultValue: "Couldn't load your favorites.",
+                bundle: .module,
                 comment: "Shown when the favorites list fails to load"
             ))
         }

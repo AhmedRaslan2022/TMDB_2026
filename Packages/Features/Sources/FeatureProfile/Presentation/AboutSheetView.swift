@@ -20,9 +20,9 @@ public struct AboutSheetView: View {
     public var body: some View {
         NavigationStack {
             VStack(spacing: AppSpacing.md) {
-                Text("TMDB Showcase", comment: "About sheet title")
+                Text("TMDB Showcase", bundle: .module, comment: "About sheet title")
                     .font(AppTypography.screenTitle)
-                Text("Movie data provided by The Movie Database.", comment: "About sheet attribution")
+                Text("Movie data provided by The Movie Database.", bundle: .module, comment: "About sheet attribution")
                     .font(AppTypography.caption)
                     .foregroundStyle(AppColors.textSecondary)
             }
@@ -31,7 +31,7 @@ public struct AboutSheetView: View {
                     Button {
                         onDismiss()
                     } label: {
-                        Text("Done", comment: "Dismiss sheet button")
+                        Text("Done", bundle: .module, comment: "Dismiss sheet button")
                     }
                 }
             }

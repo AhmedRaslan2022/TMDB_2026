@@ -89,7 +89,7 @@ public struct MovieDetailsView: View {
                 Task { await viewModel.toggleWatchlist() }
             } label: {
                 Label {
-                    Text("Watchlist", comment: "Watchlist toggle button")
+                    Text("Watchlist", bundle: .module, comment: "Watchlist toggle button")
                 } icon: {
                     Image(systemName: viewModel.isOnWatchlist ? "bookmark.fill" : "bookmark")
                 }
@@ -97,15 +97,15 @@ public struct MovieDetailsView: View {
             .tint(AppColors.brandSecondary)
             .accessibilityIdentifier("details.watchlist")
             .accessibilityValue(viewModel.isOnWatchlist
-                ? Text("On watchlist", comment: "Watchlist button state: on")
-                : Text("Not on watchlist", comment: "Watchlist button state: off"))
+                ? Text("On watchlist", bundle: .module, comment: "Watchlist button state: on")
+                : Text("Not on watchlist", bundle: .module, comment: "Watchlist button state: off"))
         }
         ToolbarItem(placement: .primaryAction) {
             Button {
                 Task { await viewModel.toggleFavorite() }
             } label: {
                 Label {
-                    Text("Favorite", comment: "Favorite toggle button")
+                    Text("Favorite", bundle: .module, comment: "Favorite toggle button")
                 } icon: {
                     Image(systemName: viewModel.isFavorite ? "heart.fill" : "heart")
                 }
@@ -113,22 +113,22 @@ public struct MovieDetailsView: View {
             .tint(AppColors.error)
             .accessibilityIdentifier("details.favorite")
             .accessibilityValue(viewModel.isFavorite
-                ? Text("Favorited", comment: "Favorite button state: on")
-                : Text("Not favorited", comment: "Favorite button state: off"))
+                ? Text("Favorited", bundle: .module, comment: "Favorite button state: on")
+                : Text("Not favorited", bundle: .module, comment: "Favorite button state: off"))
         }
     }
 
     @ViewBuilder
     private func relatedSections(_ bundle: MovieDetailsBundle) -> some View {
         RelatedSection(
-            title: Text("Similar", comment: "Similar movies section title"),
+            title: Text("Similar", bundle: .module, comment: "Similar movies section title"),
             accessibilityPrefix: "details.similar",
             movies: bundle.similar,
             posterURL: viewModel.posterURL(for:),
             onSelectMovie: onSelectMovie
         )
         RelatedSection(
-            title: Text("Recommended", comment: "Recommended movies section title"),
+            title: Text("Recommended", bundle: .module, comment: "Recommended movies section title"),
             accessibilityPrefix: "details.recommended",
             movies: bundle.recommendations,
             posterURL: viewModel.posterURL(for:),
@@ -163,7 +163,7 @@ public struct MovieDetailsView: View {
         .shimmering()
         .ignoresSafeArea(edges: .top)
         .accessibilityElement()
-        .accessibilityLabel(Text("Loading", comment: "VoiceOver label while movie details load"))
+        .accessibilityLabel(Text("Loading", bundle: .module, comment: "VoiceOver label while movie details load"))
     }
 
     private func errorView(_ message: LocalizedStringResource) -> some View {
@@ -174,7 +174,7 @@ public struct MovieDetailsView: View {
             Button {
                 Task { await viewModel.load() }
             } label: {
-                Text("Retry", comment: "Retry loading movie details")
+                Text("Retry", bundle: .module, comment: "Retry loading movie details")
                     .font(AppTypography.label)
             }
             .buttonStyle(.bordered)

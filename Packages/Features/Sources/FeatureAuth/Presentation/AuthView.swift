@@ -36,12 +36,13 @@ public struct AuthView: View {
 
     private var header: some View {
         VStack(spacing: AppSpacing.md) {
-            Text("TMDB", comment: "App name on the auth screen")
+            Text("TMDB", bundle: .module, comment: "App name on the auth screen")
                 .font(AppTypography.screenTitle)
                 .foregroundStyle(AppColors.brandSecondary)
 
             Text(
                 "Discover movies, build your watchlist, and rate what you watch.",
+                bundle: .module,
                 comment: "Auth screen value proposition"
             )
             .font(AppTypography.body)
@@ -70,7 +71,7 @@ public struct AuthView: View {
             Button {
                 Task { await viewModel.continueAsGuest() }
             } label: {
-                Text("Continue as guest", comment: "Guest login button")
+                Text("Continue as guest", bundle: .module, comment: "Guest login button")
                     .font(AppTypography.title)
                     .frame(maxWidth: .infinity)
                     .padding(.vertical, AppSpacing.md)

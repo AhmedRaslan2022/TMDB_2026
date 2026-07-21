@@ -144,6 +144,25 @@ final class TMDBUITests: XCTestCase {
     }
 
     @MainActor
+    func testArabicLocalizationRendersTranslatedStrings() {
+        let app = XCUIApplication()
+        app.launchArguments += ["-uitest-stubs", "-AppleLanguages", "(ar)", "-AppleLocale", "ar_EG"]
+        app.launch()
+
+        // The auth gate's guest button is a FeatureAuth string resolved against
+        // that package's String Catalog — proving per-module localization works.
+        let guestArabic = app.buttons["المتابعة كضيف"]
+        XCTAssertTrue(guestArabic.waitForExistence(timeout: 5), "Guest button should render in Arabic")
+        guestArabic.tap()
+
+        // A tab label (app-target catalog) also localizes.
+        XCTAssertTrue(
+            app.tabBars.buttons["الرئيسية"].waitForExistence(timeout: 5),
+            "The Home tab should render in Arabic"
+        )
+    }
+
+    @MainActor
     func testTVTabBrowseToShowDetails() {
         let app = XCUIApplication()
         app.launchArguments += ["-uitest-stubs"]

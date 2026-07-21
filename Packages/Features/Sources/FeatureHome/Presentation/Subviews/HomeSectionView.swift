@@ -54,7 +54,7 @@ struct HomeSectionView: View {
 
     private var seeAllButton: some View {
         Button(action: onSeeAll) {
-            Text("See All", comment: "Opens the full paginated list for a home section")
+            Text("See All", bundle: .module, comment: "Opens the full paginated list for a home section")
                 .font(AppTypography.label)
                 .foregroundStyle(AppColors.brandSecondary)
         }
@@ -65,10 +65,10 @@ struct HomeSectionView: View {
         Picker(
             selection: Binding(get: { trendingWindow }, set: onSelectWindow)
         ) {
-            Text("Today", comment: "Trending window: today").tag(TrendingWindow.day)
-            Text("This Week", comment: "Trending window: this week").tag(TrendingWindow.week)
+            Text("Today", bundle: .module, comment: "Trending window: today").tag(TrendingWindow.day)
+            Text("This Week", bundle: .module, comment: "Trending window: this week").tag(TrendingWindow.week)
         } label: {
-            Text("Trending window", comment: "Accessibility label for the trending window picker")
+            Text("Trending window", bundle: .module, comment: "Accessibility label for the trending window picker")
         }
         .pickerStyle(.segmented)
         .fixedSize()
@@ -93,7 +93,7 @@ struct HomeSectionView: View {
         HStack(spacing: AppSpacing.sm) {
             Image(systemName: "film.stack")
                 .accessibilityHidden(true)
-            Text("Nothing here right now.", comment: "Empty home section body")
+            Text("Nothing here right now.", bundle: .module, comment: "Empty home section body")
                 .font(AppTypography.body)
         }
         .foregroundStyle(AppColors.textSecondary)
@@ -127,7 +127,7 @@ struct HomeSectionView: View {
             }
             .foregroundStyle(AppColors.textSecondary)
             Button(action: onRetry) {
-                Text("Retry", comment: "Retry a failed home section")
+                Text("Retry", bundle: .module, comment: "Retry a failed home section")
                     .font(AppTypography.label)
             }
             .buttonStyle(.bordered)

@@ -23,7 +23,7 @@ public struct FavoritesView: View {
 
     public var body: some View {
         content
-            .navigationTitle(Text("Favorites", comment: "Favorites tab title"))
+            .navigationTitle(Text("Favorites", bundle: .module, comment: "Favorites tab title"))
             .task { await viewModel.load() }
     }
 
@@ -63,7 +63,7 @@ public struct FavoritesView: View {
                             Task { await viewModel.remove(movie) }
                         } label: {
                             Label {
-                                Text("Remove from Favorites", comment: "Remove a favorite")
+                                Text("Remove from Favorites", bundle: .module, comment: "Remove a favorite")
                             } icon: {
                                 Image(systemName: "heart.slash")
                             }
@@ -88,25 +88,25 @@ public struct FavoritesView: View {
         .scrollDisabled(true)
         .shimmering()
         .accessibilityElement()
-        .accessibilityLabel(Text("Loading favorites", comment: "VoiceOver label while favorites load"))
+        .accessibilityLabel(Text("Loading favorites", bundle: .module, comment: "VoiceOver label while favorites load"))
     }
 
     private var emptyView: some View {
         ContentUnavailableView {
             Label {
-                Text("No Favorites Yet", comment: "Empty favorites title")
+                Text("No Favorites Yet", bundle: .module, comment: "Empty favorites title")
             } icon: {
                 Image(systemName: "heart")
             }
         } description: {
-            Text("Tap the heart on a movie to keep it here.", comment: "Empty favorites description")
+            Text("Tap the heart on a movie to keep it here.", bundle: .module, comment: "Empty favorites description")
         }
     }
 
     private func errorView(_ message: LocalizedStringResource) -> some View {
         ContentUnavailableView {
             Label {
-                Text("Couldn't Load Favorites", comment: "Favorites error title")
+                Text("Couldn't Load Favorites", bundle: .module, comment: "Favorites error title")
             } icon: {
                 Image(systemName: "exclamationmark.triangle")
             }

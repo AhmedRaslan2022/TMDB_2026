@@ -20,12 +20,12 @@ struct RecentSearchesView: View {
         if recents.isEmpty {
             ContentUnavailableView {
                 Label {
-                    Text("Search Movies", comment: "Empty search prompt title")
+                    Text("Search Movies", bundle: .module, comment: "Empty search prompt title")
                 } icon: {
                     Image(systemName: "magnifyingglass")
                 }
             } description: {
-                Text("Find movies by title.", comment: "Empty search prompt description")
+                Text("Find movies by title.", bundle: .module, comment: "Empty search prompt description")
             }
         } else {
             list
@@ -53,7 +53,7 @@ struct RecentSearchesView: View {
                             onDelete(query)
                         } label: {
                             Label {
-                                Text("Delete", comment: "Delete a recent search")
+                                Text("Delete", bundle: .module, comment: "Delete a recent search")
                             } icon: {
                                 Image(systemName: "trash")
                             }
@@ -62,10 +62,10 @@ struct RecentSearchesView: View {
                 }
             } header: {
                 HStack {
-                    Text("Recent", comment: "Recent searches section header")
+                    Text("Recent", bundle: .module, comment: "Recent searches section header")
                     Spacer()
                     Button(action: onClear) {
-                        Text("Clear All", comment: "Clear all recent searches")
+                        Text("Clear All", bundle: .module, comment: "Clear all recent searches")
                             .font(AppTypography.caption)
                     }
                     .accessibilityIdentifier("search.recent.clearAll")

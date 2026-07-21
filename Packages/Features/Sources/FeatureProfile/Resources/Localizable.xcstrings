@@ -1,0 +1,28 @@
+{
+  "sourceLanguage" : "en",
+  "strings" : {
+    "About" : { "localizations" : { "ar" : { "stringUnit" : { "state" : "translated", "value" : "حول التطبيق" } } } },
+    "Appearance" : { "localizations" : { "ar" : { "stringUnit" : { "state" : "translated", "value" : "المظهر" } } } },
+    "Applies to titles and descriptions from TMDB." : { "localizations" : { "ar" : { "stringUnit" : { "state" : "translated", "value" : "يُطبَّق على العناوين والأوصاف من TMDB." } } } },
+    "Browsing as Guest" : { "localizations" : { "ar" : { "stringUnit" : { "state" : "translated", "value" : "تتصفّح كضيف" } } } },
+    "Clear Cache" : { "localizations" : { "ar" : { "stringUnit" : { "state" : "translated", "value" : "مسح ذاكرة التخزين المؤقت" } } } },
+    "Clear cached images and data?" : { "localizations" : { "ar" : { "stringUnit" : { "state" : "translated", "value" : "مسح الصور والبيانات المؤقتة؟" } } } },
+    "Content Language" : { "localizations" : { "ar" : { "stringUnit" : { "state" : "translated", "value" : "لغة المحتوى" } } } },
+    "Dark" : { "localizations" : { "ar" : { "stringUnit" : { "state" : "translated", "value" : "داكن" } } } },
+    "Done" : { "localizations" : { "ar" : { "stringUnit" : { "state" : "translated", "value" : "تم" } } } },
+    "Favorites" : { "localizations" : { "ar" : { "stringUnit" : { "state" : "translated", "value" : "المفضّلة" } } } },
+    "Light" : { "localizations" : { "ar" : { "stringUnit" : { "state" : "translated", "value" : "فاتح" } } } },
+    "Movie data provided by The Movie Database." : { "localizations" : { "ar" : { "stringUnit" : { "state" : "translated", "value" : "بيانات الأفلام مقدَّمة من The Movie Database." } } } },
+    "Profile" : { "localizations" : { "ar" : { "stringUnit" : { "state" : "translated", "value" : "الملف الشخصي" } } } },
+    "Retry" : { "localizations" : { "ar" : { "stringUnit" : { "state" : "translated", "value" : "إعادة المحاولة" } } } },
+    "Settings" : { "localizations" : { "ar" : { "stringUnit" : { "state" : "translated", "value" : "الإعدادات" } } } },
+    "Sign Out" : { "localizations" : { "ar" : { "stringUnit" : { "state" : "translated", "value" : "تسجيل الخروج" } } } },
+    "Sign in to sync favorites and more." : { "localizations" : { "ar" : { "stringUnit" : { "state" : "translated", "value" : "سجّل الدخول لمزامنة المفضّلة والمزيد." } } } },
+    "Storage" : { "localizations" : { "ar" : { "stringUnit" : { "state" : "translated", "value" : "التخزين" } } } },
+    "System" : { "localizations" : { "ar" : { "stringUnit" : { "state" : "translated", "value" : "النظام" } } } },
+    "Watchlist" : { "localizations" : { "ar" : { "stringUnit" : { "state" : "translated", "value" : "قائمة المشاهدة" } } } },
+    "What's New" : { "localizations" : { "ar" : { "stringUnit" : { "state" : "translated", "value" : "ما الجديد" } } } },
+    "profile.error" : { "localizations" : { "ar" : { "stringUnit" : { "state" : "translated", "value" : "تعذّر تحميل الملف الشخصي." } } } }
+  },
+  "version" : "1.0"
+}

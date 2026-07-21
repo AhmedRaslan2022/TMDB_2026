@@ -1,0 +1,26 @@
+{
+  "sourceLanguage" : "en",
+  "strings" : {
+    "Favorites" : {
+      "comment" : "Favorites tab label",
+      "localizations" : { "ar" : { "stringUnit" : { "state" : "translated", "value" : "المفضّلة" } } }
+    },
+    "Home" : {
+      "comment" : "Home tab label",
+      "localizations" : { "ar" : { "stringUnit" : { "state" : "translated", "value" : "الرئيسية" } } }
+    },
+    "Profile" : {
+      "comment" : "Profile tab label",
+      "localizations" : { "ar" : { "stringUnit" : { "state" : "translated", "value" : "الملف الشخصي" } } }
+    },
+    "Search" : {
+      "comment" : "Search tab label",
+      "localizations" : { "ar" : { "stringUnit" : { "state" : "translated", "value" : "البحث" } } }
+    },
+    "TV" : {
+      "comment" : "TV tab label",
+      "localizations" : { "ar" : { "stringUnit" : { "state" : "translated", "value" : "التلفاز" } } }
+    }
+  },
+  "version" : "1.0"
+}

@@ -149,8 +149,10 @@ public final class HomeViewModel {
 
     private static func message(for _: any Error) -> LocalizedStringResource {
         LocalizedStringResource(
+            moduleKey:
             "home.section.error",
             defaultValue: "Couldn't load this section.",
+            bundle: .module,
             comment: "Shown inside a home section when its fetch fails"
         )
     }

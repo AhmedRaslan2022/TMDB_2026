@@ -56,8 +56,10 @@ public final class ProfileViewModel {
             state = .loading
         } catch {
             state = .error(LocalizedStringResource(
+                moduleKey:
                 "profile.error",
                 defaultValue: "Couldn't load your profile.",
+                bundle: .module,
                 comment: "Shown when the profile fails to load"
             ))
         }

@@ -36,7 +36,7 @@ public struct TVHomeView: View {
             }
             .padding(.vertical, AppSpacing.lg)
         }
-        .navigationTitle(Text("TV Shows", comment: "TV tab title"))
+        .navigationTitle(Text("TV Shows", bundle: .module, comment: "TV tab title"))
         .refreshable { await viewModel.refresh() }
         .task { await viewModel.load() }
     }

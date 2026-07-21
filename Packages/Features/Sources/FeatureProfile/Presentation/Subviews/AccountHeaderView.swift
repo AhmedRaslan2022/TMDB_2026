@@ -64,9 +64,9 @@ struct AccountHeaderView: View {
             }
         case .guest:
             VStack(spacing: AppSpacing.xs) {
-                Text("Browsing as Guest", comment: "Profile header for anonymous sessions")
+                Text("Browsing as Guest", bundle: .module, comment: "Profile header for anonymous sessions")
                     .font(AppTypography.title)
-                Text("Sign in to sync favorites and more.", comment: "Guest profile prompt")
+                Text("Sign in to sync favorites and more.", bundle: .module, comment: "Guest profile prompt")
                     .font(AppTypography.caption)
                     .foregroundStyle(AppColors.textSecondary)
             }
@@ -77,13 +77,13 @@ struct AccountHeaderView: View {
         HStack(spacing: AppSpacing.xl) {
             StatTile(
                 value: stats.favoriteCount,
-                label: Text("Favorites", comment: "Favorites stat label"),
+                label: Text("Favorites", bundle: .module, comment: "Favorites stat label"),
                 systemImage: "heart.fill",
                 accessibilityID: "profile.stat.favorites"
             )
             StatTile(
                 value: stats.watchlistCount,
-                label: Text("Watchlist", comment: "Watchlist stat label"),
+                label: Text("Watchlist", bundle: .module, comment: "Watchlist stat label"),
                 systemImage: "bookmark.fill",
                 accessibilityID: "profile.stat.watchlist"
             )

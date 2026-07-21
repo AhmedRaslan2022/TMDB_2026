@@ -19,9 +19,9 @@ public struct WhatsNewCoverView: View {
     public var body: some View {
         VStack(spacing: AppSpacing.xl) {
             Spacer()
-            Text("What's New", comment: "What's-new cover title")
+            Text("What's New", bundle: .module, comment: "What's-new cover title")
                 .font(AppTypography.screenTitle)
-            Text("Full-screen cover presented by the coordinator.", comment: "What's-new cover body")
+            Text("Full-screen cover presented by the coordinator.", bundle: .module, comment: "What's-new cover body")
                 .font(AppTypography.body)
                 .foregroundStyle(AppColors.textSecondary)
             Spacer()

@@ -40,7 +40,7 @@ struct DiscoverFilterBar: View {
                 ratingMenu
                 if filters.isActive {
                     Button(role: .destructive, action: onClear) {
-                        Text("Clear", comment: "Clears all Discover filters")
+                        Text("Clear", bundle: .module, comment: "Clears all Discover filters")
                     }
                     .buttonStyle(.bordered)
                     .accessibilityIdentifier("discover.clear")
@@ -58,7 +58,7 @@ struct DiscoverFilterBar: View {
                 }
             }
         } label: {
-            menuLabel(Text("Sort", comment: "Discover sort menu label"))
+            menuLabel(Text("Sort", bundle: .module, comment: "Discover sort menu label"))
         }
         .accessibilityIdentifier("discover.sort")
     }
@@ -66,7 +66,7 @@ struct DiscoverFilterBar: View {
     private var yearMenu: some View {
         Menu {
             menuButton(
-                Text("Any Year", comment: "Discover year filter: no year selected"),
+                Text("Any Year", bundle: .module, comment: "Discover year filter: no year selected"),
                 isSelected: filters.year == nil
             ) { onSetYear(nil) }
             ForEach(availableYears, id: \.self) { year in
@@ -75,7 +75,7 @@ struct DiscoverFilterBar: View {
                 }
             }
         } label: {
-            menuLabel(Text("Year", comment: "Discover year menu label"))
+            menuLabel(Text("Year", bundle: .module, comment: "Discover year menu label"))
         }
         .accessibilityIdentifier("discover.year")
     }
@@ -83,17 +83,17 @@ struct DiscoverFilterBar: View {
     private var ratingMenu: some View {
         Menu {
             menuButton(
-                Text("Any Rating", comment: "Discover rating filter: no minimum"),
+                Text("Any Rating", bundle: .module, comment: "Discover rating filter: no minimum"),
                 isSelected: filters.minimumRating == nil
             ) { onSetRating(nil) }
             ForEach(availableRatings, id: \.self) { rating in
                 menuButton(
-                    Text("\(Int(rating))+", comment: "Discover minimum-rating option"),
+                    Text("\(Int(rating))+", bundle: .module, comment: "Discover minimum-rating option"),
                     isSelected: filters.minimumRating == rating
                 ) { onSetRating(rating) }
             }
         } label: {
-            menuLabel(Text("Rating", comment: "Discover rating menu label"))
+            menuLabel(Text("Rating", bundle: .module, comment: "Discover rating menu label"))
         }
         .accessibilityIdentifier("discover.rating")
     }
@@ -145,10 +145,10 @@ struct DiscoverFilterBar: View {
 
     private static func sortLabel(_ option: MovieSortOption) -> Text {
         switch option {
-        case .popularity: Text("Popularity", comment: "Sort option: most popular")
-        case .rating: Text("Top Rated", comment: "Sort option: highest rated")
-        case .newest: Text("Newest", comment: "Sort option: most recent release")
-        case .title: Text("A–Z", comment: "Sort option: alphabetical by title")
+        case .popularity: Text("Popularity", bundle: .module, comment: "Sort option: most popular")
+        case .rating: Text("Top Rated", bundle: .module, comment: "Sort option: highest rated")
+        case .newest: Text("Newest", bundle: .module, comment: "Sort option: most recent release")
+        case .title: Text("A–Z", bundle: .module, comment: "Sort option: alphabetical by title")
         }
     }
 }

@@ -1,0 +1,72 @@
+{
+  "sourceLanguage" : "en",
+  "strings" : {
+    "Home" : {
+      "localizations" : { "ar" : { "stringUnit" : { "state" : "translated", "value" : "الرئيسية" } } }
+    },
+    "Loading" : {
+      "localizations" : { "ar" : { "stringUnit" : { "state" : "translated", "value" : "جارٍ التحميل" } } }
+    },
+    "No Movies" : {
+      "localizations" : { "ar" : { "stringUnit" : { "state" : "translated", "value" : "لا توجد أفلام" } } }
+    },
+    "Nothing here right now." : {
+      "localizations" : { "ar" : { "stringUnit" : { "state" : "translated", "value" : "لا يوجد شيء هنا حاليًا." } } }
+    },
+    "Now Playing" : {
+      "localizations" : { "ar" : { "stringUnit" : { "state" : "translated", "value" : "تُعرض الآن" } } }
+    },
+    "Popular" : {
+      "localizations" : { "ar" : { "stringUnit" : { "state" : "translated", "value" : "الأكثر رواجًا" } } }
+    },
+    "Retry" : {
+      "localizations" : { "ar" : { "stringUnit" : { "state" : "translated", "value" : "إعادة المحاولة" } } }
+    },
+    "See All" : {
+      "localizations" : { "ar" : { "stringUnit" : { "state" : "translated", "value" : "عرض الكل" } } }
+    },
+    "This Week" : {
+      "localizations" : { "ar" : { "stringUnit" : { "state" : "translated", "value" : "هذا الأسبوع" } } }
+    },
+    "This list has nothing in it right now." : {
+      "localizations" : { "ar" : { "stringUnit" : { "state" : "translated", "value" : "لا يحتوي هذا القسم على أي عناصر حاليًا." } } }
+    },
+    "Today" : {
+      "localizations" : { "ar" : { "stringUnit" : { "state" : "translated", "value" : "اليوم" } } }
+    },
+    "Top Rated" : {
+      "localizations" : { "ar" : { "stringUnit" : { "state" : "translated", "value" : "الأعلى تقييمًا" } } }
+    },
+    "Trending" : {
+      "localizations" : { "ar" : { "stringUnit" : { "state" : "translated", "value" : "الرائج" } } }
+    },
+    "Trending window" : {
+      "localizations" : { "ar" : { "stringUnit" : { "state" : "translated", "value" : "فترة الرواج" } } }
+    },
+    "Upcoming" : {
+      "localizations" : { "ar" : { "stringUnit" : { "state" : "translated", "value" : "القادمة" } } }
+    },
+    "home.section.error" : {
+      "localizations" : { "ar" : { "stringUnit" : { "state" : "translated", "value" : "تعذّر تحميل هذا القسم." } } }
+    },
+    "home.section.nowPlaying" : {
+      "localizations" : { "ar" : { "stringUnit" : { "state" : "translated", "value" : "تُعرض الآن" } } }
+    },
+    "home.section.popular" : {
+      "localizations" : { "ar" : { "stringUnit" : { "state" : "translated", "value" : "الأكثر رواجًا" } } }
+    },
+    "home.section.topRated" : {
+      "localizations" : { "ar" : { "stringUnit" : { "state" : "translated", "value" : "الأعلى تقييمًا" } } }
+    },
+    "home.section.trending" : {
+      "localizations" : { "ar" : { "stringUnit" : { "state" : "translated", "value" : "الرائج" } } }
+    },
+    "home.section.upcoming" : {
+      "localizations" : { "ar" : { "stringUnit" : { "state" : "translated", "value" : "القادمة" } } }
+    },
+    "movieList.error" : {
+      "localizations" : { "ar" : { "stringUnit" : { "state" : "translated", "value" : "تعذّر تحميل القائمة." } } }
+    }
+  },
+  "version" : "1.0"
+}

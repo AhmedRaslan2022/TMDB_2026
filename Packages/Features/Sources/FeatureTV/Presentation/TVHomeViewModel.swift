@@ -103,8 +103,10 @@ public final class TVHomeViewModel {
             }
         case .failure:
             sectionStates[list] = .error(LocalizedStringResource(
+                moduleKey:
                 "tv.section.error",
                 defaultValue: "Couldn't load this section.",
+                bundle: .module,
                 comment: "Shown inside a TV section when its fetch fails"
             ))
         }

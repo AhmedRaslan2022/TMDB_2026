@@ -35,6 +35,7 @@ struct RatingRing: View {
         .accessibilityElement()
         .accessibilityLabel(Text(
             "Rated \(score, format: .number.precision(.fractionLength(1))) out of 10",
+            bundle: .module,
             comment: "VoiceOver label for the details rating ring"
         ))
     }

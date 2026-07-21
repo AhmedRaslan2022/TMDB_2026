@@ -29,11 +29,11 @@ public struct SearchView: View {
 
     public var body: some View {
         content
-            .navigationTitle(Text("Search", comment: "Search tab title"))
+            .navigationTitle(Text("Search", bundle: .module, comment: "Search tab title"))
             .searchable(
                 text: $viewModel.query,
                 placement: searchPlacement,
-                prompt: Text("Search movies", comment: "Search field prompt")
+                prompt: Text("Search movies", bundle: .module, comment: "Search field prompt")
             )
             .onSubmit(of: .search) {
                 Task { await viewModel.submit() }
@@ -42,7 +42,7 @@ public struct SearchView: View {
                 ToolbarItem(placement: .primaryAction) {
                     Button(action: onOpenDiscover) {
                         Label {
-                            Text("Filters", comment: "Opens the advanced-search filters screen")
+                            Text("Filters", bundle: .module, comment: "Opens the advanced-search filters screen")
                         } icon: {
                             Image(systemName: "line.3.horizontal.decrease.circle")
                         }
@@ -121,13 +121,13 @@ public struct SearchView: View {
         .scrollDisabled(true)
         .shimmering()
         .accessibilityElement()
-        .accessibilityLabel(Text("Searching", comment: "VoiceOver label while a search runs"))
+        .accessibilityLabel(Text("Searching", bundle: .module, comment: "VoiceOver label while a search runs"))
     }
 
     private func errorView(_ message: LocalizedStringResource) -> some View {
         ContentUnavailableView {
             Label {
-                Text("Search Failed", comment: "Search error title")
+                Text("Search Failed", bundle: .module, comment: "Search error title")
             } icon: {
                 Image(systemName: "exclamationmark.triangle")
             }

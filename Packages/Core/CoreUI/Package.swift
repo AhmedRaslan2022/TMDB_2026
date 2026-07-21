@@ -18,7 +18,8 @@ let package = Package(
             name: "CoreUI",
             dependencies: [
                 .product(name: "CoreUtilities", package: "CoreUtilities"),
-            ]
+            ],
+            resources: [.process("Resources")]
         ),
         .testTarget(
             name: "CoreUITests",

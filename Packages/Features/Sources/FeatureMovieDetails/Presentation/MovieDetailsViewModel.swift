@@ -78,8 +78,10 @@ public final class MovieDetailsViewModel {
             state = .idle
         } catch {
             state = .error(LocalizedStringResource(
+                moduleKey:
                 "details.error",
                 defaultValue: "Couldn't load this movie.",
+                bundle: .module,
                 comment: "Shown when the movie details fetch fails"
             ))
         }

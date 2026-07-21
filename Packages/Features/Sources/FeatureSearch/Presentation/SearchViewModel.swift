@@ -228,8 +228,10 @@ public final class SearchViewModel {
         } catch {
             guard !Task.isCancelled else { return }
             state = .error(LocalizedStringResource(
+                moduleKey:
                 "search.error",
                 defaultValue: "Something went wrong. Try searching again.",
+                bundle: .module,
                 comment: "Shown when a search request fails"
             ))
         }

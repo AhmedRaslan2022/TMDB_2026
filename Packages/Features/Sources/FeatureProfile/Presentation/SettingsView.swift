@@ -27,7 +27,7 @@ public struct SettingsView: View {
             dataSection
             accountSection
         }
-        .navigationTitle(Text("Settings", comment: "Settings nav title"))
+        .navigationTitle(Text("Settings", bundle: .module, comment: "Settings nav title"))
         #if os(iOS)
             .navigationBarTitleDisplayMode(.inline)
         #endif
@@ -42,7 +42,7 @@ public struct SettingsView: View {
                 .accessibilityIdentifier("settings.theme.\(theme.rawValue)")
             }
         } header: {
-            Text("Appearance", comment: "Settings appearance section header")
+            Text("Appearance", bundle: .module, comment: "Settings appearance section header")
         }
     }
 
@@ -55,9 +55,9 @@ public struct SettingsView: View {
                 .accessibilityIdentifier("settings.language.\(language.rawValue)")
             }
         } header: {
-            Text("Content Language", comment: "Settings language section header")
+            Text("Content Language", bundle: .module, comment: "Settings language section header")
         } footer: {
-            Text("Applies to titles and descriptions from TMDB.", comment: "Settings language footer")
+            Text("Applies to titles and descriptions from TMDB.", bundle: .module, comment: "Settings language footer")
         }
     }
 
@@ -67,7 +67,7 @@ public struct SettingsView: View {
                 showClearCacheConfirm = true
             } label: {
                 HStack {
-                    Text("Clear Cache", comment: "Settings clear-cache button")
+                    Text("Clear Cache", bundle: .module, comment: "Settings clear-cache button")
                     Spacer()
                     if viewModel.isClearingCache {
                         ProgressView()
@@ -80,18 +80,18 @@ public struct SettingsView: View {
             .disabled(viewModel.isClearingCache)
             .accessibilityIdentifier("settings.clearCache")
             .confirmationDialog(
-                Text("Clear cached images and data?", comment: "Clear-cache confirmation title"),
+                Text("Clear cached images and data?", bundle: .module, comment: "Clear-cache confirmation title"),
                 isPresented: $showClearCacheConfirm,
                 titleVisibility: .visible
             ) {
                 Button(role: .destructive) {
                     Task { await viewModel.clearCache() }
                 } label: {
-                    Text("Clear Cache", comment: "Confirm clear cache")
+                    Text("Clear Cache", bundle: .module, comment: "Confirm clear cache")
                 }
             }
         } header: {
-            Text("Storage", comment: "Settings storage section header")
+            Text("Storage", bundle: .module, comment: "Settings storage section header")
         }
     }
 
@@ -100,7 +100,7 @@ public struct SettingsView: View {
             Button(role: .destructive) {
                 viewModel.signOut()
             } label: {
-                Text("Sign Out", comment: "Settings sign-out button")
+                Text("Sign Out", bundle: .module, comment: "Settings sign-out button")
             }
             .accessibilityIdentifier("settings.signOut")
         }
@@ -124,16 +124,16 @@ public struct SettingsView: View {
 
     private static func themeLabel(_ theme: AppTheme) -> Text {
         switch theme {
-        case .system: Text("System", comment: "Theme option: follow system")
-        case .light: Text("Light", comment: "Theme option: light")
-        case .dark: Text("Dark", comment: "Theme option: dark")
+        case .system: Text("System", bundle: .module, comment: "Theme option: follow system")
+        case .light: Text("Light", bundle: .module, comment: "Theme option: light")
+        case .dark: Text("Dark", bundle: .module, comment: "Theme option: dark")
         }
     }
 
     private static func languageLabel(_ language: AppLanguage) -> Text {
         switch language {
-        case .english: Text("English", comment: "Language option: English")
-        case .arabic: Text("العربية", comment: "Language option: Arabic")
+        case .english: Text("English", bundle: .module, comment: "Language option: English")
+        case .arabic: Text("العربية", bundle: .module, comment: "Language option: Arabic")
         }
     }
 }

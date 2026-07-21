@@ -179,8 +179,10 @@ public final class DiscoverViewModel {
         } catch {
             guard !Task.isCancelled, filters == snapshot else { return }
             state = .error(LocalizedStringResource(
+                moduleKey:
                 "discover.error",
                 defaultValue: "Couldn't load results. Try adjusting your filters.",
+                bundle: .module,
                 comment: "Shown when a Discover request fails"
             ))
         }
