@@ -80,3 +80,33 @@ jobs:
           name: test-results
           path: TestResults.xcresult
           if-no-files-found: ignore
+
+  env-matrix:
+    name: Build (${{ matrix.scheme }})
+    runs-on: macos-15
+    strategy:
+      # Build every environment so an xcconfig/Info.plist regression in one
+      # config can't hide behind another. Independent, so don't fail-fast.
+      fail-fast: false
+      matrix:
+        scheme: [TMDB-Dev, TMDB-Staging, TMDB-Test, TMDB-Live]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: maxim-lobanov/setup-xcode@v1
+        with:
+          xcode-version: latest-stable
+      - name: Install xcbeautify
+        run: brew install xcbeautify
+      - name: Create Secrets.xcconfig
+        env:
+          TMDB_ACCESS_TOKEN: ${{ secrets.TMDB_ACCESS_TOKEN }}
+        run: printf 'TMDB_ACCESS_TOKEN = %s\n' "$TMDB_ACCESS_TOKEN" > Configs/Secrets.xcconfig
+      - name: Build ${{ matrix.scheme }}
+        run: |
+          set -o pipefail
+          xcodebuild build \
+            -workspace TMDB.xcworkspace \
+            -scheme ${{ matrix.scheme }} \
+            -destination 'platform=iOS Simulator,name=iPhone 16' \
+            CODE_SIGNING_ALLOWED=NO \
+            | xcbeautify --renderer github-actions
