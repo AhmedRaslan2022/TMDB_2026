@@ -253,7 +253,7 @@ The 10 commits merged while the reviewer was unavailable (6.1–6.6, 7.1/7.7, 8.
 - 8.3: Content now localizes to the device by default. `LanguageQueryInterceptor` (built in 5.6) gained an optional `regionProvider`, so every request carries `language` + `region` (ISO 3166-1, e.g. `EG`) — release dates/availability reflect where the user is. `AppSettings` seeds the content language from the DEVICE on first launch (`AppLanguage.matching(languageCode: Locale.current.language.languageCode)`, new pure CoreModels helper mapping ar→arabic, everything-else→english) instead of hardcoding English; an explicit user choice still wins (only the unset case falls back to device). `regionCodeProvider` reads `Locale.current.region` per request off the main actor. Refactor: extracted `makeAPIClient` + `makeAuthModule` into `AppContainer+Composition.swift` to keep AppContainer.swift under the file-length + init-body limits after the interceptor grew. 6 new tests (AppLanguage.matching table; region appended/omitted-when-nil-or-empty). CoreModels 10 + Networking 22 green; app builds + unit tests pass.
 
 ## Sprint 9 — Quality Hardening & CI/CD
-- [ ] 9.1 Fill test coverage gaps: ~80% on Domain + ViewModels
+- [x] 9.1 Fill test coverage gaps (Domain): unit tests for the 6 previously-untested use cases — `FetchMovieList`, `FetchMovieDetails`, `FetchPersonDetails`, `DiscoverMovies`, `FetchTVDetails`, `FetchTVList` (19 tests: parameter forwarding, result pass-through, error propagation). ViewModels were already fully covered; these closed the Domain gap against the "test every use case" rule.
 - [ ] 9.2 UI tests for critical paths (login, add favorite) vs Test scheme
 - [ ] 9.3 GitHub Actions: build + test + lint on every PR
 - [ ] 9.4 GitHub Actions: per-env build matrix
