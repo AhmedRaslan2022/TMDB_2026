@@ -34,9 +34,7 @@ public final class URLSessionAPIClient: APIClient {
         self.baseURL = baseURL
         self.session = session
         self.interceptors = interceptors
-        let decoder = JSONDecoder()
-        decoder.keyDecodingStrategy = .convertFromSnakeCase
-        self.decoder = decoder
+        decoder = .tmdb
     }
 
     public func send<T: Decodable & Sendable>(_ endpoint: some Endpoint) async throws -> T {

@@ -9,16 +9,24 @@ import CoreUtilities
 import Foundation
 
 /// An `APIClient` decorator that logs each request (method, path, redacted
-/// query/body) and its response (or error) with a duration — same interface as
-/// what it wraps, so it drops in transparently at the composition root.
+/// query/headers/body) and its response as pretty-printed, redacted JSON with a
+/// duration — same interface as what it wraps, so it drops in transparently at
+/// the composition root.
 ///
 /// Only wired in for the Dev/Test environments (see the composition root);
 /// never in Staging/Live. Secrets are never logged: the `Authorization: Bearer`
 /// token is added by an interceptor *inside* the wrapped client and is invisible
-/// here, and any sensitive query/header/body keys (`session_id`, `api_key`, …)
-/// are redacted to `•••`.
+/// here, and any sensitive key (`session_id`, `api_key`, …) is redacted to `•••`
+/// in the query, headers, request body, **and the response body** (recursively).
+///
+/// The raw response bytes only exist at the `sendRaw` boundary, so `send(_:)` is
+/// composed as `sendRaw` + decode — exactly what `URLSessionAPIClient` does
+/// internally — letting the decorator log the JSON body of *every* request.
+/// Both share the `JSONDecoder.tmdb` factory, so the typed value the caller
+/// receives is identical whether or not this decorator is in place.
 public struct LoggingAPIClient: APIClient {
     private let wrapped: any APIClient
+    private let decoder: JSONDecoder
     private let log: @Sendable (String) -> Void
 
     /// Composition-root entry point — logs through the shared `AppLogger`.
@@ -30,38 +38,32 @@ public struct LoggingAPIClient: APIClient {
     /// Test seam — inject a capturing sink to assert on the emitted lines.
     init(wrapping client: any APIClient, log: @escaping @Sendable (String) -> Void) {
         wrapped = client
+        // Same shared factory URLSessionAPIClient uses, so the typed value the
+        // caller receives is identical whether or not this decorator is present.
+        decoder = .tmdb
         self.log = log
     }
 
     public func send<T: Decodable & Sendable>(_ endpoint: some Endpoint) async throws -> T {
-        try await logging(
-            endpoint,
-            outcome: { _ in "→ \(T.self)" },
-            perform: { try await wrapped.send($0) }
-        )
+        // Route through sendRaw so the JSON body is logged, then decode exactly
+        // as the wrapped client would — same result, same APIError.decoding.
+        let data = try await sendRaw(endpoint)
+        do {
+            return try decoder.decode(T.self, from: data)
+        } catch let error as DecodingError {
+            log("📥 ❌ \(endpoint.method.rawValue) \(endpoint.path) decode → \(Self.safeDescription(APIError.decoding(error)))")
+            throw APIError.decoding(error)
+        }
     }
 
     @discardableResult
     public func sendRaw(_ endpoint: some Endpoint) async throws -> Data {
-        try await logging(
-            endpoint,
-            outcome: { "\($0.count) bytes" },
-            perform: { try await wrapped.sendRaw($0) }
-        )
-    }
-
-    /// Shared request/response/error logging around a delegated call.
-    private func logging<E: Endpoint, R>(
-        _ endpoint: E,
-        outcome: @Sendable (R) -> String,
-        perform: (E) async throws -> R
-    ) async throws -> R {
-        log("📤 \(requestLine(endpoint))")
+        log(Self.requestLog(endpoint))
         let start = ContinuousClock.now
         do {
-            let result = try await perform(endpoint)
-            log("📥 ✅ \(endpoint.method.rawValue) \(endpoint.path) \(outcome(result)) \(elapsed(since: start))")
-            return result
+            let data = try await wrapped.sendRaw(endpoint)
+            log(Self.responseLog(endpoint, data: data, duration: elapsed(since: start)))
+            return data
         } catch is CancellationError {
             log("🚫 \(endpoint.method.rawValue) \(endpoint.path) cancelled \(elapsed(since: start))")
             throw CancellationError()
@@ -71,16 +73,35 @@ public struct LoggingAPIClient: APIClient {
         }
     }
 
-    private func requestLine(_ endpoint: some Endpoint) -> String {
-        var line = "\(endpoint.method.rawValue) \(endpoint.path)"
-        let query = endpoint.queryItems
-        if !query.isEmpty {
-            line += "?" + query.map { "\($0.name)=\(Self.redact($0.name, $0.value ?? ""))" }.joined(separator: "&")
+    // MARK: Rendering
+
+    /// The 📤 request block: method + path followed by its components (query,
+    /// headers, body), each with secrets redacted.
+    private static func requestLog(_ endpoint: some Endpoint) -> String {
+        var lines = ["📤 \(endpoint.method.rawValue) \(endpoint.path)"]
+        if !endpoint.queryItems.isEmpty {
+            let query = endpoint.queryItems
+                .map { "\($0.name)=\(redact($0.name, $0.value ?? ""))" }
+                .joined(separator: "&")
+            lines.append("   • query: \(query)")
         }
-        if let body = endpoint.body, let text = Self.redactedBody(body) {
-            line += " 🧩 \(text)"
+        if !endpoint.headers.isEmpty {
+            let headers = endpoint.headers
+                .map { "\($0.key)=\(redact($0.key, $0.value))" }
+                .sorted()
+                .joined(separator: ", ")
+            lines.append("   • headers: \(headers)")
         }
-        return line
+        if let body = endpoint.body {
+            lines.append("   🧩 body:\n\(prettyJSON(body, limit: 2000))")
+        }
+        return lines.joined(separator: "\n")
+    }
+
+    /// The 📥 response block: the beautified, redacted JSON body under the
+    /// method/path/duration header line.
+    private static func responseLog(_ endpoint: some Endpoint, data: Data, duration: String) -> String {
+        "📥 ✅ \(endpoint.method.rawValue) \(endpoint.path) \(duration)\n\(prettyJSON(data, limit: 8000))"
     }
 
     private func elapsed(since start: ContinuousClock.Instant) -> String {
@@ -132,7 +153,7 @@ public struct LoggingAPIClient: APIClient {
 
     // MARK: Redaction
 
-    /// Query/header/body keys whose values must never be logged.
+    /// Keys whose values must never be logged, in query, headers, or JSON.
     private static let sensitiveKeys: Set<String> = [
         "session_id", "guest_session_id", "api_key", "request_token", "access_token", "authorization",
     ]
@@ -141,16 +162,20 @@ public struct LoggingAPIClient: APIClient {
         sensitiveKeys.contains(key.lowercased()) ? "•••" : value
     }
 
-    /// Renders a JSON body with sensitive keys redacted at every nesting level;
-    /// falls back to a byte count for non-JSON. Truncated so logs stay readable.
-    private static func redactedBody(_ data: Data) -> String? {
+    /// Beautifies a JSON payload with every sensitive value redacted; falls back
+    /// to a byte count for non-JSON (e.g. images). Truncated so logs stay sane.
+    private static func prettyJSON(_ data: Data, limit: Int) -> String {
+        guard !data.isEmpty else { return "(empty body)" }
         guard let json = try? JSONSerialization.jsonObject(with: data) else {
+            return "\(data.count) bytes (non-JSON)"
+        }
+        guard let pretty = try? JSONSerialization.data(
+            withJSONObject: redactJSON(json),
+            options: [.prettyPrinted, .sortedKeys, .withoutEscapingSlashes]
+        ), let text = String(data: pretty, encoding: .utf8) else {
             return "\(data.count) bytes"
         }
-        guard let redacted = try? JSONSerialization.data(withJSONObject: redactJSON(json)),
-              let text = String(data: redacted, encoding: .utf8)
-        else { return "\(data.count) bytes" }
-        return text.count > 500 ? String(text.prefix(500)) + "…" : text
+        return text.count > limit ? String(text.prefix(limit)) + "\n… (truncated, \(text.count) chars total)" : text
     }
 
     /// Recursively replaces every sensitive key's value with `•••`, descending

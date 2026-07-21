@@ -76,16 +76,46 @@ struct LoggingAPIClientTests {
         #expect(sink.text.contains("page=1"), "non-sensitive params are shown")
     }
 
-    @Test("send decodes, delegates, and logs the response type")
-    func sendDecodesAndLogs() async throws {
-        struct Model: Decodable, Sendable { let rating: Int }
+    @Test("send decodes snake_case keys and logs the beautified JSON response body")
+    func sendDecodesAndLogsPrettyJSON() async throws {
+        // original_title → originalTitle proves the shared .convertFromSnakeCase
+        // decoder is in effect (JSONDecoder.tmdb), pinning it against drift.
+        struct Model: Decodable, Sendable { let originalTitle: String }
         let sink = Sink()
-        let client = makeClient(.success(Data(#"{"rating": 7}"#.utf8)), into: sink)
+        let client = makeClient(.success(Data(#"{"original_title":"Fight Club"}"#.utf8)), into: sink)
 
         let model: Model = try await client.send(RatingEndpoint())
 
-        #expect(model.rating == 7)
-        #expect(sink.text.contains("→ Model"))
+        #expect(model.originalTitle == "Fight Club")
+        #expect(sink.text.contains("📥 ✅"))
+        // Pretty-printed (indented, spaced) rather than the compact input.
+        #expect(sink.text.contains(#""original_title" : "Fight Club""#))
+    }
+
+    @Test("a malformed body surfaces APIError.decoding and logs the decode failure")
+    func sendLogsDecodeFailure() async {
+        struct Model: Decodable, Sendable { let rating: Int }
+        let sink = Sink()
+        let client = makeClient(.success(Data(#"{"rating":"not-a-number"}"#.utf8)), into: sink)
+
+        await #expect(throws: APIError.self) {
+            _ = try await client.send(RatingEndpoint()) as Model
+        }
+        #expect(sink.text.contains("📥 ❌"))
+        #expect(sink.text.contains("decode → decoding("))
+    }
+
+    @Test("secrets in the RESPONSE body are redacted (e.g. a new session id)")
+    func redactsResponseSecrets() async throws {
+        // TMDB's create-session response returns a session_id in the body.
+        let sink = Sink()
+        let client = makeClient(.success(Data(#"{"session_id":"RESP-SECRET","success":true}"#.utf8)), into: sink)
+
+        _ = try await client.sendRaw(RatingEndpoint())
+
+        #expect(sink.text.contains("RESP-SECRET") == false, "response session id is redacted")
+        #expect(sink.text.contains(#""session_id" : "•••""#), "redacted, still pretty-printed")
+        #expect(sink.text.contains(#""success" : true"#), "non-sensitive fields survive")
     }
 
     @Test("a failure is logged with the error and rethrown")
