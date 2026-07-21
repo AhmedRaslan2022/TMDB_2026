@@ -49,6 +49,11 @@ private struct CastCard: View {
     let profileURL: URL?
     let onSelect: () -> Void
 
+    // Scale the headshot + card with Dynamic Type so names don't crush at large
+    // accessibility text sizes.
+    @ScaledMetric(relativeTo: .body) private var headshot: CGFloat = 80
+    @ScaledMetric(relativeTo: .body) private var cardWidth: CGFloat = 100
+
     var body: some View {
         Button(action: onSelect) {
             VStack(spacing: AppSpacing.sm) {
@@ -66,7 +71,7 @@ private struct CastCard: View {
                                 .accessibilityHidden(true)
                         }
                 }
-                .frame(width: 80, height: 80)
+                .frame(width: headshot, height: headshot)
                 .clipShape(Circle())
 
                 Text(member.name)
@@ -81,7 +86,7 @@ private struct CastCard: View {
                         .lineLimit(1)
                 }
             }
-            .frame(width: 100)
+            .frame(width: cardWidth)
         }
         .buttonStyle(.plain)
         .accessibilityElement(children: .combine)

@@ -12,6 +12,10 @@ import SwiftUI
 struct RatingRing: View {
     let score: Double
 
+    /// Grows with Dynamic Type so the score stays legible and doesn't overflow
+    /// the ring at large accessibility text sizes.
+    @ScaledMetric(relativeTo: .body) private var diameter: CGFloat = 56
+
     private var fraction: Double {
         min(max(score / 10, 0), 1)
     }
@@ -27,7 +31,7 @@ struct RatingRing: View {
             Text(score, format: .number.precision(.fractionLength(1)))
                 .font(AppTypography.label)
         }
-        .frame(width: 56, height: 56)
+        .frame(width: diameter, height: diameter)
         .accessibilityElement()
         .accessibilityLabel(Text(
             "Rated \(score, format: .number.precision(.fractionLength(1))) out of 10",
