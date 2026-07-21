@@ -254,7 +254,7 @@ The 10 commits merged while the reviewer was unavailable (6.1–6.6, 7.1/7.7, 8.
 
 ## Sprint 9 — Quality Hardening & CI/CD
 - [x] 9.1 Fill test coverage gaps (Domain): unit tests for the 6 previously-untested use cases — `FetchMovieList`, `FetchMovieDetails`, `FetchPersonDetails`, `DiscoverMovies`, `FetchTVDetails`, `FetchTVList` (19 tests: parameter forwarding, result pass-through, error propagation). ViewModels were already fully covered; these closed the Domain gap against the "test every use case" rule.
-- [ ] 9.2 UI tests for critical paths (login, add favorite) vs Test scheme
+- [x] 9.2 UI tests for critical paths vs Test scheme — added `testLoginButtonEntersShellFromAuthGate` (the primary "Sign in with TMDB" login branch, distinct from guest, via the offline stub LoginUseCase → tab shell) and `testFavoriteToggleOffRemovesFromFavoritesTab` (the *remove* side of favoriting: add→remove round-trips the button value and clears the movie from the Favorites tab). Add-favorite/watchlist/rating were already covered by `testSearchToDetailsFavoriteAndFavoritesTab`; these close the login + un-favorite gaps. Both pass on the iPhone 16 Pro simulator via `xcodebuild test -scheme TMDB-Test`.
 - [ ] 9.3 GitHub Actions: build + test + lint on every PR
 - [ ] 9.4 GitHub Actions: per-env build matrix
 - [ ] 9.5 Fastlane lanes: lint / test / beta / release
