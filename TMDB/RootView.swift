@@ -58,6 +58,14 @@ struct RootView: View {
 
     var body: some View {
         content
+            // Content language also drives the UI: render in that locale (live
+            // string localization) and mirror to RTL for Arabic. The `.id`
+            // rebuilds the whole shell on a language change — the tab bar and
+            // stacks are torn down and recreated so the mirroring applies
+            // cleanly rather than half-updating an existing layout.
+            .environment(\.locale, appSettings.language.locale)
+            .environment(\.layoutDirection, appSettings.language.layoutDirection)
+            .id(appSettings.language)
             .preferredColorScheme(appSettings.theme.colorScheme)
             .onOpenURL { coordinator.handle(url: $0) }
             .task { await coordinator.restoreSession() }

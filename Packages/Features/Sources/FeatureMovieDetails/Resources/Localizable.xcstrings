@@ -1,50 +1,181 @@
 {
   "sourceLanguage" : "en",
   "strings" : {
+    "%lld out of 10" : {
+      "comment" : "VoiceOver value for the current rating"
+    },
+    "%lld star" : {
+      "comment" : "VoiceOver label for a rating star"
+    },
     "Cast" : {
-      "localizations" : { "ar" : { "stringUnit" : { "state" : "translated", "value" : "طاقم العمل" } } }
+      "comment" : "Cast section title",
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "طاقم العمل"
+          }
+        }
+      }
     },
-    "Favorite" : {
-      "localizations" : { "ar" : { "stringUnit" : { "state" : "translated", "value" : "المفضّلة" } } }
-    },
-    "Favorited" : {
-      "localizations" : { "ar" : { "stringUnit" : { "state" : "translated", "value" : "في المفضّلة" } } }
-    },
-    "Loading" : {
-      "localizations" : { "ar" : { "stringUnit" : { "state" : "translated", "value" : "جارٍ التحميل" } } }
-    },
-    "Not favorited" : {
-      "localizations" : { "ar" : { "stringUnit" : { "state" : "translated", "value" : "ليس في المفضّلة" } } }
-    },
-    "Not on watchlist" : {
-      "localizations" : { "ar" : { "stringUnit" : { "state" : "translated", "value" : "ليس في قائمة المشاهدة" } } }
-    },
-    "Not rated" : {
-      "localizations" : { "ar" : { "stringUnit" : { "state" : "translated", "value" : "غير مُقيَّم" } } }
-    },
-    "On watchlist" : {
-      "localizations" : { "ar" : { "stringUnit" : { "state" : "translated", "value" : "في قائمة المشاهدة" } } }
-    },
-    "Recommended" : {
-      "localizations" : { "ar" : { "stringUnit" : { "state" : "translated", "value" : "موصى بها" } } }
-    },
-    "Retry" : {
-      "localizations" : { "ar" : { "stringUnit" : { "state" : "translated", "value" : "إعادة المحاولة" } } }
-    },
-    "Similar" : {
-      "localizations" : { "ar" : { "stringUnit" : { "state" : "translated", "value" : "أعمال مشابهة" } } }
-    },
-    "Trailers" : {
-      "localizations" : { "ar" : { "stringUnit" : { "state" : "translated", "value" : "المقاطع الدعائية" } } }
-    },
-    "Watchlist" : {
-      "localizations" : { "ar" : { "stringUnit" : { "state" : "translated", "value" : "قائمة المشاهدة" } } }
-    },
-    "Your rating" : {
-      "localizations" : { "ar" : { "stringUnit" : { "state" : "translated", "value" : "تقييمك" } } }
+    "Couldn't load this movie." : {
+
     },
     "details.error" : {
-      "localizations" : { "ar" : { "stringUnit" : { "state" : "translated", "value" : "تعذّر تحميل هذا الفيلم." } } }
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "تعذّر تحميل هذا الفيلم."
+          }
+        }
+      }
+    },
+    "Favorite" : {
+      "comment" : "Favorite toggle button",
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "المفضّلة"
+          }
+        }
+      }
+    },
+    "Favorited" : {
+      "comment" : "Favorite button state: on",
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "في المفضّلة"
+          }
+        }
+      }
+    },
+    "Loading" : {
+      "comment" : "VoiceOver label while movie details load",
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "جارٍ التحميل"
+          }
+        }
+      }
+    },
+    "Not favorited" : {
+      "comment" : "Favorite button state: off",
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "ليس في المفضّلة"
+          }
+        }
+      }
+    },
+    "Not on watchlist" : {
+      "comment" : "Watchlist button state: off",
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "ليس في قائمة المشاهدة"
+          }
+        }
+      }
+    },
+    "Not rated" : {
+      "comment" : "VoiceOver value when the user hasn't rated the movie",
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "غير مُقيَّم"
+          }
+        }
+      }
+    },
+    "On watchlist" : {
+      "comment" : "Watchlist button state: on",
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "في قائمة المشاهدة"
+          }
+        }
+      }
+    },
+    "Rated %@ out of 10" : {
+      "comment" : "VoiceOver label for the details rating ring"
+    },
+    "Recommended" : {
+      "comment" : "Recommended movies section title",
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "موصى بها"
+          }
+        }
+      }
+    },
+    "Retry" : {
+      "comment" : "Retry loading movie details",
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "إعادة المحاولة"
+          }
+        }
+      }
+    },
+    "Similar" : {
+      "comment" : "Similar movies section title",
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "أعمال مشابهة"
+          }
+        }
+      }
+    },
+    "Trailers" : {
+      "comment" : "Trailers section title",
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "المقاطع الدعائية"
+          }
+        }
+      }
+    },
+    "Watchlist" : {
+      "comment" : "Watchlist toggle button",
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "قائمة المشاهدة"
+          }
+        }
+      }
+    },
+    "Your rating" : {
+      "comment" : "Section title for the user's own movie rating",
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "تقييمك"
+          }
+        }
+      }
     }
   },
   "version" : "1.0"

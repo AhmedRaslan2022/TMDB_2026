@@ -1,71 +1,241 @@
 {
   "sourceLanguage" : "en",
   "strings" : {
+    "Couldn't load this list." : {
+
+    },
+    "Couldn't load this section." : {
+
+    },
     "Home" : {
-      "localizations" : { "ar" : { "stringUnit" : { "state" : "translated", "value" : "الرئيسية" } } }
-    },
-    "Loading" : {
-      "localizations" : { "ar" : { "stringUnit" : { "state" : "translated", "value" : "جارٍ التحميل" } } }
-    },
-    "No Movies" : {
-      "localizations" : { "ar" : { "stringUnit" : { "state" : "translated", "value" : "لا توجد أفلام" } } }
-    },
-    "Nothing here right now." : {
-      "localizations" : { "ar" : { "stringUnit" : { "state" : "translated", "value" : "لا يوجد شيء هنا حاليًا." } } }
-    },
-    "Now Playing" : {
-      "localizations" : { "ar" : { "stringUnit" : { "state" : "translated", "value" : "تُعرض الآن" } } }
-    },
-    "Popular" : {
-      "localizations" : { "ar" : { "stringUnit" : { "state" : "translated", "value" : "الأكثر رواجًا" } } }
-    },
-    "Retry" : {
-      "localizations" : { "ar" : { "stringUnit" : { "state" : "translated", "value" : "إعادة المحاولة" } } }
-    },
-    "See All" : {
-      "localizations" : { "ar" : { "stringUnit" : { "state" : "translated", "value" : "عرض الكل" } } }
-    },
-    "This Week" : {
-      "localizations" : { "ar" : { "stringUnit" : { "state" : "translated", "value" : "هذا الأسبوع" } } }
-    },
-    "This list has nothing in it right now." : {
-      "localizations" : { "ar" : { "stringUnit" : { "state" : "translated", "value" : "لا يحتوي هذا القسم على أي عناصر حاليًا." } } }
-    },
-    "Today" : {
-      "localizations" : { "ar" : { "stringUnit" : { "state" : "translated", "value" : "اليوم" } } }
-    },
-    "Top Rated" : {
-      "localizations" : { "ar" : { "stringUnit" : { "state" : "translated", "value" : "الأعلى تقييمًا" } } }
-    },
-    "Trending" : {
-      "localizations" : { "ar" : { "stringUnit" : { "state" : "translated", "value" : "الرائج" } } }
-    },
-    "Trending window" : {
-      "localizations" : { "ar" : { "stringUnit" : { "state" : "translated", "value" : "فترة الرواج" } } }
-    },
-    "Upcoming" : {
-      "localizations" : { "ar" : { "stringUnit" : { "state" : "translated", "value" : "القادمة" } } }
+      "comment" : "Home tab title",
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "الرئيسية"
+          }
+        }
+      }
     },
     "home.section.error" : {
-      "localizations" : { "ar" : { "stringUnit" : { "state" : "translated", "value" : "تعذّر تحميل هذا القسم." } } }
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "تعذّر تحميل هذا القسم."
+          }
+        }
+      }
     },
     "home.section.nowPlaying" : {
-      "localizations" : { "ar" : { "stringUnit" : { "state" : "translated", "value" : "تُعرض الآن" } } }
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "تُعرض الآن"
+          }
+        }
+      }
     },
     "home.section.popular" : {
-      "localizations" : { "ar" : { "stringUnit" : { "state" : "translated", "value" : "الأكثر رواجًا" } } }
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "الأكثر رواجًا"
+          }
+        }
+      }
     },
     "home.section.topRated" : {
-      "localizations" : { "ar" : { "stringUnit" : { "state" : "translated", "value" : "الأعلى تقييمًا" } } }
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "الأعلى تقييمًا"
+          }
+        }
+      }
     },
     "home.section.trending" : {
-      "localizations" : { "ar" : { "stringUnit" : { "state" : "translated", "value" : "الرائج" } } }
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "الرائج"
+          }
+        }
+      }
     },
     "home.section.upcoming" : {
-      "localizations" : { "ar" : { "stringUnit" : { "state" : "translated", "value" : "القادمة" } } }
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "القادمة"
+          }
+        }
+      }
+    },
+    "Loading" : {
+      "comment" : "VoiceOver label while a movie list loads",
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "جارٍ التحميل"
+          }
+        }
+      }
     },
     "movieList.error" : {
-      "localizations" : { "ar" : { "stringUnit" : { "state" : "translated", "value" : "تعذّر تحميل القائمة." } } }
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "تعذّر تحميل القائمة."
+          }
+        }
+      }
+    },
+    "No Movies" : {
+      "comment" : "Empty see-all list title",
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "لا توجد أفلام"
+          }
+        }
+      }
+    },
+    "Nothing here right now." : {
+      "comment" : "Empty home section body",
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "لا يوجد شيء هنا حاليًا."
+          }
+        }
+      }
+    },
+    "Now Playing" : {
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "تُعرض الآن"
+          }
+        }
+      }
+    },
+    "Popular" : {
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "الأكثر رواجًا"
+          }
+        }
+      }
+    },
+    "Retry" : {
+      "comment" : "Retry a failed home section\nRetry loading a see-all movie list",
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "إعادة المحاولة"
+          }
+        }
+      }
+    },
+    "See All" : {
+      "comment" : "Opens the full paginated list for a home section",
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "عرض الكل"
+          }
+        }
+      }
+    },
+    "This list has nothing in it right now." : {
+      "comment" : "Empty see-all list description",
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "لا يحتوي هذا القسم على أي عناصر حاليًا."
+          }
+        }
+      }
+    },
+    "This Week" : {
+      "comment" : "Trending window: this week",
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "هذا الأسبوع"
+          }
+        }
+      }
+    },
+    "Today" : {
+      "comment" : "Trending window: today",
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "اليوم"
+          }
+        }
+      }
+    },
+    "Top Rated" : {
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "الأعلى تقييمًا"
+          }
+        }
+      }
+    },
+    "Trending" : {
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "الرائج"
+          }
+        }
+      }
+    },
+    "Trending window" : {
+      "comment" : "Accessibility label for the trending window picker",
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "فترة الرواج"
+          }
+        }
+      }
+    },
+    "Upcoming" : {
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "القادمة"
+          }
+        }
+      }
     }
   },
   "version" : "1.0"

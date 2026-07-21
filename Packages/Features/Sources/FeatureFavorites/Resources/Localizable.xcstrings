@@ -2,38 +2,82 @@
   "sourceLanguage" : "en",
   "strings" : {
     "Couldn't Load Favorites" : {
+      "comment" : "Favorites error title",
       "localizations" : {
-        "ar" : { "stringUnit" : { "state" : "translated", "value" : "تعذّر تحميل المفضّلة" } }
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "تعذّر تحميل المفضّلة"
+          }
+        }
       }
+    },
+    "Couldn't load your favorites." : {
+
     },
     "Favorites" : {
+      "comment" : "Favorites tab title",
       "localizations" : {
-        "ar" : { "stringUnit" : { "state" : "translated", "value" : "المفضّلة" } }
-      }
-    },
-    "Loading favorites" : {
-      "localizations" : {
-        "ar" : { "stringUnit" : { "state" : "translated", "value" : "جارٍ تحميل المفضّلة" } }
-      }
-    },
-    "No Favorites Yet" : {
-      "localizations" : {
-        "ar" : { "stringUnit" : { "state" : "translated", "value" : "لا توجد مفضّلة بعد" } }
-      }
-    },
-    "Remove from Favorites" : {
-      "localizations" : {
-        "ar" : { "stringUnit" : { "state" : "translated", "value" : "إزالة من المفضّلة" } }
-      }
-    },
-    "Tap the heart on a movie to keep it here." : {
-      "localizations" : {
-        "ar" : { "stringUnit" : { "state" : "translated", "value" : "اضغط على القلب في أي فيلم للاحتفاظ به هنا." } }
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "المفضّلة"
+          }
+        }
       }
     },
     "favorites.error" : {
       "localizations" : {
-        "ar" : { "stringUnit" : { "state" : "translated", "value" : "تعذّر تحميل المفضّلة. يُرجى المحاولة مرة أخرى." } }
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "تعذّر تحميل المفضّلة. يُرجى المحاولة مرة أخرى."
+          }
+        }
+      }
+    },
+    "Loading favorites" : {
+      "comment" : "VoiceOver label while favorites load",
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "جارٍ تحميل المفضّلة"
+          }
+        }
+      }
+    },
+    "No Favorites Yet" : {
+      "comment" : "Empty favorites title",
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "لا توجد مفضّلة بعد"
+          }
+        }
+      }
+    },
+    "Remove from Favorites" : {
+      "comment" : "Remove a favorite",
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "إزالة من المفضّلة"
+          }
+        }
+      }
+    },
+    "Tap the heart on a movie to keep it here." : {
+      "comment" : "Empty favorites description",
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "اضغط على القلب في أي فيلم للاحتفاظ به هنا."
+          }
+        }
       }
     }
   },

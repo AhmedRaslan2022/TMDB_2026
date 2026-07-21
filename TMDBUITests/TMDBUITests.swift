@@ -144,6 +144,31 @@ final class TMDBUITests: XCTestCase {
     }
 
     @MainActor
+    func testSwitchingLanguageToArabicFlipsUILive() {
+        let app = XCUIApplication()
+        app.launchArguments += ["-uitest-stubs"]
+        app.launch()
+
+        app.buttons["Continue as guest"].tap()
+        // Starts in English.
+        XCTAssertTrue(app.tabBars.buttons["Home"].waitForExistence(timeout: 5))
+
+        // Profile → Settings → pick Arabic content language.
+        app.tabBars.buttons["Profile"].tap()
+        app.buttons["Settings"].firstMatch.tap()
+        let arabic = app.buttons["settings.language.ar"]
+        XCTAssertTrue(arabic.waitForExistence(timeout: 5))
+        arabic.tap()
+
+        // The shell rebuilds in Arabic — the tab bar is recreated with Arabic
+        // labels, proving the live switch (no relaunch).
+        XCTAssertTrue(
+            app.tabBars.buttons["الرئيسية"].waitForExistence(timeout: 5),
+            "Selecting Arabic should flip the UI language live"
+        )
+    }
+
+    @MainActor
     func testArabicLocalizationRendersTranslatedStrings() {
         let app = XCUIApplication()
         app.launchArguments += ["-uitest-stubs", "-AppleLanguages", "(ar)", "-AppleLocale", "ar_EG"]

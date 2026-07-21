@@ -1,54 +1,118 @@
 {
   "sourceLanguage" : "en",
   "strings" : {
+    "Couldn't load this section." : {
+
+    },
+    "Couldn't load this show." : {
+
+    },
     "Loading" : {
+      "comment" : "VoiceOver label while TV details load\nVoiceOver label while a TV section loads",
       "localizations" : {
-        "ar" : { "stringUnit" : { "state" : "translated", "value" : "جارٍ التحميل" } }
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "جارٍ التحميل"
+          }
+        }
       }
     },
     "More Like This" : {
+      "comment" : "Similar TV shows section title",
       "localizations" : {
-        "ar" : { "stringUnit" : { "state" : "translated", "value" : "أعمال مشابهة" } }
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "أعمال مشابهة"
+          }
+        }
       }
     },
     "Nothing here right now." : {
+      "comment" : "Empty TV section body",
       "localizations" : {
-        "ar" : { "stringUnit" : { "state" : "translated", "value" : "لا يوجد شيء هنا حاليًا." } }
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "لا يوجد شيء هنا حاليًا."
+          }
+        }
       }
     },
     "On The Air" : {
+      "comment" : "TV section: currently airing",
       "localizations" : {
-        "ar" : { "stringUnit" : { "state" : "translated", "value" : "تُعرض الآن" } }
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "تُعرض الآن"
+          }
+        }
       }
     },
     "Popular" : {
+      "comment" : "TV section: popular shows",
       "localizations" : {
-        "ar" : { "stringUnit" : { "state" : "translated", "value" : "الأكثر رواجًا" } }
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "الأكثر رواجًا"
+          }
+        }
       }
     },
     "Retry" : {
+      "comment" : "Retry a failed TV section\nRetry loading TV details",
       "localizations" : {
-        "ar" : { "stringUnit" : { "state" : "translated", "value" : "إعادة المحاولة" } }
-      }
-    },
-    "TV Shows" : {
-      "localizations" : {
-        "ar" : { "stringUnit" : { "state" : "translated", "value" : "المسلسلات" } }
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "إعادة المحاولة"
+          }
+        }
       }
     },
     "Top Rated" : {
+      "comment" : "TV section: highest rated shows",
       "localizations" : {
-        "ar" : { "stringUnit" : { "state" : "translated", "value" : "الأعلى تقييمًا" } }
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "الأعلى تقييمًا"
+          }
+        }
+      }
+    },
+    "TV Shows" : {
+      "comment" : "TV tab title",
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "المسلسلات"
+          }
+        }
       }
     },
     "tv.details.error" : {
       "localizations" : {
-        "ar" : { "stringUnit" : { "state" : "translated", "value" : "تعذّر تحميل هذا المسلسل." } }
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "تعذّر تحميل هذا المسلسل."
+          }
+        }
       }
     },
     "tv.section.error" : {
       "localizations" : {
-        "ar" : { "stringUnit" : { "state" : "translated", "value" : "تعذّر تحميل هذا القسم." } }
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "تعذّر تحميل هذا القسم."
+          }
+        }
       }
     }
   },

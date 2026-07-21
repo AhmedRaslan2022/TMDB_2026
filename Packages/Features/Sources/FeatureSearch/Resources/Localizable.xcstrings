@@ -1,33 +1,310 @@
 {
   "sourceLanguage" : "en",
   "strings" : {
-    "A–Z" : { "localizations" : { "ar" : { "stringUnit" : { "state" : "translated", "value" : "أ–ي" } } } },
-    "Any Rating" : { "localizations" : { "ar" : { "stringUnit" : { "state" : "translated", "value" : "أي تقييم" } } } },
-    "Any Year" : { "localizations" : { "ar" : { "stringUnit" : { "state" : "translated", "value" : "أي سنة" } } } },
-    "Clear" : { "localizations" : { "ar" : { "stringUnit" : { "state" : "translated", "value" : "مسح" } } } },
-    "Clear All" : { "localizations" : { "ar" : { "stringUnit" : { "state" : "translated", "value" : "مسح الكل" } } } },
-    "Couldn't Load" : { "localizations" : { "ar" : { "stringUnit" : { "state" : "translated", "value" : "تعذّر التحميل" } } } },
-    "Delete" : { "localizations" : { "ar" : { "stringUnit" : { "state" : "translated", "value" : "حذف" } } } },
-    "Discover" : { "localizations" : { "ar" : { "stringUnit" : { "state" : "translated", "value" : "استكشاف" } } } },
-    "Filters" : { "localizations" : { "ar" : { "stringUnit" : { "state" : "translated", "value" : "عوامل التصفية" } } } },
-    "Find movies by title." : { "localizations" : { "ar" : { "stringUnit" : { "state" : "translated", "value" : "ابحث عن الأفلام بالعنوان." } } } },
-    "Loading results" : { "localizations" : { "ar" : { "stringUnit" : { "state" : "translated", "value" : "جارٍ تحميل النتائج" } } } },
-    "Newest" : { "localizations" : { "ar" : { "stringUnit" : { "state" : "translated", "value" : "الأحدث" } } } },
-    "No Matches" : { "localizations" : { "ar" : { "stringUnit" : { "state" : "translated", "value" : "لا توجد نتائج" } } } },
-    "No movies match these filters. Try loosening them." : { "localizations" : { "ar" : { "stringUnit" : { "state" : "translated", "value" : "لا توجد أفلام مطابقة لعوامل التصفية هذه. جرّب تخفيفها." } } } },
-    "Popularity" : { "localizations" : { "ar" : { "stringUnit" : { "state" : "translated", "value" : "الرواج" } } } },
-    "Rating" : { "localizations" : { "ar" : { "stringUnit" : { "state" : "translated", "value" : "التقييم" } } } },
-    "Recent" : { "localizations" : { "ar" : { "stringUnit" : { "state" : "translated", "value" : "عمليات البحث الأخيرة" } } } },
-    "Search" : { "localizations" : { "ar" : { "stringUnit" : { "state" : "translated", "value" : "بحث" } } } },
-    "Search Failed" : { "localizations" : { "ar" : { "stringUnit" : { "state" : "translated", "value" : "فشل البحث" } } } },
-    "Search Movies" : { "localizations" : { "ar" : { "stringUnit" : { "state" : "translated", "value" : "البحث عن الأفلام" } } } },
-    "Search movies" : { "localizations" : { "ar" : { "stringUnit" : { "state" : "translated", "value" : "ابحث عن الأفلام" } } } },
-    "Searching" : { "localizations" : { "ar" : { "stringUnit" : { "state" : "translated", "value" : "جارٍ البحث" } } } },
-    "Sort" : { "localizations" : { "ar" : { "stringUnit" : { "state" : "translated", "value" : "الترتيب" } } } },
-    "Top Rated" : { "localizations" : { "ar" : { "stringUnit" : { "state" : "translated", "value" : "الأعلى تقييمًا" } } } },
-    "Year" : { "localizations" : { "ar" : { "stringUnit" : { "state" : "translated", "value" : "السنة" } } } },
-    "discover.error" : { "localizations" : { "ar" : { "stringUnit" : { "state" : "translated", "value" : "تعذّر تحميل النتائج. جرّب تعديل عوامل التصفية." } } } },
-    "search.error" : { "localizations" : { "ar" : { "stringUnit" : { "state" : "translated", "value" : "حدث خطأ ما. حاول البحث مرة أخرى." } } } }
+    "%lld+" : {
+      "comment" : "Discover minimum-rating option"
+    },
+    "A–Z" : {
+      "comment" : "Sort option: alphabetical by title",
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "أ–ي"
+          }
+        }
+      }
+    },
+    "Any Rating" : {
+      "comment" : "Discover rating filter: no minimum",
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "أي تقييم"
+          }
+        }
+      }
+    },
+    "Any Year" : {
+      "comment" : "Discover year filter: no year selected",
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "أي سنة"
+          }
+        }
+      }
+    },
+    "Clear" : {
+      "comment" : "Clears all Discover filters",
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "مسح"
+          }
+        }
+      }
+    },
+    "Clear All" : {
+      "comment" : "Clear all recent searches",
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "مسح الكل"
+          }
+        }
+      }
+    },
+    "Couldn't Load" : {
+      "comment" : "Discover error title",
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "تعذّر التحميل"
+          }
+        }
+      }
+    },
+    "Couldn't load results. Try adjusting your filters." : {
+
+    },
+    "Delete" : {
+      "comment" : "Delete a recent search",
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "حذف"
+          }
+        }
+      }
+    },
+    "Discover" : {
+      "comment" : "Advanced-search screen title",
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "استكشاف"
+          }
+        }
+      }
+    },
+    "discover.error" : {
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "تعذّر تحميل النتائج. جرّب تعديل عوامل التصفية."
+          }
+        }
+      }
+    },
+    "Filters" : {
+      "comment" : "Opens the advanced-search filters screen",
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "عوامل التصفية"
+          }
+        }
+      }
+    },
+    "Find movies by title." : {
+      "comment" : "Empty search prompt description",
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "ابحث عن الأفلام بالعنوان."
+          }
+        }
+      }
+    },
+    "Loading results" : {
+      "comment" : "VoiceOver label while Discover loads",
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "جارٍ تحميل النتائج"
+          }
+        }
+      }
+    },
+    "Newest" : {
+      "comment" : "Sort option: most recent release",
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "الأحدث"
+          }
+        }
+      }
+    },
+    "No Matches" : {
+      "comment" : "Discover empty-results title",
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "لا توجد نتائج"
+          }
+        }
+      }
+    },
+    "No movies match these filters. Try loosening them." : {
+      "comment" : "Discover empty-results hint",
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "لا توجد أفلام مطابقة لعوامل التصفية هذه. جرّب تخفيفها."
+          }
+        }
+      }
+    },
+    "Popularity" : {
+      "comment" : "Sort option: most popular",
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "الرواج"
+          }
+        }
+      }
+    },
+    "Rating" : {
+      "comment" : "Discover rating menu label",
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "التقييم"
+          }
+        }
+      }
+    },
+    "Recent" : {
+      "comment" : "Recent searches section header",
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "عمليات البحث الأخيرة"
+          }
+        }
+      }
+    },
+    "Search" : {
+      "comment" : "Search tab title",
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "بحث"
+          }
+        }
+      }
+    },
+    "Search Failed" : {
+      "comment" : "Search error title",
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "فشل البحث"
+          }
+        }
+      }
+    },
+    "Search movies" : {
+      "comment" : "Search field prompt",
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "ابحث عن الأفلام"
+          }
+        }
+      }
+    },
+    "Search Movies" : {
+      "comment" : "Empty search prompt title",
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "البحث عن الأفلام"
+          }
+        }
+      }
+    },
+    "search.error" : {
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "حدث خطأ ما. حاول البحث مرة أخرى."
+          }
+        }
+      }
+    },
+    "Searching" : {
+      "comment" : "VoiceOver label while a search runs",
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "جارٍ البحث"
+          }
+        }
+      }
+    },
+    "Something went wrong. Try searching again." : {
+
+    },
+    "Sort" : {
+      "comment" : "Discover sort menu label",
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "الترتيب"
+          }
+        }
+      }
+    },
+    "Top Rated" : {
+      "comment" : "Sort option: highest rated",
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "الأعلى تقييمًا"
+          }
+        }
+      }
+    },
+    "Year" : {
+      "comment" : "Discover year menu label",
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "السنة"
+          }
+        }
+      }
+    }
   },
   "version" : "1.0"
 }
