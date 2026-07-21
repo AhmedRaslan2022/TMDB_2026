@@ -41,7 +41,10 @@ final class AppSettings: SettingsStore {
         self.imageCache = imageCache
         self.modelContainer = modelContainer
         theme = defaults.string(for: .appTheme).flatMap(AppTheme.init) ?? .system
-        let language = defaults.string(for: .appLanguage).flatMap(AppLanguage.init) ?? .english
+        // First launch has no stored choice → seed from the device language
+        // (task 8.3), so an Arabic device gets Arabic content out of the box.
+        let language = defaults.string(for: .appLanguage).flatMap(AppLanguage.init)
+            ?? .matching(languageCode: Locale.current.language.languageCode?.identifier)
         self.language = language
         languageBox.code = language.rawValue // didSet doesn't fire during init
     }
@@ -50,6 +53,13 @@ final class AppSettings: SettingsStore {
     /// interceptor, which runs off the main actor. Reflects later changes.
     nonisolated var languageCodeProvider: @Sendable () -> String {
         { [languageBox] in languageBox.code }
+    }
+
+    /// The device's region (ISO 3166-1) for TMDB's `region` param — release
+    /// dates and availability reflect where the user is. Read per request off
+    /// the main actor; `Locale.current` is thread-safe.
+    nonisolated var regionCodeProvider: @Sendable () -> String? {
+        { Locale.current.region?.identifier }
     }
 
     func clearCache() async {

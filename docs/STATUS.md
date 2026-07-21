@@ -221,7 +221,15 @@ Task checklist mirroring `docs/SPRINTS.md`. One line per deviation/decision.
 - 7.2–7.6 NOT DONE — DEFERRED (environment-blocked, not skipped): these need Xcode assets that can't be created/verified here — Universal Links (7.2) need an Associated Domains entitlement + a hosted `apple-app-site-association` file; App Group (7.3) needs an App Group entitlement/provisioning; the WidgetKit widget (7.4) and Live Activity/Dynamic Island (7.6) each need a **Widget Extension target** (own Info.plist/entitlements/build settings) that is impractical and unsafe to scaffold by hand-editing project.pbxproj and can't run in this sandbox; App Intents/Siri (7.5) is partially codeable but its shortcut/donation flow wants on-device verification. 7.1's `DeepLinkParser` is deliberately the reusable core 7.2's universal-link handler will call. Recommend doing 7.2–7.6 in Xcode directly (add targets via the IDE, then implement against the existing coordinator/repositories).
 
 ## Sprint 8 — Localization, Theming & Accessibility
-- [ ] 8.1 – 8.6 (not started)
+- [ ] 8.1 Extract all strings to String Catalogs (`.xcstrings`)
+- [ ] 8.2 Arabic localization + full RTL layout audit (mirroring, alignment)
+- [x] 8.3 Request TMDB content in device language (`language`/`region` params)
+- [ ] 8.4 Dark/Light theme finalization + alternate app icons
+- [ ] 8.5 Accessibility: VoiceOver labels, traits, Dynamic Type across all screens
+- [ ] 8.6 [test] snapshot tests for CoreUI components (light/dark, LTR/RTL, type sizes)
+
+### Sprint 8 Decisions / Deviations
+- 8.3: Content now localizes to the device by default. `LanguageQueryInterceptor` (built in 5.6) gained an optional `regionProvider`, so every request carries `language` + `region` (ISO 3166-1, e.g. `EG`) — release dates/availability reflect where the user is. `AppSettings` seeds the content language from the DEVICE on first launch (`AppLanguage.matching(languageCode: Locale.current.language.languageCode)`, new pure CoreModels helper mapping ar→arabic, everything-else→english) instead of hardcoding English; an explicit user choice still wins (only the unset case falls back to device). `regionCodeProvider` reads `Locale.current.region` per request off the main actor. Refactor: extracted `makeAPIClient` + `makeAuthModule` into `AppContainer+Composition.swift` to keep AppContainer.swift under the file-length + init-body limits after the interceptor grew. 6 new tests (AppLanguage.matching table; region appended/omitted-when-nil-or-empty). CoreModels 10 + Networking 22 green; app builds + unit tests pass.
 
 ## Sprint 9 — Quality Hardening & CI/CD
 - [ ] 9.1 – 9.8 (not started)

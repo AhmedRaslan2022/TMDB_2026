@@ -2,7 +2,7 @@
 //  MediaItemTests.swift
 //  TMDB
 //
-//  Created by Ahmed Raslan on 20/07/2026.
+//  Created by Ahmed Raslan on 21/07/2026.
 //
 
 import Testing
@@ -40,5 +40,16 @@ struct MediaItemTests {
     @Test("MediaKind is exhaustive over movie and tv")
     func mediaKindCases() {
         #expect(MediaKind.allCases == [.movie, .tv])
+    }
+
+    @Test("AppLanguage.matching maps a device code to a supported language", arguments: [
+        ("ar", AppLanguage.arabic),
+        ("AR", AppLanguage.arabic),
+        ("en", AppLanguage.english),
+        ("fr", AppLanguage.english), // unsupported → English
+        (nil, AppLanguage.english), // absent → English
+    ])
+    func languageMatching(code: String?, expected: AppLanguage) {
+        #expect(AppLanguage.matching(languageCode: code) == expected)
     }
 }

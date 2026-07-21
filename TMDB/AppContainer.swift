@@ -73,13 +73,7 @@ final class AppContainer {
             modelContainer: modelContainer
         )
         self.appSettings = appSettings
-        let apiClient = URLSessionAPIClient(
-            baseURL: environment.apiBaseURL,
-            interceptors: [
-                BearerAuthInterceptor(tokenProvider: { environment.accessToken }),
-                LanguageQueryInterceptor(languageProvider: appSettings.languageCodeProvider),
-            ]
-        )
+        let apiClient = Self.makeAPIClient(environment: environment, appSettings: appSettings)
         self.apiClient = apiClient
 
         authModule = Self.makeAuthModule(
@@ -257,42 +251,6 @@ extension AppContainer {
                 sessionProvider: AppRatingSessionProvider(secureStorage: secureStorage)
             ),
             imageBaseURL: environment.imageBaseURL
-        )
-    }
-
-    /// Composes the auth vertical. In DEBUG a launch argument swaps in the
-    /// inert stub so UI tests — which can't complete real TMDB web auth —
-    /// exercise the shell offline.
-    private static func makeAuthModule(
-        apiClient: any APIClient,
-        secureStorage: any SecureStorage,
-        modelContainer: ModelContainer
-    ) -> AuthModule {
-        #if DEBUG
-            // UI tests can't complete real TMDB auth, so they opt into the
-            // inert stub before any live collaborators are built.
-            if UITestStubs.isActive {
-                return .stub
-            }
-        #endif
-        let authRepository = AuthRepositoryImpl(apiClient: apiClient)
-        let sessionRepository = SessionRepositoryImpl(secureStorage: secureStorage)
-        return AuthModule(
-            loginUseCase: LoginUseCaseImpl(
-                authRepository: authRepository,
-                sessionRepository: sessionRepository,
-                authorizer: WebRequestTokenAuthorizer()
-            ),
-            guestUseCase: CreateGuestSessionUseCaseImpl(
-                authRepository: authRepository,
-                sessionRepository: sessionRepository
-            ),
-            logoutUseCase: LogoutUseCaseImpl(
-                authRepository: authRepository,
-                sessionRepository: sessionRepository,
-                userDataStore: SwiftDataUserStore(modelContainer: modelContainer)
-            ),
-            sessionRepository: sessionRepository
         )
     }
 }

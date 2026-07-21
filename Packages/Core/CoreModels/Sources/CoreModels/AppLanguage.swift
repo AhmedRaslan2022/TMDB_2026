@@ -16,4 +16,12 @@ public enum AppLanguage: String, CaseIterable, Sendable, Identifiable {
     public var id: String {
         rawValue
     }
+
+    /// The supported language matching an ISO 639-1 language code (e.g. the
+    /// device's), falling back to English for anything unsupported or absent.
+    /// Used to seed the content language from the device on first launch.
+    public static func matching(languageCode: String?) -> AppLanguage {
+        guard let languageCode else { return .english }
+        return AppLanguage(rawValue: languageCode.lowercased()) ?? .english
+    }
 }

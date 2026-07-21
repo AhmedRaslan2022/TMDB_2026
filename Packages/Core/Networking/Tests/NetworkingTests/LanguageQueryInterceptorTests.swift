@@ -37,6 +37,29 @@ struct LanguageQueryInterceptorTests {
         #expect(items.contains(URLQueryItem(name: "language", value: "en")))
     }
 
+    @Test func appendsRegionWhenProvided() async throws {
+        let interceptor = LanguageQueryInterceptor(languageProvider: { "ar" }, regionProvider: { "EG" })
+        let request = try URLRequest(url: #require(URL(string: "https://api.example.com/3/movie/popular")))
+
+        let adapted = try await interceptor.adapt(request)
+
+        let items = try #require(try components(adapted).queryItems)
+        #expect(items.contains(URLQueryItem(name: "language", value: "ar")))
+        #expect(items.contains(URLQueryItem(name: "region", value: "EG")))
+    }
+
+    @Test func omitsRegionWhenNilOrEmpty() async throws {
+        let nilRegion = LanguageQueryInterceptor(languageProvider: { "en" }, regionProvider: { nil })
+        let emptyRegion = LanguageQueryInterceptor(languageProvider: { "en" }, regionProvider: { "" })
+        let request = try URLRequest(url: #require(URL(string: "https://api.example.com/3/movie/1")))
+
+        let names1 = try await components(nilRegion.adapt(request)).queryItems?.map(\.name) ?? []
+        let names2 = try await components(emptyRegion.adapt(request)).queryItems?.map(\.name) ?? []
+
+        #expect(names1.contains("region") == false)
+        #expect(names2.contains("region") == false)
+    }
+
     @Test func doesNotDuplicateAnExistingLanguageItem() async throws {
         let interceptor = LanguageQueryInterceptor(languageProvider: { "en" })
         let request = try URLRequest(url: #require(URL(string: "https://api.example.com/3/movie/1?language=fr")))
