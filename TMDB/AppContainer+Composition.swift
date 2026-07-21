@@ -17,8 +17,10 @@ import SwiftDataStorage
 extension AppContainer {
     /// The authenticated TMDB client: a bearer token plus the language/region
     /// interceptor that localizes API content to the user's settings + device.
+    /// In Dev/Test it's wrapped in `LoggingAPIClient` (request/response logging);
+    /// Staging/Live get the bare client so nothing is logged in production.
     static func makeAPIClient(environment: AppEnvironment, appSettings: AppSettings) -> any APIClient {
-        URLSessionAPIClient(
+        let client = URLSessionAPIClient(
             baseURL: environment.apiBaseURL,
             interceptors: [
                 BearerAuthInterceptor(tokenProvider: { environment.accessToken }),
@@ -28,6 +30,10 @@ extension AppContainer {
                 ),
             ]
         )
+        switch environment.name {
+        case .dev, .test: return LoggingAPIClient(wrapping: client)
+        case .staging, .live: return client
+        }
     }
 
     /// Composes the auth vertical. In DEBUG a launch argument swaps in the
