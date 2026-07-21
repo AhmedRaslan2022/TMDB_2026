@@ -19,7 +19,7 @@ final class TMDBUITests: XCTestCase {
         let app = XCUIApplication()
         // Real TMDB auth needs web approval and Home needs the network, so
         // run against the offline stub modules (auth + movie lists).
-        app.launchArguments += ["-uitest-stubs"]
+        app.launchArguments += ["-uitest-stubs", "-AppleLanguages", "(en)", "-AppleLocale", "en_US"]
         app.launch()
 
         // Auth gate → main shell via the guest path.
@@ -59,7 +59,7 @@ final class TMDBUITests: XCTestCase {
     @MainActor
     func testSearchToDetailsFavoriteAndFavoritesTab() {
         let app = XCUIApplication()
-        app.launchArguments += ["-uitest-stubs"]
+        app.launchArguments += ["-uitest-stubs", "-AppleLanguages", "(en)", "-AppleLocale", "en_US"]
         app.launch()
 
         app.buttons["Continue as guest"].tap()
@@ -114,7 +114,7 @@ final class TMDBUITests: XCTestCase {
     @MainActor
     func testCastToPersonToTitleDeepNavigation() {
         let app = XCUIApplication()
-        app.launchArguments += ["-uitest-stubs"]
+        app.launchArguments += ["-uitest-stubs", "-AppleLanguages", "(en)", "-AppleLocale", "en_US"]
         app.launch()
 
         app.buttons["Continue as guest"].tap()
@@ -146,7 +146,7 @@ final class TMDBUITests: XCTestCase {
     @MainActor
     func testSwitchingLanguageToArabicFlipsUILive() {
         let app = XCUIApplication()
-        app.launchArguments += ["-uitest-stubs"]
+        app.launchArguments += ["-uitest-stubs", "-AppleLanguages", "(en)", "-AppleLocale", "en_US"]
         app.launch()
 
         app.buttons["Continue as guest"].tap()
@@ -190,7 +190,7 @@ final class TMDBUITests: XCTestCase {
     @MainActor
     func testTVTabBrowseToShowDetails() {
         let app = XCUIApplication()
-        app.launchArguments += ["-uitest-stubs"]
+        app.launchArguments += ["-uitest-stubs", "-AppleLanguages", "(en)", "-AppleLocale", "en_US"]
         app.launch()
 
         app.buttons["Continue as guest"].tap()
@@ -209,7 +209,7 @@ final class TMDBUITests: XCTestCase {
     @MainActor
     func testSettingsThemeSelectionAndSignOut() {
         let app = XCUIApplication()
-        app.launchArguments += ["-uitest-stubs"]
+        app.launchArguments += ["-uitest-stubs", "-AppleLanguages", "(en)", "-AppleLocale", "en_US"]
         app.launch()
 
         let guestButton = app.buttons["Continue as guest"]
@@ -233,7 +233,7 @@ final class TMDBUITests: XCTestCase {
     @MainActor
     func testDiscoverFiltersReturnResults() {
         let app = XCUIApplication()
-        app.launchArguments += ["-uitest-stubs"]
+        app.launchArguments += ["-uitest-stubs", "-AppleLanguages", "(en)", "-AppleLocale", "en_US"]
         app.launch()
 
         app.buttons["Continue as guest"].tap()
