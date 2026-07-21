@@ -1,0 +1,82 @@
+name: CI
+
+# Build + test + lint on every PR into develop/main, and on pushes to develop.
+# Mirrors the local pre-commit gate (swiftformat --lint + swiftlint --strict)
+# and the Test scheme's xcodebuild run so "green locally" == "green in CI".
+on:
+  pull_request:
+    branches: [develop, main]
+  push:
+    branches: [develop]
+
+# A newer commit on the same ref cancels the in-flight run.
+concurrency:
+  group: ci-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  lint:
+    name: Lint (SwiftFormat + SwiftLint)
+    runs-on: macos-15
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install linters
+        run: brew install swiftformat swiftlint
+      - name: SwiftFormat (lint mode)
+        run: swiftformat --lint . --quiet
+      - name: SwiftLint (strict)
+        run: swiftlint lint --strict --quiet
+
+  unit-tests:
+    name: Unit tests (pure Core packages)
+    runs-on: macos-15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: maxim-lobanov/setup-xcode@v1
+        with:
+          xcode-version: latest-stable
+      # Fast, host-safe SPM suites (no SwiftData, no simulator). SwiftData- and
+      # UI-backed suites run on the simulator via the Test scheme below.
+      - name: swift test — Networking / CoreModels
+        run: |
+          set -o pipefail
+          for pkg in Packages/Core/Networking Packages/Core/CoreModels; do
+            echo "::group::swift test $pkg"
+            swift test --package-path "$pkg"
+            echo "::endgroup::"
+          done
+
+  build-test:
+    name: Build & Test (Test scheme, iOS Simulator)
+    runs-on: macos-15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: maxim-lobanov/setup-xcode@v1
+        with:
+          xcode-version: latest-stable
+      - name: Install xcbeautify
+        run: brew install xcbeautify
+      # Secrets.xcconfig is git-ignored; CI recreates it from a repo secret so
+      # the token never lives in git. Tests use URLProtocol stubs (no real
+      # network), so an unset secret still builds — the value is only wired in.
+      - name: Create Secrets.xcconfig
+        env:
+          TMDB_ACCESS_TOKEN: ${{ secrets.TMDB_ACCESS_TOKEN }}
+        run: printf 'TMDB_ACCESS_TOKEN = %s\n' "$TMDB_ACCESS_TOKEN" > Configs/Secrets.xcconfig
+      - name: Build & test
+        run: |
+          set -o pipefail
+          xcodebuild test \
+            -workspace TMDB.xcworkspace \
+            -scheme TMDB-Test \
+            -destination 'platform=iOS Simulator,name=iPhone 16' \
+            -resultBundlePath TestResults.xcresult \
+            CODE_SIGNING_ALLOWED=NO \
+            | xcbeautify --renderer github-actions
+      - name: Upload test results
+        if: ${{ !cancelled() }}
+        uses: actions/upload-artifact@v4
+        with:
+          name: test-results
+          path: TestResults.xcresult
+          if-no-files-found: ignore
