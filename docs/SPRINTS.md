@@ -189,6 +189,27 @@ Solo build, **2-week sprints**. Each sprint has a goal, tasks (with rough estima
 
 ---
 
+## Sprint 10 — Manual QA & Bug Bash (ongoing)
+**Goal:** Drive every feature by hand on device + simulator, catalog defects in `docs/BUGS.md`, and fix them one-by-one — each fix carrying a regression test so the same bug can't return.
+
+This sprint is **demand-driven**: it has no fixed task count. The backlog is the running bug log in `docs/BUGS.md`, which the product owner (Ahmed) fills as issues are found during hands-on testing. Each open bug becomes a task.
+
+| # | Task | Pts | Label |
+|---|---|---|---|
+| 10.1 | Manual QA pass: work the per-feature checklist (Auth, Home, Details, Search, Favorites, Profile, TV, Person, Settings/i18n/theme/icons) on device + simulator; log every defect in `docs/BUGS.md` | 3 | qa |
+| 10.2 | Bug-fix loop: for each open bug, branch `sprint-10/bug-<id>-<slug>`, reproduce, fix, add a regression test that fails before / passes after, then squash-merge | — | fix |
+| 10.3 | Triage & severity: keep `docs/BUGS.md` current — severity (S1 blocker … S4 polish), status (Open / In progress / Fixed / Won't fix), and the closing commit for each | 1 | qa |
+
+**Bug workflow (per entry in `docs/BUGS.md`):**
+1. Ahmed adds a row: ID, area, steps to reproduce, expected vs actual, severity.
+2. Claude reproduces, opens `sprint-10/bug-<id>-<slug>`, writes a **failing** regression test that captures the defect.
+3. Fix until the test (and the full suite + lint) is green; update the row to Fixed with the commit hash.
+4. Squash-merge to `develop`; the bug stays in the log as a closed record.
+
+**DoD:** `docs/BUGS.md` has zero **S1/S2** (blocker/major) bugs in `Open`/`In progress`; every fixed bug has a named regression test; the manual-QA checklist is fully walked at least once on a real device.
+
+---
+
 ## Summary
 
 | Sprint | Theme | ~Pts |
@@ -203,6 +224,7 @@ Solo build, **2-week sprints**. Each sprint has a goal, tasks (with rough estima
 | 7 | Platform integration | 22 |
 | 8 | i18n, theming, a11y | 20 |
 | 9 | Quality & CI/CD | 25 |
+| 10 | Manual QA & bug bash | ongoing |
 
 **~10 sprints / ~20 weeks** at a sustainable solo pace. If you want to ship a demoable version sooner, Sprints 0–4 alone (through favorites) already showcase every architectural requirement you listed — the rest is breadth and polish.
 

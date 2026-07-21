@@ -253,4 +253,17 @@ The 10 commits merged while the reviewer was unavailable (6.1–6.6, 7.1/7.7, 8.
 - 8.3: Content now localizes to the device by default. `LanguageQueryInterceptor` (built in 5.6) gained an optional `regionProvider`, so every request carries `language` + `region` (ISO 3166-1, e.g. `EG`) — release dates/availability reflect where the user is. `AppSettings` seeds the content language from the DEVICE on first launch (`AppLanguage.matching(languageCode: Locale.current.language.languageCode)`, new pure CoreModels helper mapping ar→arabic, everything-else→english) instead of hardcoding English; an explicit user choice still wins (only the unset case falls back to device). `regionCodeProvider` reads `Locale.current.region` per request off the main actor. Refactor: extracted `makeAPIClient` + `makeAuthModule` into `AppContainer+Composition.swift` to keep AppContainer.swift under the file-length + init-body limits after the interceptor grew. 6 new tests (AppLanguage.matching table; region appended/omitted-when-nil-or-empty). CoreModels 10 + Networking 22 green; app builds + unit tests pass.
 
 ## Sprint 9 — Quality Hardening & CI/CD
-- [ ] 9.1 – 9.8 (not started)
+- [ ] 9.1 Fill test coverage gaps: ~80% on Domain + ViewModels
+- [ ] 9.2 UI tests for critical paths (login, add favorite) vs Test scheme
+- [ ] 9.3 GitHub Actions: build + test + lint on every PR
+- [ ] 9.4 GitHub Actions: per-env build matrix
+- [ ] 9.5 Fastlane lanes: lint / test / beta / release
+- [ ] 9.6 Fastlane match for code signing; CI-injected secrets
+- [ ] 9.7 Fastlane snapshot for App Store screenshots (AR + EN)
+- [ ] 9.8 README final: diagram, module graph, GIFs, decisions log, setup
+
+## Sprint 10 — Manual QA & Bug Bash (ongoing)
+- [ ] 10.1 Manual QA pass — walk the `docs/BUGS.md` checklist on device + simulator, log defects
+- [ ] 10.2 Bug-fix loop — one branch + regression test per bug in `docs/BUGS.md`
+- [ ] 10.3 Triage & severity — keep `docs/BUGS.md` current
+- Bug log lives in `docs/BUGS.md`; Ahmed adds rows, each open bug becomes a `sprint-10/bug-<id>-<slug>` task with a regression test. Zero open S1/S2 = DoD.
