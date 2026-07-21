@@ -2,6 +2,10 @@
   "sourceLanguage" : "en",
   "strings" : {
     "About" : { "localizations" : { "ar" : { "stringUnit" : { "state" : "translated", "value" : "حول التطبيق" } } } },
+    "App Icon" : { "localizations" : { "ar" : { "stringUnit" : { "state" : "translated", "value" : "أيقونة التطبيق" } } } },
+    "Default" : { "localizations" : { "ar" : { "stringUnit" : { "state" : "translated", "value" : "افتراضي" } } } },
+    "Midnight" : { "localizations" : { "ar" : { "stringUnit" : { "state" : "translated", "value" : "منتصف الليل" } } } },
+    "Sunset" : { "localizations" : { "ar" : { "stringUnit" : { "state" : "translated", "value" : "الغروب" } } } },
     "Appearance" : { "localizations" : { "ar" : { "stringUnit" : { "state" : "translated", "value" : "المظهر" } } } },
     "Applies to titles and descriptions from TMDB." : { "localizations" : { "ar" : { "stringUnit" : { "state" : "translated", "value" : "يُطبَّق على العناوين والأوصاف من TMDB." } } } },
     "Browsing as Guest" : { "localizations" : { "ar" : { "stringUnit" : { "state" : "translated", "value" : "تتصفّح كضيف" } } } },

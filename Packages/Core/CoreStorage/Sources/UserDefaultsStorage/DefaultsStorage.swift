@@ -14,6 +14,8 @@ public enum DefaultsKey: String, CaseIterable, Sendable {
     case appTheme = "tmdb.app-theme"
     /// Content-language preference (`AppLanguage` raw value).
     case appLanguage = "tmdb.app-language"
+    /// Alternate app-icon preference (`AppIcon` raw value).
+    case appIcon = "tmdb.app-icon"
 }
 
 /// Key-value persistence for lightweight preferences. Implemented by

@@ -16,6 +16,7 @@ struct SettingsViewModelTests {
     private final class SettingsStoreMock: SettingsStore {
         var theme: AppTheme
         var language: AppLanguage
+        var appIcon: AppIcon = .default
         private(set) var clearCount = 0
 
         init(theme: AppTheme = .system, language: AppLanguage = .english) {
@@ -57,6 +58,17 @@ struct SettingsViewModelTests {
 
         #expect(viewModel.language == .arabic)
         #expect(store.language == .arabic)
+    }
+
+    @Test("selecting an app icon updates the VM and persists through the store")
+    func selectAppIcon() {
+        let store = SettingsStoreMock()
+        let viewModel = SettingsViewModel(store: store, onSignOut: {})
+
+        viewModel.selectIcon(.midnight)
+
+        #expect(viewModel.appIcon == .midnight)
+        #expect(store.appIcon == .midnight)
     }
 
     @Test("clearCache delegates to the store and flips the confirmation flag")

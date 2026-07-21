@@ -24,6 +24,7 @@ public struct SettingsView: View {
         Form {
             appearanceSection
             languageSection
+            appIconSection
             dataSection
             accountSection
         }
@@ -58,6 +59,19 @@ public struct SettingsView: View {
             Text("Content Language", bundle: .module, comment: "Settings language section header")
         } footer: {
             Text("Applies to titles and descriptions from TMDB.", bundle: .module, comment: "Settings language footer")
+        }
+    }
+
+    private var appIconSection: some View {
+        Section {
+            ForEach(AppIcon.allCases) { icon in
+                selectableRow(Self.iconLabel(icon), isSelected: viewModel.appIcon == icon) {
+                    viewModel.selectIcon(icon)
+                }
+                .accessibilityIdentifier("settings.icon.\(icon.rawValue)")
+            }
+        } header: {
+            Text("App Icon", bundle: .module, comment: "Settings app-icon section header")
         }
     }
 
@@ -136,6 +150,14 @@ public struct SettingsView: View {
         case .arabic: Text("العربية", bundle: .module, comment: "Language option: Arabic")
         }
     }
+
+    private static func iconLabel(_ icon: AppIcon) -> Text {
+        switch icon {
+        case .default: Text("Default", bundle: .module, comment: "App icon option: default")
+        case .midnight: Text("Midnight", bundle: .module, comment: "App icon option: midnight")
+        case .sunset: Text("Sunset", bundle: .module, comment: "App icon option: sunset")
+        }
+    }
 }
 
 #if DEBUG
@@ -149,6 +171,7 @@ public struct SettingsView: View {
     private final class PreviewSettingsStore: SettingsStore {
         var theme: AppTheme = .system
         var language: AppLanguage = .english
+        var appIcon: AppIcon = .default
         func clearCache() async {}
     }
 #endif

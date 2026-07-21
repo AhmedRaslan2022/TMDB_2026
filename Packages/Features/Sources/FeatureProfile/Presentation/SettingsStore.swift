@@ -15,6 +15,8 @@ import CoreModels
 public protocol SettingsStore: AnyObject {
     var theme: AppTheme { get set }
     var language: AppLanguage { get set }
+    /// The user-selected alternate app icon; setting it applies the change.
+    var appIcon: AppIcon { get set }
     /// Clears the image cache and any cached API data.
     func clearCache() async
 }

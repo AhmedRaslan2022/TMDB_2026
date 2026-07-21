@@ -6,6 +6,11 @@
 
 IPHONEOS_DEPLOYMENT_TARGET = 17.0
 
+// Include every AppIcon set in the catalog (not just the primary) so the
+// user-selectable alternate icons (AppIcon-Midnight / AppIcon-Sunset) are
+// available to `setAlternateIconName`, on top of the per-environment primary.
+ASSETCATALOG_COMPILER_INCLUDE_ALL_APPICON_ASSETS = YES
+
 // App identity base — env files append their suffix / display name.
 APP_BUNDLE_ID_BASE = com.rasslan.github.TMDB
 

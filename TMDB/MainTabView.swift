@@ -235,6 +235,7 @@ struct MainTabView: View {
     private final class PreviewSettingsStore: SettingsStore {
         var theme: AppTheme = .system
         var language: AppLanguage = .english
+        var appIcon: AppIcon = .default
         func clearCache() async {}
     }
 #endif

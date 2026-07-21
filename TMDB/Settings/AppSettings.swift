@@ -31,15 +31,34 @@ final class AppSettings: SettingsStore {
         }
     }
 
+    var appIcon: AppIcon {
+        didSet {
+            defaults.set(appIcon.rawValue, for: .appIcon)
+            iconController.apply(appIcon)
+        }
+    }
+
     @ObservationIgnored private let defaults: any DefaultsStorage
     @ObservationIgnored private let imageCache: ImageCache
     @ObservationIgnored private let modelContainer: ModelContainer
+    @ObservationIgnored private let iconController: any AppIconControlling
     @ObservationIgnored private let languageBox = LanguageBox()
 
-    init(defaults: any DefaultsStorage, imageCache: ImageCache, modelContainer: ModelContainer) {
+    init(
+        defaults: any DefaultsStorage,
+        imageCache: ImageCache,
+        modelContainer: ModelContainer,
+        iconController: any AppIconControlling
+    ) {
         self.defaults = defaults
         self.imageCache = imageCache
         self.modelContainer = modelContainer
+        self.iconController = iconController
+        // Seed the property so the picker shows the right selection; `didSet`
+        // doesn't fire during init, so the controller is NOT re-invoked here —
+        // and shouldn't be: iOS persists the chosen alternate icon at the system
+        // level, and re-applying on every launch would retrigger its alert.
+        appIcon = defaults.string(for: .appIcon).flatMap(AppIcon.init) ?? .default
         theme = defaults.string(for: .appTheme).flatMap(AppTheme.init) ?? .system
         // First launch has no stored choice → seed from the device language
         // (task 8.3), so an Arabic device gets Arabic content out of the box.

@@ -70,7 +70,8 @@ final class AppContainer {
         let appSettings = AppSettings(
             defaults: UserDefaultsManager(),
             imageCache: imageCache,
-            modelContainer: modelContainer
+            modelContainer: modelContainer,
+            iconController: AppIconController()
         )
         self.appSettings = appSettings
         let apiClient = Self.makeAPIClient(environment: environment, appSettings: appSettings)
