@@ -1,0 +1,15 @@
+// Staging — internal/TestFlight builds. Release-quality codegen.
+
+#include "../Configs/Shared.xcconfig"
+
+APP_ENVIRONMENT_NAME = Staging
+PRODUCT_BUNDLE_IDENTIFIER = $(APP_BUNDLE_ID_BASE).staging
+INFOPLIST_KEY_CFBundleDisplayName = TMDB STG
+ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon-Staging
+
+SWIFT_OPTIMIZATION_LEVEL = -O
+SWIFT_COMPILATION_MODE = wholemodule
+ENABLE_NS_ASSERTIONS = NO
+DEBUG_INFORMATION_FORMAT = dwarf-with-dsym
+MTL_ENABLE_DEBUG_INFO = NO
+VALIDATE_PRODUCT = YES

@@ -1,0 +1,60 @@
+{
+  "sourceLanguage" : "en",
+  "strings" : {
+    "auth.error.generic" : {
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "تعذّر تسجيل الدخول. يُرجى المحاولة مرة أخرى."
+          }
+        }
+      }
+    },
+    "auth.error.notApproved" : {
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "لم تتم الموافقة على تسجيل الدخول."
+          }
+        }
+      }
+    },
+    "Continue as guest" : {
+      "comment" : "Guest login button",
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "المتابعة كضيف"
+          }
+        }
+      }
+    },
+    "Discover movies, build your watchlist, and rate what you watch." : {
+      "comment" : "Auth screen value proposition",
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "اكتشف الأفلام، وكوّن قائمة مشاهدتك، وقيّم ما تشاهده."
+          }
+        }
+      }
+    },
+    "Sign in with TMDB" : {
+
+    },
+    "Something went wrong. Please try again." : {
+
+    },
+    "The sign-in wasn't approved. Please try again." : {
+
+    },
+    "TMDB" : {
+      "comment" : "App name on the auth screen"
+    }
+  },
+  "version" : "1.0"
+}

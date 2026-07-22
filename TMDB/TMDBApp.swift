@@ -2,31 +2,32 @@
 //  TMDBApp.swift
 //  TMDB
 //
-//  Created by Rasslan on 14/07/2026.
+//  Created by Ahmed Raslan on 14/07/2026.
 //
 
-import SwiftUI
+import CoreUI
 import SwiftData
+import SwiftUI
 
+/// App entry point. The app target only composes modules; all functionality
+/// lives in the SPM packages under `Packages/`.
 @main
 struct TMDBApp: App {
-    var sharedModelContainer: ModelContainer = {
-        let schema = Schema([
-            Item.self,
-        ])
-        let modelConfiguration = ModelConfiguration(schema: schema, isStoredInMemoryOnly: false)
-
-        do {
-            return try ModelContainer(for: schema, configurations: [modelConfiguration])
-        } catch {
-            fatalError("Could not create ModelContainer: \(error)")
-        }
-    }()
+    @State private var container = AppContainer()
 
     var body: some Scene {
         WindowGroup {
-            ContentView()
+            RootView(container: container)
+                .environment(\.imageCache, container.imageCache)
+            #if DEBUG
+                .task {
+                    await DebugSmokeCheck.run(
+                        apiClient: container.apiClient,
+                        environment: container.environment
+                    )
+                }
+            #endif
         }
-        .modelContainer(sharedModelContainer)
+        .modelContainer(container.modelContainer)
     }
 }

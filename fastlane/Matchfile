@@ -1,0 +1,24 @@
+# Matchfile — code signing via fastlane match (git storage).
+#
+# UNVERIFIED SCAFFOLDING (Sprint 9.6): match stores encrypted certificates and
+# provisioning profiles in a SEPARATE private git repo — never this one. Create
+# that repo, then set MATCH_GIT_URL and MATCH_PASSWORD (as env vars / CI
+# secrets) before running `fastlane match appstore`.
+#
+# CI gets READ-ONLY access via a deploy key + the MATCH_PASSWORD secret; the
+# lanes pass `readonly: is_ci` so CI never mutates the signing repo.
+
+git_url(ENV["MATCH_GIT_URL"]) # e.g. git@github.com:AhmedRaslan2022/TMDB-signing.git
+storage_mode("git")
+
+type("development") # default; the beta/release lanes override with "appstore"
+
+app_identifier([
+  "com.rasslan.github.TMDB",
+  "com.rasslan.github.TMDB.staging",
+  "com.rasslan.github.TMDB.dev",
+  "com.rasslan.github.TMDB.test",
+])
+
+username(ENV["FASTLANE_APPLE_ID"])
+team_id("R6RXWLTM3U")

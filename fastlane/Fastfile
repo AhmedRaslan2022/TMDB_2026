@@ -1,0 +1,102 @@
+# Fastfile — CI/CD lanes for the TMDB app.
+#
+# UNVERIFIED SCAFFOLDING (Sprint 9.5–9.7): these lanes were authored without an
+# Apple Developer account or signing assets available in the dev environment,
+# so the distribution lanes (beta/release/screenshots) have NOT been executed.
+# `lint` and `test` are safe to run anywhere. Validate the rest on a machine
+# with the team's certificates + an App Store Connect API key.
+#
+# Secrets come from the environment / CI, NEVER from git:
+#   TMDB_ACCESS_TOKEN                    — written into Configs/Secrets.xcconfig
+#   MATCH_GIT_URL, MATCH_PASSWORD        — code signing (see Matchfile)
+#   ASC_KEY_ID, ASC_ISSUER_ID, ASC_KEY  — App Store Connect API key (.p8 contents)
+#   FASTLANE_APPLE_ID                    — Apple Developer email
+
+default_platform(:ios)
+
+WORKSPACE = "TMDB.xcworkspace".freeze
+LIVE_ID = "com.rasslan.github.TMDB".freeze
+STAGING_ID = "com.rasslan.github.TMDB.staging".freeze
+
+platform :ios do
+  # ---- Quality gates (safe locally + in CI) ------------------------------
+
+  desc "SwiftFormat (lint mode) + SwiftLint (strict) — mirrors the pre-commit gate"
+  lane :lint do
+    sh("cd .. && swiftformat --lint . --quiet")
+    sh("cd .. && swiftlint lint --strict --quiet")
+  end
+
+  desc "Run the app unit + UI tests on the Test scheme (simulator)"
+  lane :test do
+    run_tests(
+      workspace: WORKSPACE,
+      scheme: "TMDB-Test",
+      devices: ["iPhone 16"],
+      code_coverage: true,
+    )
+  end
+
+  # ---- Distribution ------------------------------------------------------
+
+  desc "Build Staging and upload to TestFlight"
+  lane :beta do
+    ensure_secrets
+    setup_ci if is_ci
+    key = asc_api_key
+    match(type: "appstore", app_identifier: STAGING_ID, readonly: is_ci)
+    increment_build_number(
+      build_number: latest_testflight_build_number(api_key: key, app_identifier: STAGING_ID) + 1,
+      xcodeproj: "TMDB.xcodeproj",
+    )
+    build_app(workspace: WORKSPACE, scheme: "TMDB-Staging", export_method: "app-store")
+    upload_to_testflight(
+      api_key: key,
+      app_identifier: STAGING_ID,
+      skip_waiting_for_build_processing: true,
+    )
+  end
+
+  desc "Build Live and upload to the App Store (held for manual review submission)"
+  lane :release do
+    ensure_secrets
+    setup_ci if is_ci
+    key = asc_api_key
+    match(type: "appstore", app_identifier: LIVE_ID, readonly: is_ci)
+    build_app(workspace: WORKSPACE, scheme: "TMDB-Live", export_method: "app-store")
+    upload_to_app_store(
+      api_key: key,
+      app_identifier: LIVE_ID,
+      submit_for_review: false, # flip to true once metadata/screenshots are ready
+      force: true,              # skip the HTML preview confirmation in CI
+      precheck_include_in_app_purchases: false,
+    )
+  end
+
+  desc "Capture App Store screenshots in EN + AR (reads Snapfile)"
+  lane :screenshots do
+    # Requires SnapshotHelper.swift + ScreenshotUITests in the UI test target —
+    # see fastlane/SETUP.md. Runs the screenshot UI test across the Snapfile's
+    # device + language matrix.
+    capture_ios_screenshots
+  end
+
+  # ---- Helpers -----------------------------------------------------------
+
+  desc "Recreate Configs/Secrets.xcconfig from TMDB_ACCESS_TOKEN"
+  private_lane :ensure_secrets do
+    token = ENV["TMDB_ACCESS_TOKEN"].to_s
+    UI.user_error!("TMDB_ACCESS_TOKEN is not set") if token.empty?
+    File.write("../Configs/Secrets.xcconfig", "TMDB_ACCESS_TOKEN = #{token}\n")
+  end
+
+  # Builds an App Store Connect API key from env (CI-friendly, no 2FA).
+  def asc_api_key
+    app_store_connect_api_key(
+      key_id: ENV["ASC_KEY_ID"],
+      issuer_id: ENV["ASC_ISSUER_ID"],
+      key_content: ENV["ASC_KEY"],
+      is_key_content_base64: false,
+    )
+  end
+end

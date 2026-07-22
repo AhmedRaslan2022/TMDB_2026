@@ -1,0 +1,17 @@
+{
+  "sourceLanguage" : "en",
+  "strings" : {
+    "Rated %@ out of 10" : {
+      "comment" : "VoiceOver label for a poster card's rating",
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "تقييم %@ من 10"
+          }
+        }
+      }
+    }
+  },
+  "version" : "1.0"
+}

@@ -1,0 +1,188 @@
+//
+//  AppCoordinator.swift
+//  TMDB
+//
+//  Created by Ahmed Raslan on 17/07/2026.
+//
+
+import CoreUtilities
+import FeatureAuth
+import FeatureFavorites
+import FeatureHome
+import FeatureProfile
+import FeatureSearch
+import FeatureTV
+import Foundation
+import Observation
+
+/// The five root tabs of the main shell.
+enum AppTab: Hashable, CaseIterable {
+    case home
+    case tv
+    case search
+    case favorites
+    case profile
+}
+
+/// Root coordinator. Owns the auth-gate switch, the selected tab, and one
+/// child coordinator per tab; children own per-tab navigation. Views never
+/// mutate navigation state directly — they call coordinator methods.
+@Observable
+@MainActor
+final class AppCoordinator {
+    /// Which root scene is on screen.
+    enum RootScene {
+        /// Login / guest entry. Shown until a session exists.
+        case auth
+        /// The authenticated (or guest) tab shell.
+        case main
+    }
+
+    /// Modals presented as sheets. All modal presentation is
+    /// coordinator-driven — views only report intent.
+    enum Sheet: String, Identifiable {
+        /// App/about information (placeholder until Sprint 5's settings).
+        case about
+
+        var id: String {
+            rawValue
+        }
+    }
+
+    /// Modals presented as full-screen covers.
+    enum FullScreenCover: String, Identifiable {
+        /// What's-new walkthrough (placeholder content for now).
+        case whatsNew
+
+        var id: String {
+            rawValue
+        }
+    }
+
+    private(set) var rootScene: RootScene = .auth
+    var selectedTab: AppTab = .home
+    var presentedSheet: Sheet?
+    var presentedFullScreenCover: FullScreenCover?
+    /// A deep link received before the main shell was ready (e.g. a cold-start
+    /// link arriving at the auth gate). Applied once the shell appears, so the
+    /// link still lands on the right screen with a correct back stack.
+    private var pendingDeepLink: DeepLink?
+
+    let home = TabCoordinator<HomeRoute>()
+    let tv = TabCoordinator<TVRoute>()
+    let search = TabCoordinator<SearchRoute>()
+    let favorites = TabCoordinator<FavoritesRoute>()
+    let profile = TabCoordinator<ProfileRoute>()
+
+    private let auth: AuthModule
+    private let logger = AppLogger(category: "Auth")
+
+    init(auth: AuthModule) {
+        self.auth = auth
+    }
+
+    /// Builds the auth-gate view model, wiring a completed session back to the
+    /// root switch. The session itself is already persisted by the use case.
+    func makeAuthViewModel() -> AuthViewModel {
+        auth.makeAuthViewModel(onAuthenticated: { [weak self] _ in
+            self?.completeAuthGate()
+        })
+    }
+
+    /// Restores a persisted session on launch, entering the main shell
+    /// directly when one exists. Called once from the root view.
+    func restoreSession() async {
+        if await auth.hasPersistedSession() {
+            rootScene = .main
+            applyPendingDeepLink()
+        }
+    }
+
+    /// Called when auth completes; enters the main shell.
+    func completeAuthGate() {
+        rootScene = .main
+        applyPendingDeepLink()
+    }
+
+    // MARK: Deep linking
+
+    /// Entry point for an incoming URL (custom scheme or universal link).
+    /// Returns whether the URL was a recognized deep link.
+    @discardableResult
+    func handle(url: URL) -> Bool {
+        guard let deepLink = DeepLinkParser.parse(url) else { return false }
+        handle(deepLink)
+        return true
+    }
+
+    /// Applies a deep link: on the main shell it selects the tab and rebuilds
+    /// that tab's stack immediately; at the auth gate it's deferred until the
+    /// shell appears (cold start).
+    func handle(_ deepLink: DeepLink) {
+        guard rootScene == .main else {
+            pendingDeepLink = deepLink
+            return
+        }
+        dismissModal()
+        switch deepLink {
+        case let .movie(id):
+            selectedTab = .home
+            home.popToRoot()
+            home.push(.movieDetails(movieID: id))
+        case let .tvShow(id):
+            selectedTab = .tv
+            tv.popToRoot()
+            tv.push(.showDetails(showID: id))
+        case let .person(id):
+            selectedTab = .home
+            home.popToRoot()
+            home.push(.person(personID: id))
+        case .search:
+            // A query pre-seed needs the SearchViewModel; selecting the tab is
+            // the coordinator's part. Query injection is a later refinement.
+            selectedTab = .search
+            search.popToRoot()
+        case let .tab(tab):
+            selectedTab = tab
+        }
+    }
+
+    /// Applies and clears any link deferred while at the auth gate.
+    private func applyPendingDeepLink() {
+        guard let deepLink = pendingDeepLink else { return }
+        pendingDeepLink = nil
+        handle(deepLink)
+    }
+
+    func presentSheet(_ sheet: Sheet) {
+        presentedSheet = sheet
+    }
+
+    func presentFullScreenCover(_ cover: FullScreenCover) {
+        presentedFullScreenCover = cover
+    }
+
+    func dismissModal() {
+        presentedSheet = nil
+        presentedFullScreenCover = nil
+    }
+
+    /// Returns to the auth gate, e.g. after logout, resetting all tab and
+    /// modal state. Navigation resets immediately; session teardown (local
+    /// wipe first, then remote delete) runs in the background via the auth
+    /// module's barrier, so a new login/guest attempt waits for it and can
+    /// never be clobbered by the wipe.
+    func signOut() {
+        rootScene = .auth
+        selectedTab = .home
+        dismissModal()
+        home.popToRoot()
+        tv.popToRoot()
+        search.popToRoot()
+        favorites.popToRoot()
+        profile.popToRoot()
+        auth.beginLogout { [logger] error in
+            logger.error("Logout teardown failed: \(error)")
+        }
+    }
+}

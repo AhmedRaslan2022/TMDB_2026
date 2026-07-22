@@ -1,0 +1,53 @@
+{
+  "sourceLanguage" : "en",
+  "strings" : {
+    "Couldn't load this person." : {
+
+    },
+    "Known For" : {
+      "comment" : "Person filmography section title",
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "أشهر الأعمال"
+          }
+        }
+      }
+    },
+    "Loading" : {
+      "comment" : "VoiceOver label while person details load",
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "جارٍ التحميل"
+          }
+        }
+      }
+    },
+    "person.error" : {
+      "comment" : "Shown when the person details fetch fails",
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "تعذّر تحميل بيانات هذا الشخص."
+          }
+        }
+      }
+    },
+    "Retry" : {
+      "comment" : "Retry loading person details",
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "إعادة المحاولة"
+          }
+        }
+      }
+    }
+  },
+  "version" : "1.0"
+}

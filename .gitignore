@@ -1,0 +1,32 @@
+# macOS
+.DS_Store
+
+# Xcode
+xcuserdata/
+*.xcuserstate
+DerivedData/
+build/
+*.xcscmblueprint
+*.xccheckout
+
+# SPM
+.build/
+.swiftpm/
+Package.resolved
+
+# Secrets — never commit real values
+Configs/Secrets.xcconfig
+
+# Fastlane (Sprint 9)
+fastlane/report.xml
+fastlane/screenshots/**/*.png
+fastlane/test_output
+
+# Fastlane — generated artifacts (screenshots are added deliberately if needed)
+fastlane/report.xml
+fastlane/README.md
+fastlane/test_output/
+fastlane/screenshots/
+fastlane/*.p8
+vendor/bundle/
+.bundle/
