@@ -63,10 +63,12 @@ New shared code goes in the correct Core package — never duplicated into featu
 
 ## Git Workflow
 
-- Branches: `sprint-N/task-N.M-short-name` off `develop`. `main` is release-only.
+- **Promotion pipeline** (see `docs/BRANCHING.md`): `develop → test → staging → live`, each hop a PR, each merge minting a versioned build for that environment (`test`=Test, `staging`=Staging→TestFlight, `live`=Live→App Store). `main` is superseded by `live` as the production line.
+- Work branches: `sprint-N/task-N.M-short-name` (or `fix/…`, `chore/…`) off `develop`.
 - **Conventional commits** (`feat:`, `fix:`, `test:`, `chore:`, `refactor:`, `docs:`). Small, atomic commits.
-- One PR per task (or tightly-related task pair), squash-merged into `develop`. PR description: what/why + which sprint task it closes.
-- Never commit directly to `main` or `develop`. Never force-push shared branches.
+- One PR per task (or tightly-related task pair), **squash-merged into `develop`**. Promotion PRs (develop→test→staging→live) use **merge commits**, forward-only, one hop at a time. PR description: what/why + which sprint task it closes.
+- **Never push directly to `develop`, `test`, `staging`, or `live`** — always open a pull request, including feature work into `develop`. Never force-push a shared branch.
+- CI (`.github/workflows/ci.yml`) gates every PR; `release.yml` versions each promotion merge. Branch protection that blocks non-green/direct pushes is an owner-side GitHub setting.
 
 ## Sprint Execution Protocol
 

@@ -4,6 +4,8 @@ Task checklist mirroring `docs/SPRINTS.md`. One line per deviation/decision.
 
 > **Note:** `docs/PLAN.md` does not exist in this repo — `TMDB-App-Plan.md` was deleted before Sprint 0 started. Architecture rules in `CLAUDE.md` serve as the plan of record until a PLAN.md is added.
 
+> **Branching (2026-07-22):** promotion pipeline `develop → test → staging → live`, PR per hop, each merge mints a versioned build via `.github/workflows/release.yml`. No direct pushes to those branches. See [`docs/BRANCHING.md`](BRANCHING.md).
+
 ## Sprint 0 — Foundation & Tooling
 
 - [x] 0.1 Create Xcode workspace + thin app target
