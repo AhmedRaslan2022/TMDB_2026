@@ -272,7 +272,7 @@ The 10 commits merged while the reviewer was unavailable (6.1–6.6, 7.1/7.7, 8.
 
 ## Sprint 10 — App Launch Experience & Onboarding
 - [x] 10.1 App + Scene delegate lifecycle seams — `TMDB/App/AppDelegate.swift` (`didFinishLaunching` + `configurationForConnecting` routing scenes to the scene delegate) and `SceneDelegate.swift` (scene lifecycle: willConnect/didBecomeActive/willResignActive/foreground/background), both logging via the CoreUtilities `AppLogger` "Lifecycle" category. Wired through `@UIApplicationDelegateAdaptor` in `TMDBApp`; SwiftUI still owns the window/content (the scene delegate creates no `UIWindow`) and deep links keep `.onOpenURL`. Verified the app still boots to the shell (login UI test passes).
-- [ ] 10.2 Static launch screen (Info.plist `UILaunchScreen`) matching the splash
+- [x] 10.2 Static launch screen — `Info.plist` `UILaunchScreen` with `UIColorName = LaunchBackground` (new `LaunchBackground.colorset` in the app asset catalog = TMDB brand dark-blue `rgb(0.05,0.14,0.25)`, matching `AppColors.brandPrimary`). Solid brand background so it hands off seamlessly into the in-app splash's first frame (10.4). No launch-screen storyboard; modern Info.plist dict. plist lints clean, app builds.
 - [ ] 10.3 `FeatureOnboarding` package — interactive, first-launch-only, `OnboardingCompletion` port
 - [ ] 10.4 Splash root + `LaunchUseCase` (onboarding + auth status → destination); `RootScene` gains `.splash` + `.onboarding`
 - Decisions: onboarding lives in a new FeatureOnboarding package; splash + LaunchUseCase in the app target (the launch decision combines auth + onboarding, and features can't import each other). Delegates are lifecycle seams only — deep links keep the working SwiftUI `.onOpenURL`.
