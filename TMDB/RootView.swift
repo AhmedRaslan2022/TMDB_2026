@@ -10,6 +10,7 @@ import FeatureAuth
 import FeatureFavorites
 import FeatureHome
 import FeatureMovieDetails
+import FeatureOnboarding
 import FeaturePerson
 import FeatureProfile
 import FeatureSearch
@@ -24,6 +25,8 @@ import SwiftUI
 struct RootView: View {
     @Bindable private var coordinator: AppCoordinator
     @State private var authViewModel: AuthViewModel
+    @State private var onboardingViewModel: OnboardingViewModel
+    private let launchUseCase: any LaunchUseCase
     @State private var homeViewModel: HomeViewModel
     @State private var tvHomeViewModel: TVHomeViewModel
     @State private var searchViewModel: SearchViewModel
@@ -41,6 +44,8 @@ struct RootView: View {
     init(container: AppContainer) {
         _coordinator = Bindable(container.coordinator)
         _authViewModel = State(initialValue: container.coordinator.makeAuthViewModel())
+        _onboardingViewModel = State(initialValue: container.makeOnboardingViewModel())
+        launchUseCase = container.launchUseCase
         _homeViewModel = State(initialValue: container.makeHomeViewModel())
         _tvHomeViewModel = State(initialValue: container.makeTVHomeViewModel())
         _searchViewModel = State(initialValue: container.makeSearchViewModel())
@@ -68,7 +73,7 @@ struct RootView: View {
             .id(appSettings.language)
             .preferredColorScheme(appSettings.theme.colorScheme)
             .onOpenURL { coordinator.handle(url: $0) }
-            .task { await coordinator.restoreSession() }
+            .task { await coordinator.start(using: launchUseCase) }
             .sheet(item: $coordinator.presentedSheet) { sheet in
                 switch sheet {
                 case .about:
@@ -86,6 +91,10 @@ struct RootView: View {
     @ViewBuilder
     private var content: some View {
         switch coordinator.rootScene {
+        case .splash:
+            SplashView()
+        case .onboarding:
+            OnboardingView(viewModel: onboardingViewModel)
         case .auth:
             AuthView(viewModel: authViewModel)
         case .main:

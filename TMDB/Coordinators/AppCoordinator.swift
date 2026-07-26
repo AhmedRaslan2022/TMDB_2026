@@ -32,6 +32,10 @@ enum AppTab: Hashable, CaseIterable {
 final class AppCoordinator {
     /// Which root scene is on screen.
     enum RootScene {
+        /// Launch splash, shown while the launch destination is resolved.
+        case splash
+        /// First-launch interactive onboarding.
+        case onboarding
         /// Login / guest entry. Shown until a session exists.
         case auth
         /// The authenticated (or guest) tab shell.
@@ -59,7 +63,7 @@ final class AppCoordinator {
         }
     }
 
-    private(set) var rootScene: RootScene = .auth
+    private(set) var rootScene: RootScene = .splash
     var selectedTab: AppTab = .home
     var presentedSheet: Sheet?
     var presentedFullScreenCover: FullScreenCover?
@@ -89,13 +93,38 @@ final class AppCoordinator {
         })
     }
 
-    /// Restores a persisted session on launch, entering the main shell
-    /// directly when one exists. Called once from the root view.
+    /// Resolves the launch destination (onboarding / auth / main) via the
+    /// launch use case and switches the root scene. Called once from the root
+    /// view while the splash is on screen.
+    func start(using launch: any LaunchUseCase) async {
+        switch await launch.execute() {
+        case .onboarding:
+            rootScene = .onboarding
+        case .authGate:
+            rootScene = .auth
+        case .main:
+            rootScene = .main
+            applyPendingDeepLink()
+        }
+    }
+
+    /// Restores a persisted session, entering the main shell when one exists
+    /// and otherwise showing the auth gate. Retained as the explicit
+    /// "restore" path (the launch use case decides the wider first-run flow).
     func restoreSession() async {
         if await auth.hasPersistedSession() {
             rootScene = .main
             applyPendingDeepLink()
+        } else {
+            rootScene = .auth
         }
+    }
+
+    /// Called when onboarding finishes; a fresh install has no session yet, so
+    /// present the auth gate. Persisting the "seen" flag is the app's job (via
+    /// the `OnboardingCompletion` port).
+    func completeOnboarding() {
+        rootScene = .auth
     }
 
     /// Called when auth completes; enters the main shell.

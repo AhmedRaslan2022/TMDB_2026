@@ -38,6 +38,14 @@ final class AppSettings: SettingsStore {
         }
     }
 
+    /// Whether the first-launch onboarding has been completed. Backed directly
+    /// by `UserDefaults` (read once at launch, written once when onboarding
+    /// finishes), so it doesn't need to be an observed stored property.
+    @ObservationIgnored var hasCompletedOnboarding: Bool {
+        get { defaults.bool(for: .hasSeenOnboarding) }
+        set { defaults.set(newValue, for: .hasSeenOnboarding) }
+    }
+
     @ObservationIgnored private let defaults: any DefaultsStorage
     @ObservationIgnored private let imageCache: ImageCache
     @ObservationIgnored private let modelContainer: ModelContainer
