@@ -271,7 +271,7 @@ The 10 commits merged while the reviewer was unavailable (6.1–6.6, 7.1/7.7, 8.
 - **Net:** 9.1–9.4 fully done and verified; 9.5–9.7 delivered as clearly-marked unverified scaffolding (per the product owner's choice); 9.8 done. The two remaining actions are owner-side and external (enable branch protection + Actions secret; run the signing/distribution lanes with real Apple credentials).
 
 ## Sprint 10 — App Launch Experience & Onboarding
-- [ ] 10.1 App + Scene delegate lifecycle seams (`@UIApplicationDelegateAdaptor`; keep `.onOpenURL`)
+- [x] 10.1 App + Scene delegate lifecycle seams — `TMDB/App/AppDelegate.swift` (`didFinishLaunching` + `configurationForConnecting` routing scenes to the scene delegate) and `SceneDelegate.swift` (scene lifecycle: willConnect/didBecomeActive/willResignActive/foreground/background), both logging via the CoreUtilities `AppLogger` "Lifecycle" category. Wired through `@UIApplicationDelegateAdaptor` in `TMDBApp`; SwiftUI still owns the window/content (the scene delegate creates no `UIWindow`) and deep links keep `.onOpenURL`. Verified the app still boots to the shell (login UI test passes).
 - [ ] 10.2 Static launch screen (Info.plist `UILaunchScreen`) matching the splash
 - [ ] 10.3 `FeatureOnboarding` package — interactive, first-launch-only, `OnboardingCompletion` port
 - [ ] 10.4 Splash root + `LaunchUseCase` (onboarding + auth status → destination); `RootScene` gains `.splash` + `.onboarding`
