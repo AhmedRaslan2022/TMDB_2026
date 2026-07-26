@@ -270,8 +270,15 @@ The 10 commits merged while the reviewer was unavailable (6.1–6.6, 7.1/7.7, 8.
 - [x] **README tells the architecture story with visuals** — done (mermaid architecture + module diagrams, decisions log); screenshot/GIF media are placeholders awaiting a `fastlane screenshots` capture.
 - **Net:** 9.1–9.4 fully done and verified; 9.5–9.7 delivered as clearly-marked unverified scaffolding (per the product owner's choice); 9.8 done. The two remaining actions are owner-side and external (enable branch protection + Actions secret; run the signing/distribution lanes with real Apple credentials).
 
-## Sprint 10 — Manual QA & Bug Bash (ongoing)
-- [ ] 10.1 Manual QA pass — walk the `docs/BUGS.md` checklist on device + simulator, log defects
-- [ ] 10.2 Bug-fix loop — one branch + regression test per bug in `docs/BUGS.md`
-- [ ] 10.3 Triage & severity — keep `docs/BUGS.md` current
-- Bug log lives in `docs/BUGS.md`; Ahmed adds rows, each open bug becomes a `sprint-10/bug-<id>-<slug>` task with a regression test. Zero open S1/S2 = DoD.
+## Sprint 10 — App Launch Experience & Onboarding
+- [ ] 10.1 App + Scene delegate lifecycle seams (`@UIApplicationDelegateAdaptor`; keep `.onOpenURL`)
+- [ ] 10.2 Static launch screen (Info.plist `UILaunchScreen`) matching the splash
+- [ ] 10.3 `FeatureOnboarding` package — interactive, first-launch-only, `OnboardingCompletion` port
+- [ ] 10.4 Splash root + `LaunchUseCase` (onboarding + auth status → destination); `RootScene` gains `.splash` + `.onboarding`
+- Decisions: onboarding lives in a new FeatureOnboarding package; splash + LaunchUseCase in the app target (the launch decision combines auth + onboarding, and features can't import each other). Delegates are lifecycle seams only — deep links keep the working SwiftUI `.onOpenURL`.
+
+## Sprint 11 — Manual QA & Bug Bash (ongoing)
+- [ ] 11.1 Manual QA pass — walk the `docs/BUGS.md` checklist on device + simulator, log defects
+- [ ] 11.2 Bug-fix loop — one branch + regression test per bug in `docs/BUGS.md`
+- [ ] 11.3 Triage & severity — keep `docs/BUGS.md` current
+- Bug log lives in `docs/BUGS.md`; Ahmed adds rows, each open bug becomes a `sprint-11/bug-<id>-<slug>` task with a regression test. Zero open S1/S2 = DoD.

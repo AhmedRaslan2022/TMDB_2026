@@ -189,20 +189,34 @@ Solo build, **2-week sprints**. Each sprint has a goal, tasks (with rough estima
 
 ---
 
-## Sprint 10 — Manual QA & Bug Bash (ongoing)
+## Sprint 10 — App Launch Experience & Onboarding
+**Goal:** A polished, correct first-run and cold-start experience — static launch screen → in-app splash → the right destination (onboarding, auth, or the shell) based on onboarding + authorization status — plus first-launch-only interactive onboarding, and UIKit lifecycle seams.
+
+| # | Task | Pts | Label |
+|---|---|---|---|
+| 10.1 | App + Scene delegate lifecycle seams via `@UIApplicationDelegateAdaptor` (SwiftUI App lifecycle retained). Documented hooks for launch + scene lifecycle; deep links keep using `.onOpenURL` | 2 | feat |
+| 10.2 | Static launch screen (Info.plist `UILaunchScreen`) whose background/logo matches the in-app splash for a seamless hand-off | 1 | feat |
+| 10.3 | `FeatureOnboarding` package: interactive, paged onboarding shown on **first launch only**; `OnboardingViewModel` + an `OnboardingCompletion` port the app fulfills (persists the flag) | 3 | feat |
+| 10.4 | Splash as the root + `LaunchUseCase` (onboarding-complete + auth-session status → `LaunchDestination` of onboarding / auth / main); `AppCoordinator.RootScene` gains `.splash` + `.onboarding`; splash runs the use case then routes | 3 | feat |
+
+**DoD:** cold start shows the static launch screen → splash while the launch decision runs, then lands on onboarding (first launch), the auth gate (no session), or the shell (session restored) with no auth-gate flash; onboarding shows once and never again; `LaunchUseCase` + `OnboardingViewModel` unit-tested; delegates in place; lint + full suite green.
+
+---
+
+## Sprint 11 — Manual QA & Bug Bash (ongoing)
 **Goal:** Drive every feature by hand on device + simulator, catalog defects in `docs/BUGS.md`, and fix them one-by-one — each fix carrying a regression test so the same bug can't return.
 
 This sprint is **demand-driven**: it has no fixed task count. The backlog is the running bug log in `docs/BUGS.md`, which the product owner (Ahmed) fills as issues are found during hands-on testing. Each open bug becomes a task.
 
 | # | Task | Pts | Label |
 |---|---|---|---|
-| 10.1 | Manual QA pass: work the per-feature checklist (Auth, Home, Details, Search, Favorites, Profile, TV, Person, Settings/i18n/theme/icons) on device + simulator; log every defect in `docs/BUGS.md` | 3 | qa |
-| 10.2 | Bug-fix loop: for each open bug, branch `sprint-10/bug-<id>-<slug>`, reproduce, fix, add a regression test that fails before / passes after, then squash-merge | — | fix |
-| 10.3 | Triage & severity: keep `docs/BUGS.md` current — severity (S1 blocker … S4 polish), status (Open / In progress / Fixed / Won't fix), and the closing commit for each | 1 | qa |
+| 11.1 | Manual QA pass: work the per-feature checklist (Auth, Home, Details, Search, Favorites, Profile, TV, Person, Settings/i18n/theme/icons, launch/onboarding) on device + simulator; log every defect in `docs/BUGS.md` | 3 | qa |
+| 11.2 | Bug-fix loop: for each open bug, branch `sprint-11/bug-<id>-<slug>`, reproduce, fix, add a regression test that fails before / passes after, then squash-merge | — | fix |
+| 11.3 | Triage & severity: keep `docs/BUGS.md` current — severity (S1 blocker … S4 polish), status (Open / In progress / Fixed / Won't fix), and the closing commit for each | 1 | qa |
 
 **Bug workflow (per entry in `docs/BUGS.md`):**
 1. Ahmed adds a row: ID, area, steps to reproduce, expected vs actual, severity.
-2. Claude reproduces, opens `sprint-10/bug-<id>-<slug>`, writes a **failing** regression test that captures the defect.
+2. Claude reproduces, opens `sprint-11/bug-<id>-<slug>`, writes a **failing** regression test that captures the defect.
 3. Fix until the test (and the full suite + lint) is green; update the row to Fixed with the commit hash.
 4. Squash-merge to `develop`; the bug stays in the log as a closed record.
 
@@ -224,7 +238,8 @@ This sprint is **demand-driven**: it has no fixed task count. The backlog is the
 | 7 | Platform integration | 22 |
 | 8 | i18n, theming, a11y | 20 |
 | 9 | Quality & CI/CD | 25 |
-| 10 | Manual QA & bug bash | ongoing |
+| 10 | App launch experience & onboarding | 9 |
+| 11 | Manual QA & bug bash | ongoing |
 
 **~10 sprints / ~20 weeks** at a sustainable solo pace. If you want to ship a demoable version sooner, Sprints 0–4 alone (through favorites) already showcase every architectural requirement you listed — the rest is breadth and polish.
 
