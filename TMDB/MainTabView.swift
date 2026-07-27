@@ -211,7 +211,7 @@ struct MainTabView: View {
                 )
             },
             makeSettingsViewModel: {
-                SettingsViewModel(store: PreviewSettingsStore(), onSignOut: {})
+                SettingsViewModel(store: PreviewSettingsStore(), onSignOut: {}, isAuthenticated: { false })
             },
             makeTVDetailsViewModel: { showID in
                 TVDetailsViewModel(

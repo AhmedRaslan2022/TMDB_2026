@@ -270,6 +270,9 @@ The 10 commits merged while the reviewer was unavailable (6.1–6.6, 7.1/7.7, 8.
 - [x] **README tells the architecture story with visuals** — done (mermaid architecture + module diagrams, decisions log); screenshot/GIF media are placeholders awaiting a `fastlane screenshots` capture.
 - **Net:** 9.1–9.4 fully done and verified; 9.5–9.7 delivered as clearly-marked unverified scaffolding (per the product owner's choice); 9.8 done. The two remaining actions are owner-side and external (enable branch protection + Actions secret; run the signing/distribution lanes with real Apple credentials).
 
+### UX fix — Settings account row reflects session kind — 2026-07-27
+(`fix/settings-guest-sign-in`, user request) A full TMDB account keeps the destructive **Sign Out** in Settings, while a **guest or unauthenticated** session shows **Sign In** in green (`AppColors.brandTertiary`); both route through the same teardown to the auth gate. Session kind flows `AuthModule.isAuthenticated()` (true only for `.authenticated`) → injected `isAuthenticated` provider on `SettingsViewModel` (`isAuthenticated: Bool?`, `nil` until `loadAccountState()` runs from the view's `.task` — FeatureProfile can't import FeatureAuth, so the composition root bridges). EN+AR "Sign In" strings; a11y ids `settings.signOut` / `settings.signIn`. 8 VM tests + the updated guest UI test (Sign In shown, Sign Out absent, tap → auth gate) pass.
+
 ## Sprint 10 — Manual QA & Bug Bash (ongoing)
 - [ ] 10.1 Manual QA pass — walk the `docs/BUGS.md` checklist on device + simulator, log defects
 - [ ] 10.2 Bug-fix loop — one branch + regression test per bug in `docs/BUGS.md`
