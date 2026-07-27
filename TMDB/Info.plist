@@ -21,12 +21,7 @@
 	<string>$(TMDB_API_BASE_URL)</string>
 	<key>TMDB_IMAGE_BASE_URL</key>
 	<string>$(TMDB_IMAGE_BASE_URL)</string>
-	<key>UILaunchScreen</key>
-	<dict>
-		<key>UIColorName</key>
-		<string>LaunchBackground</string>
-		<key>UIImageRespectsSafeAreaInsets</key>
-		<true/>
-	</dict>
+	<key>UILaunchStoryboardName</key>
+	<string>LaunchScreen</string>
 </dict>
 </plist>

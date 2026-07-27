@@ -62,37 +62,46 @@ struct RootView: View {
     }
 
     var body: some View {
-        content
-            // Content language also drives the UI: render in that locale (live
-            // string localization) and mirror to RTL for Arabic. The `.id`
-            // rebuilds the whole shell on a language change — the tab bar and
-            // stacks are torn down and recreated so the mirroring applies
-            // cleanly rather than half-updating an existing layout.
-            .environment(\.locale, appSettings.language.locale)
-            .environment(\.layoutDirection, appSettings.language.layoutDirection)
-            .id(appSettings.language)
-            .preferredColorScheme(appSettings.theme.colorScheme)
-            .onOpenURL { coordinator.handle(url: $0) }
-            .task { await coordinator.start(using: launchUseCase) }
-            .sheet(item: $coordinator.presentedSheet) { sheet in
-                switch sheet {
-                case .about:
-                    AboutSheetView(onDismiss: { coordinator.dismissModal() })
-                }
+        ZStack {
+            content
+            // The splash is ALWAYS the root layer at launch — mounted
+            // unconditionally on top, never a routing option — and fades out
+            // once the launch decision picked the scene rendering beneath it.
+            if coordinator.isLaunching {
+                SplashView()
+                    .transition(.opacity)
+                    .zIndex(1)
             }
-            .fullScreenCover(item: $coordinator.presentedFullScreenCover) { cover in
-                switch cover {
-                case .whatsNew:
-                    WhatsNewCoverView(onDismiss: { coordinator.dismissModal() })
-                }
+        }
+        .animation(.easeOut(duration: 0.4), value: coordinator.isLaunching)
+        // Content language also drives the UI: render in that locale (live
+        // string localization) and mirror to RTL for Arabic. The `.id`
+        // rebuilds the whole shell on a language change — the tab bar and
+        // stacks are torn down and recreated so the mirroring applies
+        // cleanly rather than half-updating an existing layout.
+        .environment(\.locale, appSettings.language.locale)
+        .environment(\.layoutDirection, appSettings.language.layoutDirection)
+        .id(appSettings.language)
+        .preferredColorScheme(appSettings.theme.colorScheme)
+        .onOpenURL { coordinator.handle(url: $0) }
+        .task { await coordinator.start(using: launchUseCase) }
+        .sheet(item: $coordinator.presentedSheet) { sheet in
+            switch sheet {
+            case .about:
+                AboutSheetView(onDismiss: { coordinator.dismissModal() })
             }
+        }
+        .fullScreenCover(item: $coordinator.presentedFullScreenCover) { cover in
+            switch cover {
+            case .whatsNew:
+                WhatsNewCoverView(onDismiss: { coordinator.dismissModal() })
+            }
+        }
     }
 
     @ViewBuilder
     private var content: some View {
         switch coordinator.rootScene {
-        case .splash:
-            SplashView()
         case .onboarding:
             OnboardingView(viewModel: onboardingViewModel)
         case .auth:

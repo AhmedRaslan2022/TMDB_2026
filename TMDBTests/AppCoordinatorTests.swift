@@ -10,10 +10,11 @@ import Testing
 
 @MainActor
 struct AppCoordinatorTests {
-    @Test func startsAtSplashOnHomeTab() {
+    @Test("launch begins under the splash — isLaunching until start resolves")
+    func startsLaunchingUnderSplash() {
         let coordinator = AppCoordinator(auth: .stub)
 
-        #expect(coordinator.rootScene == .splash)
+        #expect(coordinator.isLaunching)
         #expect(coordinator.selectedTab == .home)
     }
 
@@ -25,7 +26,7 @@ struct AppCoordinatorTests {
         #expect(coordinator.rootScene == .auth)
     }
 
-    @Test("start routes to the launch use case's destination")
+    @Test("start routes to the launch use case's destination and drops the splash")
     func startRoutesToDestination() async {
         for (destination, expected) in [
             (LaunchDestination.onboarding, AppCoordinator.RootScene.onboarding),
@@ -34,9 +35,10 @@ struct AppCoordinatorTests {
         ] {
             let coordinator = AppCoordinator(auth: .stub)
 
-            await coordinator.start(using: StubLaunchUseCase(destination: destination))
+            await coordinator.start(using: StubLaunchUseCase(destination: destination), minimumSplashDuration: .zero)
 
             #expect(coordinator.rootScene == expected)
+            #expect(!coordinator.isLaunching, "the splash dismisses once the destination is applied")
         }
     }
 
