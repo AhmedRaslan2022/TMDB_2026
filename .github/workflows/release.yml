@@ -1,13 +1,13 @@
 name: Release
 
-# Promotion pipeline: develop → test → staging → live.
+# Promotion pipeline: develop → test → staging → main.
 # A PR merged INTO one of these branches is a push that mints a new versioned
 # build for that environment: a unique build number (the run number, so no
-# commit-back loop), a git tag, a GitHub Release, and — for staging/live — the
+# commit-back loop), a git tag, a GitHub Release, and — for staging/main — the
 # matching fastlane distribution lane when signing secrets are configured.
 on:
   push:
-    branches: [test, staging, live]
+    branches: [test, staging, main]
 
 # Never cancel an in-flight release — each merge gets its own version.
 concurrency:
@@ -35,7 +35,7 @@ jobs:
           case "${{ github.ref_name }}" in
             test)    echo "scheme=TMDB-Test"    >> "$GITHUB_OUTPUT"; echo "lane="        >> "$GITHUB_OUTPUT" ;;
             staging) echo "scheme=TMDB-Staging" >> "$GITHUB_OUTPUT"; echo "lane=beta"    >> "$GITHUB_OUTPUT" ;;
-            live)    echo "scheme=TMDB-Live"    >> "$GITHUB_OUTPUT"; echo "lane=release" >> "$GITHUB_OUTPUT" ;;
+            main)    echo "scheme=TMDB-Live"    >> "$GITHUB_OUTPUT"; echo "lane=release" >> "$GITHUB_OUTPUT" ;;
           esac
 
       - name: Compute version
@@ -77,7 +77,7 @@ jobs:
             --title "${{ github.ref_name }} v${{ steps.ver.outputs.marketing }} (build ${{ steps.ver.outputs.build }})" \
             --notes "Automated ${{ github.ref_name }} version from merge ${{ github.sha }}." \
             --target "${{ github.sha }}" \
-            ${{ github.ref_name == 'live' && ' ' || '--prerelease' }}
+            ${{ github.ref_name == 'main' && ' ' || '--prerelease' }}
 
       # Distribution only runs when App Store Connect + match secrets exist.
       # Until they do (see fastlane/SETUP.md) this step skips with a warning,

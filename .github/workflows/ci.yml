@@ -3,11 +3,11 @@ name: CI
 # Build + test + lint on every PR into an integration/promotion branch, and on
 # pushes to develop. Mirrors the local pre-commit gate (swiftformat --lint +
 # swiftlint --strict) and the Test scheme's xcodebuild run so "green locally"
-# == "green in CI". Promotion PRs (develop→test→staging→live) are gated too;
+# == "green in CI". Promotion PRs (develop→test→staging→main) are gated too;
 # the actual per-env versioning happens in release.yml once merged.
 on:
   pull_request:
-    branches: [develop, main, test, staging, live]
+    branches: [develop, main, test, staging]
   push:
     branches: [develop]
 

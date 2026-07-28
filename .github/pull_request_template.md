@@ -1,7 +1,7 @@
 <!--
   Pick ONE section below and delete the other. See docs/BRANCHING.md.
   Pipeline is forward-only, one hop at a time:
-     feature ─▶ develop ─▶ test ─▶ staging ─▶ live
+     feature ─▶ develop ─▶ test ─▶ staging ─▶ main
 -->
 
 ## Type of PR
@@ -10,7 +10,7 @@
 - [ ] **Promotion** (merge-commit, forward-only, one hop):
   - [ ] `develop` → `test`  (mints a **test** version)
   - [ ] `test` → `staging`  (mints a **staging** version → TestFlight when secrets set)
-  - [ ] `staging` → `live`  (mints a **live** version → App Store when secrets set)
+  - [ ] `staging` → `main`  (mints a **live** version → App Store when secrets set)
 
 ---
 
