@@ -1,316 +1,320 @@
 {
-  "sourceLanguage": "en",
-  "strings": {
-    "About": {
-      "comment": "Show about sheet button",
-      "localizations": {
-        "ar": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "حول التطبيق"
+  "sourceLanguage" : "en",
+  "strings" : {
+    "About" : {
+      "comment" : "Show about sheet button",
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "حول التطبيق"
           }
         }
       }
     },
-    "App Icon": {
-      "comment": "Settings app-icon section header",
-      "localizations": {
-        "ar": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "أيقونة التطبيق"
+    "App Icon" : {
+      "comment" : "Settings app-icon section header",
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "أيقونة التطبيق"
           }
         }
       }
     },
-    "Appearance": {
-      "comment": "Settings appearance section header",
-      "localizations": {
-        "ar": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "المظهر"
+    "Appearance" : {
+      "comment" : "Settings appearance section header",
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "المظهر"
           }
         }
       }
     },
-    "Applies to titles and descriptions from TMDB.": {
-      "comment": "Settings language footer",
-      "localizations": {
-        "ar": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "يُطبَّق على العناوين والأوصاف من TMDB."
+    "Applies to titles and descriptions from TMDB." : {
+      "comment" : "Settings language footer",
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "يُطبَّق على العناوين والأوصاف من TMDB."
           }
         }
       }
     },
-    "Browsing as Guest": {
-      "comment": "Profile header for anonymous sessions",
-      "localizations": {
-        "ar": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "تتصفّح كضيف"
+    "Browsing as Guest" : {
+      "comment" : "Profile header for anonymous sessions",
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "تتصفّح كضيف"
           }
         }
       }
     },
-    "Clear Cache": {
-      "comment": "Confirm clear cache\nSettings clear-cache button",
-      "localizations": {
-        "ar": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "مسح ذاكرة التخزين المؤقت"
+    "Clear Cache" : {
+      "comment" : "Confirm clear cache\nSettings clear-cache button",
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "مسح ذاكرة التخزين المؤقت"
           }
         }
       }
     },
-    "Clear cached images and data?": {
-      "comment": "Clear-cache confirmation title",
-      "localizations": {
-        "ar": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "مسح الصور والبيانات المؤقتة؟"
+    "Clear cached images and data?" : {
+      "comment" : "Clear-cache confirmation title",
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "مسح الصور والبيانات المؤقتة؟"
           }
         }
       }
     },
-    "Close": {},
-    "Content Language": {
-      "comment": "Settings language section header",
-      "localizations": {
-        "ar": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "لغة المحتوى"
+    "Close" : {
+
+    },
+    "Content Language" : {
+      "comment" : "Settings language section header",
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "لغة المحتوى"
           }
         }
       }
     },
-    "Couldn't load your profile.": {},
-    "Dark": {
-      "comment": "Theme option: dark",
-      "localizations": {
-        "ar": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "داكن"
+    "Couldn't load your profile." : {
+
+    },
+    "Dark" : {
+      "comment" : "Theme option: dark",
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "داكن"
           }
         }
       }
     },
-    "Default": {
-      "comment": "App icon option: default",
-      "localizations": {
-        "ar": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "افتراضي"
+    "Default" : {
+      "comment" : "App icon option: default",
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "افتراضي"
           }
         }
       }
     },
-    "Done": {
-      "comment": "Dismiss sheet button",
-      "localizations": {
-        "ar": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "تم"
+    "Done" : {
+      "comment" : "Dismiss sheet button",
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "تم"
           }
         }
       }
     },
-    "English": {
-      "comment": "Language option: English"
+    "English" : {
+      "comment" : "Language option: English"
     },
-    "Favorites": {
-      "comment": "Favorites stat label",
-      "localizations": {
-        "ar": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "المفضّلة"
+    "Favorites" : {
+      "comment" : "Favorites stat label",
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "المفضّلة"
           }
         }
       }
     },
-    "Full-screen cover presented by the coordinator.": {
-      "comment": "What's-new cover body"
+    "Full-screen cover presented by the coordinator." : {
+      "comment" : "What's-new cover body"
     },
-    "Light": {
-      "comment": "Theme option: light",
-      "localizations": {
-        "ar": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "فاتح"
+    "Light" : {
+      "comment" : "Theme option: light",
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "فاتح"
           }
         }
       }
     },
-    "Midnight": {
-      "comment": "App icon option: midnight",
-      "localizations": {
-        "ar": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "منتصف الليل"
+    "Midnight" : {
+      "comment" : "App icon option: midnight",
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "منتصف الليل"
           }
         }
       }
     },
-    "Movie data provided by The Movie Database.": {
-      "comment": "About sheet attribution",
-      "localizations": {
-        "ar": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "بيانات الأفلام مقدَّمة من The Movie Database."
+    "Movie data provided by The Movie Database." : {
+      "comment" : "About sheet attribution",
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "بيانات الأفلام مقدَّمة من The Movie Database."
           }
         }
       }
     },
-    "Profile": {
-      "comment": "Profile tab title",
-      "localizations": {
-        "ar": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "الملف الشخصي"
+    "Profile" : {
+      "comment" : "Profile tab title",
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "الملف الشخصي"
           }
         }
       }
     },
-    "profile.error": {
-      "localizations": {
-        "ar": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "تعذّر تحميل الملف الشخصي."
+    "profile.error" : {
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "تعذّر تحميل الملف الشخصي."
           }
         }
       }
     },
-    "Retry": {
-      "comment": "Retry loading the profile",
-      "localizations": {
-        "ar": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "إعادة المحاولة"
+    "Retry" : {
+      "comment" : "Retry loading the profile",
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "إعادة المحاولة"
           }
         }
       }
     },
-    "Settings": {
-      "comment": "Open settings button\nSettings nav title",
-      "localizations": {
-        "ar": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "الإعدادات"
+    "Settings" : {
+      "comment" : "Open settings button\nSettings nav title",
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "الإعدادات"
           }
         }
       }
     },
-    "Sign in to sync favorites and more.": {
-      "comment": "Guest profile prompt",
-      "localizations": {
-        "ar": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "سجّل الدخول لمزامنة المفضّلة والمزيد."
+    "Sign In" : {
+      "comment" : "Profile sign-in button for guest sessions\nSettings sign-in button for guest or signed-out users",
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "تسجيل الدخول"
           }
         }
       }
     },
-    "Sign Out": {
-      "comment": "Settings sign-out button\nSign out button",
-      "localizations": {
-        "ar": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "تسجيل الخروج"
+    "Sign in to sync favorites and more." : {
+      "comment" : "Guest profile prompt",
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "سجّل الدخول لمزامنة المفضّلة والمزيد."
           }
         }
       }
     },
-    "Storage": {
-      "comment": "Settings storage section header",
-      "localizations": {
-        "ar": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "التخزين"
+    "Sign Out" : {
+      "comment" : "Settings sign-out button\nSign out button",
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "تسجيل الخروج"
           }
         }
       }
     },
-    "Sunset": {
-      "comment": "App icon option: sunset",
-      "localizations": {
-        "ar": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "الغروب"
+    "Storage" : {
+      "comment" : "Settings storage section header",
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "التخزين"
           }
         }
       }
     },
-    "System": {
-      "comment": "Theme option: follow system",
-      "localizations": {
-        "ar": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "النظام"
+    "Sunset" : {
+      "comment" : "App icon option: sunset",
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "الغروب"
           }
         }
       }
     },
-    "TMDB Showcase": {
-      "comment": "About sheet title"
-    },
-    "Watchlist": {
-      "comment": "Watchlist stat label",
-      "localizations": {
-        "ar": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "قائمة المشاهدة"
+    "System" : {
+      "comment" : "Theme option: follow system",
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "النظام"
           }
         }
       }
     },
-    "What's New": {
-      "comment": "Show what's-new cover button\nWhat's-new cover title",
-      "localizations": {
-        "ar": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "ما الجديد"
+    "TMDB Showcase" : {
+      "comment" : "About sheet title"
+    },
+    "Watchlist" : {
+      "comment" : "Watchlist stat label",
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "قائمة المشاهدة"
           }
         }
       }
     },
-    "العربية": {
-      "comment": "Language option: Arabic"
-    },
-    "Sign In": {
-      "comment": "Settings sign-in button for guest or signed-out users",
-      "localizations": {
-        "ar": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "تسجيل الدخول"
+    "What's New" : {
+      "comment" : "Show what's-new cover button\nWhat's-new cover title",
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "ما الجديد"
           }
         }
       }
+    },
+    "العربية" : {
+      "comment" : "Language option: Arabic"
     }
   },
-  "version": "1.0"
+  "version" : "1.0"
 }
