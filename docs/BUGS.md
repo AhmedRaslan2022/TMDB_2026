@@ -9,7 +9,7 @@ Severity: **S1** blocker (crash / data loss / feature unusable) · **S2** major
 **S4** polish (cosmetic / nice-to-have).
 Status: **Open** → **In progress** → **Fixed** (or **Won't fix**, with a reason).
 
-## How to add a bug (Ahmed)
+## How to add a bug  
 
 Copy the template row into the table and fill it in. Minimum useful report:
 - **Area** — which feature/screen (Auth, Home, Details, Search, Favorites, Profile, TV, Person, Settings, i18n/RTL, Theme/Icons, Networking…).
