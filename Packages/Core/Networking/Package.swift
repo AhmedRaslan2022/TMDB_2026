@@ -10,13 +10,13 @@ let package = Package(
         .library(name: "Networking", targets: ["Networking"]),
     ],
     dependencies: [
-        .package(path: "../CoreUtilities"),
+        .package(path: "../CoreKit"),
     ],
     targets: [
         .target(
             name: "Networking",
             dependencies: [
-                .product(name: "CoreUtilities", package: "CoreUtilities"),
+                .product(name: "CoreUtilities", package: "CoreKit"),
             ]
         ),
         .testTarget(name: "NetworkingTests", dependencies: ["Networking"]),

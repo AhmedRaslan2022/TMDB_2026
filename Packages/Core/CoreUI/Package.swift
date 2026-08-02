@@ -10,7 +10,7 @@ let package = Package(
         .library(name: "CoreUI", targets: ["CoreUI"]),
     ],
     dependencies: [
-        .package(path: "../CoreUtilities"),
+        .package(path: "../CoreKit"),
         .package(path: "../../Shared"),
         // The ONLY third-party dependency in the project, and test-only:
         // snapshot testing (task 8.6) needs a reference-image diff engine that
@@ -21,7 +21,7 @@ let package = Package(
         .target(
             name: "CoreUI",
             dependencies: [
-                .product(name: "CoreUtilities", package: "CoreUtilities"),
+                .product(name: "CoreUtilities", package: "CoreKit"),
             ],
             resources: [.process("Resources")]
         ),

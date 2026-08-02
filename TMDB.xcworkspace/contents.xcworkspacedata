@@ -8,13 +8,7 @@
       location = "group:Packages/Features">
    </FileRef>
    <FileRef
-      location = "group:Packages/Core/CoreModels">
-   </FileRef>
-   <FileRef
-      location = "group:Packages/Core/CoreUtilities">
-   </FileRef>
-   <FileRef
-      location = "group:Packages/Core/CoreEnvironment">
+      location = "group:Packages/Core/CoreKit">
    </FileRef>
    <FileRef
       location = "group:Packages/Core/Networking">

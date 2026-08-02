@@ -316,9 +316,7 @@
 			mainGroup = A37BE88E3006C0D00047E68A;
 			minimizedProjectReferenceProxies = 1;
 			packageReferences = (
-				CAFE000000000000000000C3 /* XCLocalSwiftPackageReference "Packages/Core/CoreModels" */,
-				CAFE000000000000000000C4 /* XCLocalSwiftPackageReference "Packages/Core/CoreUtilities" */,
-				CAFE000000000000000000C5 /* XCLocalSwiftPackageReference "Packages/Core/CoreEnvironment" */,
+				CAFE000000000000000000C3 /* XCLocalSwiftPackageReference "Packages/Core/CoreKit" */,
 				CAFE000000000000000000C6 /* XCLocalSwiftPackageReference "Packages/Core/Networking" */,
 				CAFE000000000000000000C7 /* XCLocalSwiftPackageReference "Packages/Core/CoreStorage" */,
 				CAFE000000000000000000C8 /* XCLocalSwiftPackageReference "Packages/Core/CoreUI" */,
@@ -949,17 +947,9 @@
 			isa = XCLocalSwiftPackageReference;
 			relativePath = Packages/Shared;
 		};
-		CAFE000000000000000000C3 /* XCLocalSwiftPackageReference "Packages/Core/CoreModels" */ = {
+		CAFE000000000000000000C3 /* XCLocalSwiftPackageReference "Packages/Core/CoreKit" */ = {
 			isa = XCLocalSwiftPackageReference;
-			relativePath = Packages/Core/CoreModels;
-		};
-		CAFE000000000000000000C4 /* XCLocalSwiftPackageReference "Packages/Core/CoreUtilities" */ = {
-			isa = XCLocalSwiftPackageReference;
-			relativePath = Packages/Core/CoreUtilities;
-		};
-		CAFE000000000000000000C5 /* XCLocalSwiftPackageReference "Packages/Core/CoreEnvironment" */ = {
-			isa = XCLocalSwiftPackageReference;
-			relativePath = Packages/Core/CoreEnvironment;
+			relativePath = Packages/Core/CoreKit;
 		};
 		CAFE000000000000000000C6 /* XCLocalSwiftPackageReference "Packages/Core/Networking" */ = {
 			isa = XCLocalSwiftPackageReference;

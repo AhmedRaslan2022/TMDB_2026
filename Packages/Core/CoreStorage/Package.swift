@@ -14,25 +14,25 @@ let package = Package(
         .library(name: "UserDefaultsStorage", targets: ["UserDefaultsStorage"]),
     ],
     dependencies: [
-        .package(path: "../CoreUtilities"),
+        .package(path: "../CoreKit"),
     ],
     targets: [
         .target(
             name: "KeychainStorage",
             dependencies: [
-                .product(name: "CoreUtilities", package: "CoreUtilities"),
+                .product(name: "CoreUtilities", package: "CoreKit"),
             ]
         ),
         .target(
             name: "SwiftDataStorage",
             dependencies: [
-                .product(name: "CoreUtilities", package: "CoreUtilities"),
+                .product(name: "CoreUtilities", package: "CoreKit"),
             ]
         ),
         .target(
             name: "UserDefaultsStorage",
             dependencies: [
-                .product(name: "CoreUtilities", package: "CoreUtilities"),
+                .product(name: "CoreUtilities", package: "CoreKit"),
             ]
         ),
         .testTarget(name: "KeychainStorageTests", dependencies: ["KeychainStorage"]),

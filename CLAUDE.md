@@ -26,7 +26,8 @@ Portfolio-grade iOS app on the TMDB API. Purpose: demonstrate senior-level iOS s
 
 ```
 TMDBApp (app target: composition root, AppCoordinator, route wiring only)
-Packages/Core:      separate packages — Networking, CoreStorage, CoreModels, CoreUI, CoreUtilities, CoreEnvironment
+Packages/Core:      Networking, CoreStorage, CoreUI, and CoreKit (one package, three targets/products:
+                    CoreModels, CoreUtilities, CoreEnvironment)
 Packages/Features:  FeatureAuth, FeatureHome, FeatureMovieDetails, FeatureSearch, FeatureFavorites, FeatureProfile (+ FeatureTV, FeaturePerson in Sprint 6)
 Packages/Shared:    SharedTestSupport (mocks/stubs — test targets only)
 ```

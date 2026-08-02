@@ -76,7 +76,7 @@ graph TD
 
     Features --> Core
 
-    subgraph Core ["Packages/Core — one package per module"]
+    subgraph Core ["Packages/Core — Networking · CoreStorage · CoreUI · CoreKit"]
         Networking
         CoreModels
         CoreUI
@@ -157,7 +157,7 @@ Environment values flow `Configs/*.xcconfig` → Info.plist → `CoreEnvironment
 
 ```
 TMDBApp/            app target — composition root, AppCoordinator, route wiring
-Packages/Core/      Networking · CoreModels · CoreUI · CoreUtilities · CoreEnvironment · CoreStorage
+Packages/Core/      Networking · CoreStorage · CoreUI · CoreKit (CoreModels + CoreUtilities + CoreEnvironment)
 Packages/Features/  FeatureAuth · Home · MovieDetails · Search · Favorites · Profile · TV · Person
 Packages/Shared/    SharedTestSupport (mocks/stubs — test targets only)
 Configs/            xcconfig (Shared + git-ignored Secrets)

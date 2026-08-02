@@ -39,10 +39,10 @@ jobs:
           xcode-version: latest-stable
       # Fast, host-safe SPM suites (no SwiftData, no simulator). SwiftData- and
       # UI-backed suites run on the simulator via the Test scheme below.
-      - name: swift test — Networking / CoreModels
+      - name: swift test — Networking / CoreKit
         run: |
           set -o pipefail
-          for pkg in Packages/Core/Networking Packages/Core/CoreModels; do
+          for pkg in Packages/Core/Networking Packages/Core/CoreKit; do
             echo "::group::swift test $pkg"
             swift test --package-path "$pkg"
             echo "::endgroup::"
