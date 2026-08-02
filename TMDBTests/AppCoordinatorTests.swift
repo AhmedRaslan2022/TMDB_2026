@@ -10,11 +10,36 @@ import Testing
 
 @MainActor
 struct AppCoordinatorTests {
-    @Test func startsAtAuthGateOnHomeTab() {
+    @Test("launch begins under the splash — isLaunching until start resolves")
+    func startsLaunchingUnderSplash() {
         let coordinator = AppCoordinator(auth: .stub)
 
-        #expect(coordinator.rootScene == .auth)
+        #expect(coordinator.isLaunching)
         #expect(coordinator.selectedTab == .home)
+    }
+
+    @Test func completingOnboardingShowsAuthGate() {
+        let coordinator = AppCoordinator(auth: .stub)
+
+        coordinator.completeOnboarding()
+
+        #expect(coordinator.rootScene == .auth)
+    }
+
+    @Test("start routes to the launch use case's destination and drops the splash")
+    func startRoutesToDestination() async {
+        for (destination, expected) in [
+            (LaunchDestination.onboarding, AppCoordinator.RootScene.onboarding),
+            (.authGate, .auth),
+            (.main, .main),
+        ] {
+            let coordinator = AppCoordinator(auth: .stub)
+
+            await coordinator.start(using: StubLaunchUseCase(destination: destination), minimumSplashDuration: .zero)
+
+            #expect(coordinator.rootScene == expected)
+            #expect(!coordinator.isLaunching, "the splash dismisses once the destination is applied")
+        }
     }
 
     @Test func completingAuthGateShowsMainShell() {
@@ -42,5 +67,12 @@ struct AppCoordinatorTests {
         coordinator.selectedTab = .search
 
         #expect(coordinator.selectedTab == .search)
+    }
+}
+
+private struct StubLaunchUseCase: LaunchUseCase {
+    let destination: LaunchDestination
+    func execute() async -> LaunchDestination {
+        destination
     }
 }

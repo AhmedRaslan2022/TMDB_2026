@@ -13,6 +13,8 @@ import SwiftUI
 /// lives in the SPM packages under `Packages/`.
 @main
 struct TMDBApp: App {
+    // UIKit lifecycle seam; SwiftUI still owns the UI (see AppDelegate).
+    @UIApplicationDelegateAdaptor(AppDelegate.self) private var appDelegate
     @State private var container = AppContainer()
 
     var body: some Scene {

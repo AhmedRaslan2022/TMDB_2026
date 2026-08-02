@@ -4,12 +4,6 @@
 <dict>
 	<key>APP_ENVIRONMENT_NAME</key>
 	<string>$(APP_ENVIRONMENT_NAME)</string>
-	<key>TMDB_ACCESS_TOKEN</key>
-	<string>$(TMDB_ACCESS_TOKEN)</string>
-	<key>TMDB_API_BASE_URL</key>
-	<string>$(TMDB_API_BASE_URL)</string>
-	<key>TMDB_IMAGE_BASE_URL</key>
-	<string>$(TMDB_IMAGE_BASE_URL)</string>
 	<key>CFBundleURLTypes</key>
 	<array>
 		<dict>
@@ -21,5 +15,13 @@
 			</array>
 		</dict>
 	</array>
+	<key>TMDB_ACCESS_TOKEN</key>
+	<string>$(TMDB_ACCESS_TOKEN)</string>
+	<key>TMDB_API_BASE_URL</key>
+	<string>$(TMDB_API_BASE_URL)</string>
+	<key>TMDB_IMAGE_BASE_URL</key>
+	<string>$(TMDB_IMAGE_BASE_URL)</string>
+	<key>UILaunchStoryboardName</key>
+	<string>LaunchScreen</string>
 </dict>
 </plist>

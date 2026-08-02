@@ -1,0 +1,123 @@
+{
+  "sourceLanguage" : "en",
+  "strings" : {
+    "Browse what's trending and explore casts and crews." : {
+
+    },
+    "Build Your Collection" : {
+
+    },
+    "Discover Movies & TV" : {
+
+    },
+    "English and Arabic, right-to-left layout, light and dark." : {
+
+    },
+    "Get Started" : {
+      "comment" : "Onboarding: finish and enter the app",
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "ابدأ الآن"
+          }
+        }
+      }
+    },
+    "Made for You" : {
+
+    },
+    "Next" : {
+      "comment" : "Onboarding: advance to the next slide",
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "التالي"
+          }
+        }
+      }
+    },
+    "onboarding.collect.message" : {
+      "comment" : "Onboarding slide 2 body",
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "احفظ المفضّلة، وأنشئ قائمة مشاهدة، وقيّم ما تشاهده."
+          }
+        }
+      }
+    },
+    "onboarding.collect.title" : {
+      "comment" : "Onboarding slide 2 title",
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "كوّن مجموعتك"
+          }
+        }
+      }
+    },
+    "onboarding.discover.message" : {
+      "comment" : "Onboarding slide 1 body",
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "تصفّح الأكثر رواجًا وتعرّف على فرق العمل والممثلين."
+          }
+        }
+      }
+    },
+    "onboarding.discover.title" : {
+      "comment" : "Onboarding slide 1 title",
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "اكتشف الأفلام والمسلسلات"
+          }
+        }
+      }
+    },
+    "onboarding.made.message" : {
+      "comment" : "Onboarding slide 3 body",
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "الإنجليزية والعربية، وتخطيط من اليمين إلى اليسار، ومظهر فاتح وداكن."
+          }
+        }
+      }
+    },
+    "onboarding.made.title" : {
+      "comment" : "Onboarding slide 3 title",
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "مصمّم لك"
+          }
+        }
+      }
+    },
+    "Save favorites, keep a watchlist, and rate what you watch." : {
+
+    },
+    "Skip" : {
+      "comment" : "Onboarding: skip the walkthrough",
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "تخطّي"
+          }
+        }
+      }
+    }
+  },
+  "version" : "1.0"
+}

@@ -30,8 +30,13 @@ enum AppTab: Hashable, CaseIterable {
 @Observable
 @MainActor
 final class AppCoordinator {
-    /// Which root scene is on screen.
+    /// Which root scene is on screen underneath the splash. The splash itself
+    /// is not a scene: it is ALWAYS mounted as the root layer on launch (see
+    /// `isLaunching` and `RootView`), and simply fades out over whichever
+    /// scene the launch decision picked.
     enum RootScene {
+        /// First-launch interactive onboarding.
+        case onboarding
         /// Login / guest entry. Shown until a session exists.
         case auth
         /// The authenticated (or guest) tab shell.
@@ -60,6 +65,11 @@ final class AppCoordinator {
     }
 
     private(set) var rootScene: RootScene = .auth
+    /// True from app start until the launch decision resolves. The root view
+    /// keeps the splash mounted on top of everything while this is true, so
+    /// the splash is unconditionally the first thing on screen — never a
+    /// routing option that could be skipped.
+    private(set) var isLaunching = true
     var selectedTab: AppTab = .home
     var presentedSheet: Sheet?
     var presentedFullScreenCover: FullScreenCover?
@@ -89,13 +99,47 @@ final class AppCoordinator {
         })
     }
 
-    /// Restores a persisted session on launch, entering the main shell
-    /// directly when one exists. Called once from the root view.
+    /// Resolves the launch destination (onboarding / auth / main) via the
+    /// launch use case, switches the root scene underneath the splash, then
+    /// dismisses the splash. Called once from the root view. The splash is
+    /// held on screen for at least `minimumSplashDuration` so an instant
+    /// decision doesn't reduce it to a flicker.
+    func start(using launch: any LaunchUseCase, minimumSplashDuration: Duration = .milliseconds(700)) async {
+        let started = ContinuousClock.now
+        let destination = await launch.execute()
+        let remaining = minimumSplashDuration - started.duration(to: .now)
+        if remaining > .zero {
+            try? await Task.sleep(for: remaining)
+        }
+        switch destination {
+        case .onboarding:
+            rootScene = .onboarding
+        case .authGate:
+            rootScene = .auth
+        case .main:
+            rootScene = .main
+            applyPendingDeepLink()
+        }
+        isLaunching = false
+    }
+
+    /// Restores a persisted session, entering the main shell when one exists
+    /// and otherwise showing the auth gate. Retained as the explicit
+    /// "restore" path (the launch use case decides the wider first-run flow).
     func restoreSession() async {
         if await auth.hasPersistedSession() {
             rootScene = .main
             applyPendingDeepLink()
+        } else {
+            rootScene = .auth
         }
+    }
+
+    /// Called when onboarding finishes; a fresh install has no session yet, so
+    /// present the auth gate. Persisting the "seen" flag is the app's job (via
+    /// the `OnboardingCompletion` port).
+    func completeOnboarding() {
+        rootScene = .auth
     }
 
     /// Called when auth completes; enters the main shell.
