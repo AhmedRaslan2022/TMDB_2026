@@ -49,7 +49,7 @@ final class CriticalPathUITests: XCTestCase {
     func testFavoriteToggleOffRemovesFromFavoritesTab() {
         let app = launchStubbedApp()
 
-        app.buttons["Continue as guest"].tap()
+        app.tapContinueAsGuest()
         let poster = app.buttons["home.movie.550"].firstMatch
         XCTAssertTrue(poster.waitForExistence(timeout: 5), "Stubbed home carousel should show")
         poster.tap()
