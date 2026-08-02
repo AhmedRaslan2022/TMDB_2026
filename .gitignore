@@ -30,3 +30,8 @@ fastlane/screenshots/
 fastlane/*.p8
 vendor/bundle/
 .bundle/
+
+# Scratch Flutter demo living in the repo root — not part of the iOS app.
+# Ignored so it stays out of commits and out of the repo-wide SwiftFormat/
+# SwiftLint pre-commit gate (its generated Swift fails the lint rules).
+demo_app/

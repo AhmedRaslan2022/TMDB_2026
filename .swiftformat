@@ -3,7 +3,7 @@
 --swiftversion 6.0
 
 # File discovery
---exclude **/.build,**/DerivedData
+--exclude **/.build,**/DerivedData,demo_app
 
 # Rules
 --enable isEmpty
