@@ -2,7 +2,7 @@
 //  AppDelegate.swift
 //  TMDB
 //
-//  Created by Ahmed Raslan on 26/07/2026.
+//  Created by Ahmed Raslan on 02/08/2026.
 //
 
 import CoreUtilities
@@ -18,7 +18,7 @@ final class AppDelegate: NSObject, UIApplicationDelegate {
 
     func application(
         _: UIApplication,
-        didFinishLaunchingWithOptions _: [UIApplication.LaunchOptionsKey: Any]? = nil
+        didFinishLaunchingWithOptions _: [UIApplication.LaunchOptionsKey: Any]?
     ) -> Bool {
         logger.info("Application did finish launching")
         return true
