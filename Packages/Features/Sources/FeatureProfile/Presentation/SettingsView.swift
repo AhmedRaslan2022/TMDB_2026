@@ -28,6 +28,7 @@ public struct SettingsView: View {
             dataSection
             accountSection
         }
+        .task { await viewModel.loadAccountState() }
         .navigationTitle(Text("Settings", bundle: .module, comment: "Settings nav title"))
         #if os(iOS)
             .navigationBarTitleDisplayMode(.inline)
@@ -109,14 +110,31 @@ public struct SettingsView: View {
         }
     }
 
+    /// Account row, once the session kind is known: a destructive "Sign Out"
+    /// for a full account, or a green "Sign In" for guest / signed-out — both
+    /// route through the same teardown to the auth gate, where signing in
+    /// happens.
+    @ViewBuilder
     private var accountSection: some View {
-        Section {
-            Button(role: .destructive) {
-                viewModel.signOut()
-            } label: {
-                Text("Sign Out", bundle: .module, comment: "Settings sign-out button")
+        if let isAuthenticated = viewModel.isAuthenticated {
+            Section {
+                if isAuthenticated {
+                    Button(role: .destructive) {
+                        viewModel.signOut()
+                    } label: {
+                        Text("Sign Out", bundle: .module, comment: "Settings sign-out button")
+                    }
+                    .accessibilityIdentifier("settings.signOut")
+                } else {
+                    Button {
+                        viewModel.signOut()
+                    } label: {
+                        Text("Sign In", bundle: .module, comment: "Settings sign-in button for guest or signed-out users")
+                            .foregroundStyle(AppColors.brandTertiary)
+                    }
+                    .accessibilityIdentifier("settings.signIn")
+                }
             }
-            .accessibilityIdentifier("settings.signOut")
         }
     }
 
@@ -163,7 +181,11 @@ public struct SettingsView: View {
 #if DEBUG
     #Preview {
         NavigationStack {
-            SettingsView(viewModel: SettingsViewModel(store: PreviewSettingsStore(), onSignOut: {}))
+            SettingsView(viewModel: SettingsViewModel(
+                store: PreviewSettingsStore(),
+                onSignOut: {},
+                isAuthenticated: { false }
+            ))
         }
     }
 

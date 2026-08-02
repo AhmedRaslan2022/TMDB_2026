@@ -32,7 +32,7 @@ struct SettingsViewModelTests {
     @Test("initial state mirrors the store")
     func initialState() {
         let store = SettingsStoreMock(theme: .dark, language: .arabic)
-        let viewModel = SettingsViewModel(store: store, onSignOut: {})
+        let viewModel = SettingsViewModel(store: store, onSignOut: {}, isAuthenticated: { false })
 
         #expect(viewModel.theme == .dark)
         #expect(viewModel.language == .arabic)
@@ -41,7 +41,7 @@ struct SettingsViewModelTests {
     @Test("selecting a theme updates the VM and persists through the store")
     func selectTheme() {
         let store = SettingsStoreMock()
-        let viewModel = SettingsViewModel(store: store, onSignOut: {})
+        let viewModel = SettingsViewModel(store: store, onSignOut: {}, isAuthenticated: { false })
 
         viewModel.selectTheme(.light)
 
@@ -52,7 +52,7 @@ struct SettingsViewModelTests {
     @Test("selecting a language updates the VM and persists through the store")
     func selectLanguage() {
         let store = SettingsStoreMock()
-        let viewModel = SettingsViewModel(store: store, onSignOut: {})
+        let viewModel = SettingsViewModel(store: store, onSignOut: {}, isAuthenticated: { false })
 
         viewModel.selectLanguage(.arabic)
 
@@ -63,7 +63,7 @@ struct SettingsViewModelTests {
     @Test("selecting an app icon updates the VM and persists through the store")
     func selectAppIcon() {
         let store = SettingsStoreMock()
-        let viewModel = SettingsViewModel(store: store, onSignOut: {})
+        let viewModel = SettingsViewModel(store: store, onSignOut: {}, isAuthenticated: { false })
 
         viewModel.selectIcon(.midnight)
 
@@ -74,7 +74,7 @@ struct SettingsViewModelTests {
     @Test("clearCache delegates to the store and flips the confirmation flag")
     func clearCache() async {
         let store = SettingsStoreMock()
-        let viewModel = SettingsViewModel(store: store, onSignOut: {})
+        let viewModel = SettingsViewModel(store: store, onSignOut: {}, isAuthenticated: { false })
 
         await viewModel.clearCache()
 
@@ -86,10 +86,30 @@ struct SettingsViewModelTests {
     @Test("signOut invokes the injected callback")
     func signOut() {
         var signedOut = false
-        let viewModel = SettingsViewModel(store: SettingsStoreMock(), onSignOut: { signedOut = true })
+        let viewModel = SettingsViewModel(store: SettingsStoreMock(), onSignOut: { signedOut = true }, isAuthenticated: { false })
 
         viewModel.signOut()
 
         #expect(signedOut)
+    }
+
+    @Test("account state is unknown until loaded — the row waits for the session kind")
+    func accountStateStartsUnknown() {
+        let viewModel = SettingsViewModel(store: SettingsStoreMock(), onSignOut: {}, isAuthenticated: { true })
+
+        #expect(viewModel.isAuthenticated == nil)
+    }
+
+    @Test("loadAccountState reflects the session kind", arguments: [true, false])
+    func loadAccountState(authenticated: Bool) async {
+        let viewModel = SettingsViewModel(
+            store: SettingsStoreMock(),
+            onSignOut: {},
+            isAuthenticated: { authenticated }
+        )
+
+        await viewModel.loadAccountState()
+
+        #expect(viewModel.isAuthenticated == authenticated)
     }
 }

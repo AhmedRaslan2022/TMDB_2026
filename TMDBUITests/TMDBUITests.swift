@@ -225,9 +225,13 @@ final class TMDBUITests: XCTestCase {
         dark.tap()
         XCTAssertTrue(dark.isSelected, "Tapping a theme should select it")
 
-        // Signing out from Settings returns to the auth gate.
-        app.buttons["settings.signOut"].tap()
-        XCTAssertTrue(guestButton.waitForExistence(timeout: 5), "Sign out should return to the auth gate")
+        // A guest session gets a "Sign In" row (not "Sign Out"); tapping it
+        // tears down the guest session and returns to the auth gate.
+        let signIn = app.buttons["settings.signIn"]
+        XCTAssertTrue(signIn.waitForExistence(timeout: 5), "A guest should see Sign In in Settings")
+        XCTAssertFalse(app.buttons["settings.signOut"].exists, "A guest should not see Sign Out in Settings")
+        signIn.tap()
+        XCTAssertTrue(guestButton.waitForExistence(timeout: 5), "Sign In should route to the auth gate")
     }
 
     @MainActor

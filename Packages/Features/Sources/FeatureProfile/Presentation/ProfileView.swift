@@ -43,9 +43,7 @@ public struct ProfileView: View {
             }
             entriesSection
             Section {
-                Button(role: .destructive, action: onSignOut) {
-                    Text("Sign Out", bundle: .module, comment: "Sign out button")
-                }
+                accountAction
             } footer: {
                 if let debugEnvironmentName {
                     Text(verbatim: "Environment: \(debugEnvironmentName)")
@@ -55,6 +53,31 @@ public struct ProfileView: View {
         }
         .navigationTitle(Text("Profile", bundle: .module, comment: "Profile tab title"))
         .task { await viewModel.load() }
+    }
+
+    /// Account action derived from the screen state the view model already
+    /// holds: guests get a green "Sign In" (same teardown route — the auth
+    /// gate is where signing in happens), accounts keep the destructive
+    /// "Sign Out". While loading, neither is claimed; on error the safe
+    /// default is "Sign Out" (an account whose profile failed to load must
+    /// still be able to leave).
+    @ViewBuilder
+    private var accountAction: some View {
+        switch viewModel.state {
+        case .loading:
+            EmptyView()
+        case .guest:
+            Button(action: onSignOut) {
+                Text("Sign In", bundle: .module, comment: "Profile sign-in button for guest sessions")
+                    .foregroundStyle(AppColors.brandTertiary)
+            }
+            .accessibilityIdentifier("profile.signIn")
+        case .loaded, .error:
+            Button(role: .destructive, action: onSignOut) {
+                Text("Sign Out", bundle: .module, comment: "Sign out button")
+            }
+            .accessibilityIdentifier("profile.signOut")
+        }
     }
 
     @ViewBuilder

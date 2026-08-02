@@ -25,16 +25,32 @@ public final class SettingsViewModel {
     public private(set) var isClearingCache = false
     /// True once a cache clear has completed, for a confirmation affordance.
     public private(set) var didClearCache = false
+    /// Whether the current session is a full TMDB account. `nil` until
+    /// `loadAccountState()` resolves; guest and signed-out are both `false`,
+    /// so the account row offers "Sign In" instead of "Sign Out".
+    public private(set) var isAuthenticated: Bool?
 
     private let store: any SettingsStore
     private let onSignOut: () -> Void
+    private let isAuthenticatedProvider: @MainActor () async -> Bool
 
-    public init(store: any SettingsStore, onSignOut: @escaping () -> Void) {
+    public init(
+        store: any SettingsStore,
+        onSignOut: @escaping () -> Void,
+        isAuthenticated: @escaping @MainActor () async -> Bool
+    ) {
         self.store = store
         self.onSignOut = onSignOut
+        isAuthenticatedProvider = isAuthenticated
         theme = store.theme
         language = store.language
         appIcon = store.appIcon
+    }
+
+    /// Resolves the session kind for the account row. Called from the view's
+    /// `.task`; idempotent, so a re-appear simply refreshes the answer.
+    public func loadAccountState() async {
+        isAuthenticated = await isAuthenticatedProvider()
     }
 
     public func selectTheme(_ theme: AppTheme) {

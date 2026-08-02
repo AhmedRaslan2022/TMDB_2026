@@ -243,7 +243,13 @@ extension AppContainer {
     /// Builds the Settings screen's view model over the shared `appSettings`
     /// store, so theme changes made here are reflected at the app root.
     func makeSettingsViewModel() -> SettingsViewModel {
-        SettingsViewModel(store: appSettings, onSignOut: { [coordinator] in coordinator.signOut() })
+        SettingsViewModel(
+            store: appSettings,
+            onSignOut: { [coordinator] in coordinator.signOut() },
+            // Guest and signed-out both read false, so Settings offers a green
+            // "Sign In" instead of "Sign Out" for them.
+            isAuthenticated: { [authModule] in await authModule.isAuthenticated() }
+        )
     }
 
     /// The environment name shown as a debug badge on the profile.
