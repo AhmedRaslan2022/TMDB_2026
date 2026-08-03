@@ -1,1 +1,0 @@
- /Users/rasslan/Documents/TMDB/demo_app/.dart_tool/flutter_build/c38e752e1b3e3e5f399ba0f7123bc600/native_assets.json: 
