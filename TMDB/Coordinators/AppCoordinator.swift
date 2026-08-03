@@ -182,8 +182,6 @@ final class AppCoordinator {
             home.popToRoot()
             home.push(.person(personID: id))
         case .search:
-            // A query pre-seed needs the SearchViewModel; selecting the tab is
-            // the coordinator's part. Query injection is a later refinement.
             selectedTab = .search
             search.popToRoot()
         case let .tab(tab):
