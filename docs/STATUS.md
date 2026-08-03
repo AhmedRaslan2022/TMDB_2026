@@ -296,3 +296,22 @@ The 10 commits merged while the reviewer was unavailable (6.1–6.6, 7.1/7.7, 8.
 - [ ] 11.2 Bug-fix loop — one branch + regression test per bug in `docs/BUGS.md`
 - [ ] 11.3 Triage & severity — keep `docs/BUGS.md` current
 - Bug log lives in `docs/BUGS.md`; Ahmed adds rows, each open bug becomes a `sprint-11/bug-<id>-<slug>` task with a regression test. Zero open S1/S2 = DoD.
+
+### Tooling — Tuist project generation — 2026-08-03
+The Xcode project is now **generated** by [Tuist](https://tuist.dev) from `Project.swift`; `TMDB.xcodeproj` and `TMDB.xcworkspace` are git-ignored build artifacts. Motivation: `project.pbxproj` was hand-edited for every new package (four entries per product, copied id patterns) and was a standing merge-conflict hazard. Targets now use globs, so adding a source file needs no project change at all.
+
+Fidelity was verified by diffing `xcodebuild -showBuildSettings` for all four configurations before and after — the resolved settings match. Three points needed explicit handling because Tuist writes them at *target* level, where they outrank the project-level xcconfig:
+- **Bundle id** — composed as `$(APP_BUNDLE_ID_BASE)$(APP_BUNDLE_ID_SUFFIX)`; each env xcconfig now defines the suffix instead of the full `PRODUCT_BUNDLE_IDENTIFIER`.
+- **App icon** — `$(APP_ICON_NAME)`, likewise moved into the env xcconfigs (Tuist otherwise forced `AppIcon` on every environment).
+- **Tuist's "recommended" defaults** are older than Xcode's template defaults, so `ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS`, `CLANG_CXX_LANGUAGE_STANDARD` and `CODE_SIGN_IDENTITY` are pinned to their previous values.
+
+**Two defects caught by verifying the generated output rather than trusting it:**
+
+1. **The app shipped without English.** The generated project had no `developmentRegion`, so `CFBundleDevelopmentRegion` was missing and the bundle contained only `ar.lproj` — the sole available localization. Launching with `-AppleLanguages (en)` therefore fell back to Arabic, and every English UI test failed while the Arabic one passed. Fixed with `developmentRegion: "en"` in the project options (the hand-written project had `developmentRegion = en` / `knownRegions = (en, Base)`). Worth remembering: the String Catalogs make English work by key-fallback, so the app compiles and runs fine — it just comes up in the wrong language.
+2. **Schemes came out with `parallelizable = "NO"`** where the hand-written ones were `"YES"`. Not cosmetic: serial UI tests share one simulator, so a session persisted by an earlier test made later tests boot past the auth gate and fail. It also meant the unit-test bundle never ran. Fixed with `.testableTarget(parallelization: .enabled)`.
+
+`UITestStubs.swift` keeps its unusual membership (it lives in `TMDBUITests/` but compiles into the **app**, and is excluded from the UI-test target) — expressed as an explicit source glob plus an exclusion. `UserDefaultsStorage` is now linked explicitly; the hand-written project omitted it and `import UserDefaultsStorage` only compiled thanks to Xcode's implicit SPM module visibility.
+
+CI (`ci.yml`, `release.yml`) installs Tuist and runs `tuist generate` before any `xcodebuild`; the lint and package-test jobs skip it since they never open the project. `release.yml` now reads the version from `APP_MARKETING_VERSION` in `Configs/Shared.xcconfig` instead of grepping the (no longer tracked) `project.pbxproj`. Fastlane lanes that open the workspace call a `generate_project` private lane first.
+
+**Pre-existing bug found while establishing the baseline, deliberately NOT fixed here** (the migration is behaviour-preserving): `INFOPLIST_KEY_CFBundleDisplayName` resolves to `TMDB` in *all four* environments. The per-env names in the xcconfigs ("TMDB Dev", "TMDB STG", "TMDB Test") have never applied, because the app target sets the key directly and a target setting outranks the project xcconfig. Bundle id and app icon do vary correctly. Fix = drop the key from the target settings in `Project.swift`, one line, once someone confirms the intended names.

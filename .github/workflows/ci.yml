@@ -58,6 +58,10 @@ jobs:
           xcode-version: latest-stable
       - name: Install xcbeautify
         run: brew install xcbeautify
+      - name: Install Tuist
+        run: brew install tuist
+      - name: Generate the Xcode project
+        run: tuist generate --no-open
       # Secrets.xcconfig is git-ignored; CI recreates it from a repo secret so
       # the token never lives in git. Tests use URLProtocol stubs (no real
       # network), so an unset secret still builds — the value is only wired in.
@@ -99,6 +103,10 @@ jobs:
           xcode-version: latest-stable
       - name: Install xcbeautify
         run: brew install xcbeautify
+      - name: Install Tuist
+        run: brew install tuist
+      - name: Generate the Xcode project
+        run: tuist generate --no-open
       - name: Create Secrets.xcconfig
         env:
           TMDB_ACCESS_TOKEN: ${{ secrets.TMDB_ACCESS_TOKEN }}

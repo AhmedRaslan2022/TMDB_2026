@@ -41,7 +41,7 @@ jobs:
       - name: Compute version
         id: ver
         run: |
-          MARKETING=$(grep -m1 'MARKETING_VERSION' TMDB.xcodeproj/project.pbxproj | sed -E 's/.*= *([^;]+);.*/\1/' | tr -d ' ')
+          MARKETING=$(grep -m1 'APP_MARKETING_VERSION' Configs/Shared.xcconfig | sed -E 's/.*= *//' | tr -d ' ')
           BUILD=${{ github.run_number }}
           echo "marketing=$MARKETING" >> "$GITHUB_OUTPUT"
           echo "build=$BUILD" >> "$GITHUB_OUTPUT"
@@ -54,6 +54,10 @@ jobs:
 
       - name: Install xcbeautify
         run: brew install xcbeautify
+      - name: Install Tuist
+        run: brew install tuist
+      - name: Generate the Xcode project
+        run: tuist generate --no-open
 
       - name: Build ${{ steps.env.outputs.scheme }} (build ${{ steps.ver.outputs.build }})
         run: |

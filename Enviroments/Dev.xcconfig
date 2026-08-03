@@ -3,9 +3,13 @@
 #include "../Configs/Shared.xcconfig"
 
 APP_ENVIRONMENT_NAME = Dev
-PRODUCT_BUNDLE_IDENTIFIER = $(APP_BUNDLE_ID_BASE).dev
+// Composed into PRODUCT_BUNDLE_IDENTIFIER by the app target in
+// Project.swift, which must set the id itself (a target setting
+// outranks this xcconfig).
+APP_BUNDLE_ID_SUFFIX = .dev
 INFOPLIST_KEY_CFBundleDisplayName = TMDB Dev
-ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon-Dev
+// Consumed by the app target as ASSETCATALOG_COMPILER_APPICON_NAME.
+APP_ICON_NAME = AppIcon-Dev
 
 SWIFT_OPTIMIZATION_LEVEL = -Onone
 GCC_OPTIMIZATION_LEVEL = 0

@@ -6,7 +6,7 @@ This file defines the non-negotiable rules for working in this repository. Read 
 
 Portfolio-grade iOS app on the TMDB API. Purpose: demonstrate senior-level iOS skills. Every decision should optimize for **code a reviewer would praise**, not for speed.
 
-- Min iOS: 17.0 · Swift 5.10+ · SwiftUI only · Xcode workspace + local SPM packages
+- Min iOS: 17.0 · Swift 5.10+ · SwiftUI only · **Tuist-generated** Xcode workspace + local SPM packages
 - TMDB API v3 endpoints, authenticated with the **v4 Read Access Token as a `Authorization: Bearer` header** (not the `api_key` query param)
 
 ## Hard Architecture Rules (never violate)
@@ -43,6 +43,8 @@ New shared code goes in the correct Core package — never duplicated into featu
 ## Environments & Secrets
 
 - 4 configs/schemes: **Dev, Staging, Test, Live** via xcconfig files → Info.plist → `CoreEnvironment.AppEnvironment` (type-safe reader; missing key = precondition failure in debug).
+- **The Xcode project is generated — never edit it.** `TMDB.xcodeproj`/`TMDB.xcworkspace` are git-ignored build artifacts produced by `tuist generate` from `Project.swift`. Targets, configurations, schemes, and package links are declared there; environment *values* stay in the xcconfigs. If a change needs a project edit, edit `Project.swift` and regenerate — do not hand-edit `project.pbxproj` (it will be overwritten), and never commit it.
+- Adding a Swift file inside an existing source folder needs **no** manifest change (targets use globs). Adding a new package, a new target, or a new top-level source folder does.
 - Per-env bundle ID suffix, display name, icon badge.
 - **Secrets:** real values live ONLY in `Configs/Secrets.xcconfig`, which is git-ignored. `Configs/Secrets.example.xcconfig` is committed with placeholder values. NEVER hardcode the TMDB token anywhere, NEVER commit Secrets.xcconfig, NEVER print secrets in logs, commit messages, or PR descriptions. If Secrets.xcconfig is missing, stop and ask the user to create it from the example file.
 

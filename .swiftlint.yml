@@ -8,6 +8,8 @@ excluded:
   - "**/.build"
   - "**/DerivedData"
   - "demo_app"
+  # Tuist-generated bundle accessors and Info.plists.
+  - "Derived"
 
 analyzer_rules:
   - unused_declaration
