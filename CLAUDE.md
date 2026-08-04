@@ -6,13 +6,15 @@ This file defines the non-negotiable rules for working in this repository. Read 
 
 Portfolio-grade iOS app on the TMDB API. Purpose: demonstrate senior-level iOS skills. Every decision should optimize for **code a reviewer would praise**, not for speed.
 
-- Min iOS: 17.0 · Swift 5.10+ · SwiftUI only · **Tuist-generated** Xcode workspace + local SPM packages
+- Min iOS: 17.0 · **Swift 6 language mode everywhere** · SwiftUI only · **Tuist-generated** Xcode workspace + local SPM packages
 - TMDB API v3 endpoints, authenticated with the **v4 Read Access Token as a `Authorization: Bearer` header** (not the `api_key` query param)
 
 ## Hard Architecture Rules (never violate)
 
 1. **Observation framework only.** Use `@Observable` and `@Bindable`. NEVER use `ObservableObject`, `@Published`, `@StateObject`, or `@EnvironmentObject`.
 2. **Modern concurrency only.** async/await, `Task`, `TaskGroup`, `AsyncStream`/`AsyncSequence`, actors. NEVER use Combine. NEVER use completion handlers in new code.
+   - The **app target** compiles with `-default-isolation MainActor`: every type in it is implicitly `@MainActor`. Pure value types and lock-guarded boxes must therefore be declared **`nonisolated`** explicitly, or their synthesized conformances (`Equatable`, `Hashable`) become main-actor isolated and unusable from nonisolated code — including tests. Packages are nonisolated by default and annotate `@MainActor` where needed.
+   - Stored closure properties handed to SwiftUI (`Binding(get:set:)`) or held across isolation boundaries need `@Sendable` in the declared type, not just `@MainActor`.
 3. **Clean Architecture per feature**: `Domain/` (entities, use-case protocols+impls, repository protocols) → `Data/` (DTOs, mappers, data sources, repository impls) → `Presentation/` (ViewModels, Views, Routes).
    - Domain is pure Swift: no Codable, no SwiftData, no SwiftUI, no Foundation networking imports.
    - DTOs never leak past the Data layer; always map to Domain entities.

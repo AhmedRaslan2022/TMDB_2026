@@ -55,7 +55,7 @@ private let appSettings: SettingsDictionary = [
     "SWIFT_DEFAULT_ACTOR_ISOLATION": "MainActor",
     "SWIFT_EMIT_LOC_STRINGS": "YES",
     "SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY": "YES",
-    "SWIFT_VERSION": "5.0",
+    "SWIFT_VERSION": "6.0",
     "TARGETED_DEVICE_FAMILY": "1,2",
 ]
 
@@ -67,7 +67,7 @@ private let testTargetSettings: SettingsDictionary = [
     "DEVELOPMENT_TEAM": "R6RXWLTM3U",
     "GENERATE_INFOPLIST_FILE": "YES",
     "MARKETING_VERSION": "$(APP_MARKETING_VERSION)",
-    "SWIFT_VERSION": "5.0",
+    "SWIFT_VERSION": "6.0",
     "TARGETED_DEVICE_FAMILY": "1,2",
 ]
 

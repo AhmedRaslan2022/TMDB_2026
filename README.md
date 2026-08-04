@@ -2,7 +2,7 @@
 
 [![CI](https://github.com/AhmedRaslan2022/TMDB_2026/actions/workflows/ci.yml/badge.svg?branch=develop)](https://github.com/AhmedRaslan2022/TMDB_2026/actions/workflows/ci.yml)
 ![Platform](https://img.shields.io/badge/iOS-17%2B-blue)
-![Swift](https://img.shields.io/badge/Swift-5.10%2B-orange)
+![Swift](https://img.shields.io/badge/Swift-6%20language%20mode-orange)
 ![SwiftUI](https://img.shields.io/badge/UI-SwiftUI-1E90FF)
 ![Architecture](https://img.shields.io/badge/architecture-Clean%20%2B%20MVVM%20%2B%20Coordinator-6f42c1)
 
@@ -159,6 +159,7 @@ Environment values flow `Configs/*.xcconfig` → Info.plist → `CoreEnvironment
 | String Catalogs + `bundle: .module` from day one | Per-module localization (EN + AR) with graceful English fallback; live RTL switch rebuilds the shell so mirroring applies cleanly. |
 | Snapshot-testing is the only dependency, and test-only | A reference-image diff engine isn't worth hand-rolling; it never links into shipping code. |
 | Tuist generates the Xcode project; `project.pbxproj` is not in git | Kills pbxproj merge conflicts and makes target/scheme/config wiring a reviewable Swift file. Targets use globs, so adding a file needs no project edit. |
+| Swift 6 language mode in every target, app included | Data-race safety is checked at compile time rather than trusted. The packages were already there via `swift-tools-version: 6.0`; moving the app target off Swift 5 turned two silently-wrong isolation annotations into build errors. |
 
 ## Project structure
 
