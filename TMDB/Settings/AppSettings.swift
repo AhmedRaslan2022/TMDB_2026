@@ -100,9 +100,18 @@ final class AppSettings: SettingsStore {
     }
 }
 
+// SwiftFormat orders this `final nonisolated`, SwiftLint wants the reverse.
+// SwiftFormat autocorrects, so it wins and the rule is scoped off here.
+// swiftlint:disable modifier_order
+
 /// A lock-guarded language code, so the off-main API interceptor can read the
 /// current value that the main-actor `AppSettings` writes.
-private final class LanguageBox: @unchecked Sendable {
+///
+/// Explicitly `nonisolated`: the target compiles with `-default-isolation
+/// MainActor`, which would otherwise pin the box to the main actor and make the
+/// `@unchecked Sendable` conformance a fiction — the whole point is that the
+/// lock, not an actor, is what makes off-main reads safe.
+final nonisolated class LanguageBox: @unchecked Sendable {
     private let lock = NSLock()
     private var _code = AppLanguage.english.rawValue
 
@@ -111,3 +120,5 @@ private final class LanguageBox: @unchecked Sendable {
         set { lock.withLock { _code = newValue } }
     }
 }
+
+// swiftlint:enable modifier_order

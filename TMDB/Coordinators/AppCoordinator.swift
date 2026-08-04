@@ -16,7 +16,11 @@ import Foundation
 import Observation
 
 /// The five root tabs of the main shell.
-enum AppTab: Hashable, CaseIterable {
+///
+/// `nonisolated` for the same reason as `DeepLink`, which carries one as a
+/// payload: a pure value type's `Hashable` conformance must not be main-actor
+/// isolated, or nonisolated code (and the deep-link tests) can't compare tabs.
+nonisolated enum AppTab: Hashable, CaseIterable {
     case home
     case tv
     case search

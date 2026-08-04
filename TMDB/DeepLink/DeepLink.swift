@@ -11,7 +11,11 @@ import Foundation
 /// (or, later, a universal link) translates to. The coordinator turns one of
 /// these into a tab selection + navigation stack; keeping it a pure value makes
 /// the URL-parsing layer fully unit-testable without any UI.
-enum DeepLink: Equatable {
+///
+/// `nonisolated` so the synthesized `Equatable` conformance stays usable from
+/// nonisolated contexts — `-default-isolation MainActor` would otherwise isolate
+/// the conformance and put a pure value type off-limits to the parser tests.
+nonisolated enum DeepLink: Equatable {
     case movie(id: Int)
     case tvShow(id: Int)
     case person(id: Int)
@@ -22,8 +26,9 @@ enum DeepLink: Equatable {
 }
 
 /// Translates incoming URLs into a `DeepLink`. Pure and side-effect free so the
-/// mapping is exhaustively unit-tested (task 7.7).
-enum DeepLinkParser {
+/// mapping is exhaustively unit-tested (task 7.7) — hence `nonisolated`, so the
+/// tests can call it without hopping to the main actor.
+nonisolated enum DeepLinkParser {
     /// The custom scheme registered in Info.plist (`CFBundleURLTypes`).
     static let scheme = "tmdbapp"
 
