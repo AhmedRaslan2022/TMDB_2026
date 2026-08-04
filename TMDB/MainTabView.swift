@@ -26,12 +26,12 @@ struct MainTabView: View {
     let favoritesViewModel: FavoritesViewModel
     let profileViewModel: ProfileViewModel
     let debugEnvironmentName: String?
-    let makeMovieListViewModel: @MainActor (HomeSection, TrendingWindow) -> MovieListViewModel
-    let makeMovieDetailsViewModel: @MainActor (Int) -> MovieDetailsViewModel
-    let makeDiscoverViewModel: @MainActor () -> DiscoverViewModel
-    let makeSettingsViewModel: @MainActor () -> SettingsViewModel
-    let makeTVDetailsViewModel: @MainActor (Int) -> TVDetailsViewModel
-    let makePersonViewModel: @MainActor (Int) -> PersonViewModel
+    let makeMovieListViewModel: @MainActor @Sendable (HomeSection, TrendingWindow) -> MovieListViewModel
+    let makeMovieDetailsViewModel: @MainActor @Sendable (Int) -> MovieDetailsViewModel
+    let makeDiscoverViewModel: @MainActor @Sendable () -> DiscoverViewModel
+    let makeSettingsViewModel: @MainActor @Sendable () -> SettingsViewModel
+    let makeTVDetailsViewModel: @MainActor @Sendable (Int) -> TVDetailsViewModel
+    let makePersonViewModel: @MainActor @Sendable (Int) -> PersonViewModel
 
     /// One place to wire the route table's dependencies for every tab.
     private func attached(_ view: some View) -> some View {

@@ -2,7 +2,7 @@
 //  LaunchUseCase.swift
 //  TMDB
 //
-//  Created by Ahmed Raslan on 26/07/2026.
+//  Created by Ahmed Raslan on 02/08/2026.
 //
 
 /// Where the app should start once the splash resolves.
@@ -25,8 +25,8 @@ protocol LaunchUseCase {
 }
 
 struct LaunchUseCaseImpl: LaunchUseCase {
-    let hasCompletedOnboarding: @MainActor () -> Bool
-    let hasSession: @MainActor () async -> Bool
+    let hasCompletedOnboarding: @MainActor @Sendable () -> Bool
+    let hasSession: @MainActor @Sendable () async -> Bool
 
     /// First run (onboarding not yet completed) → onboarding; otherwise a
     /// persisted session enters the shell and its absence shows the auth gate.

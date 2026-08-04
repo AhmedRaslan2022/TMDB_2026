@@ -33,12 +33,12 @@ struct RootView: View {
     @State private var favoritesViewModel: FavoritesViewModel
     @State private var profileViewModel: ProfileViewModel
     private let debugEnvironmentName: String?
-    private let makeMovieListViewModel: @MainActor (HomeSection, TrendingWindow) -> MovieListViewModel
-    private let makeMovieDetailsViewModel: @MainActor (Int) -> MovieDetailsViewModel
-    private let makeDiscoverViewModel: @MainActor () -> DiscoverViewModel
-    private let makeSettingsViewModel: @MainActor () -> SettingsViewModel
-    private let makeTVDetailsViewModel: @MainActor (Int) -> TVDetailsViewModel
-    private let makePersonViewModel: @MainActor (Int) -> PersonViewModel
+    private let makeMovieListViewModel: @MainActor @Sendable (HomeSection, TrendingWindow) -> MovieListViewModel
+    private let makeMovieDetailsViewModel: @MainActor @Sendable (Int) -> MovieDetailsViewModel
+    private let makeDiscoverViewModel: @MainActor @Sendable () -> DiscoverViewModel
+    private let makeSettingsViewModel: @MainActor @Sendable () -> SettingsViewModel
+    private let makeTVDetailsViewModel: @MainActor @Sendable (Int) -> TVDetailsViewModel
+    private let makePersonViewModel: @MainActor @Sendable (Int) -> PersonViewModel
     private let appSettings: AppSettings
 
     init(container: AppContainer) {

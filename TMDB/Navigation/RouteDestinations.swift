@@ -19,12 +19,12 @@ import SwiftUI
 /// wiring stays under the parameter-count budget as features are added.
 @MainActor
 struct RouteViewModelFactories {
-    let movieList: @MainActor (HomeSection, TrendingWindow) -> MovieListViewModel
-    let movieDetails: @MainActor (Int) -> MovieDetailsViewModel
-    let discover: @MainActor () -> DiscoverViewModel
-    let settings: @MainActor () -> SettingsViewModel
-    let tvDetails: @MainActor (Int) -> TVDetailsViewModel
-    let person: @MainActor (Int) -> PersonViewModel
+    let movieList: @MainActor @Sendable (HomeSection, TrendingWindow) -> MovieListViewModel
+    let movieDetails: @MainActor @Sendable (Int) -> MovieDetailsViewModel
+    let discover: @MainActor @Sendable () -> DiscoverViewModel
+    let settings: @MainActor @Sendable () -> SettingsViewModel
+    let tvDetails: @MainActor @Sendable (Int) -> TVDetailsViewModel
+    let person: @MainActor @Sendable (Int) -> PersonViewModel
 }
 
 /// Route → view mapping for every feature. This is the only place feature

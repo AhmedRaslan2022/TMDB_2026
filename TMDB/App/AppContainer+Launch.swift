@@ -15,11 +15,14 @@ extension AppContainer {
     /// is treated as complete so the existing flows reach the auth gate.
     var launchUseCase: any LaunchUseCase {
         #if DEBUG
-            let onboardingComplete: @MainActor () -> Bool = UITestStubs.isActive
-                ? { true }
-                : { [appSettings] in appSettings.hasCompletedOnboarding }
+            // Each branch is bound to the @Sendable type before the ternary
+            // picks one: inferring the ternary first produces a plain
+            // `() -> Bool` that then can't be converted without a data race.
+            let stubbed: @MainActor @Sendable () -> Bool = { true }
+            let real: @MainActor @Sendable () -> Bool = { [appSettings] in appSettings.hasCompletedOnboarding }
+            let onboardingComplete = UITestStubs.isActive ? stubbed : real
         #else
-            let onboardingComplete: @MainActor () -> Bool = { [appSettings] in appSettings.hasCompletedOnboarding }
+            let onboardingComplete: @MainActor @Sendable () -> Bool = { [appSettings] in appSettings.hasCompletedOnboarding }
         #endif
         return LaunchUseCaseImpl(
             hasCompletedOnboarding: onboardingComplete,
@@ -43,7 +46,7 @@ extension AppContainer {
 /// closure (persist the flag + route), so the package never touches storage
 /// or navigation.
 private struct OnboardingCompletionAdapter: OnboardingCompletion {
-    let onComplete: @MainActor () -> Void
+    let onComplete: @MainActor @Sendable () -> Void
     func completeOnboarding() {
         onComplete()
     }

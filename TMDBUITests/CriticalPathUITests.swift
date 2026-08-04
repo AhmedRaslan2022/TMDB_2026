@@ -16,6 +16,10 @@ final class CriticalPathUITests: XCTestCase {
         continueAfterFailure = false
     }
 
+    /// `@MainActor` to match the test methods that call it: `XCUIApplication`
+    /// is main-actor isolated, and under Swift 6 a nonisolated helper can't
+    /// touch it.
+    @MainActor
     private func launchStubbedApp() -> XCUIApplication {
         let app = XCUIApplication()
         app.launchArguments += ["-uitest-stubs", "-AppleLanguages", "(en)", "-AppleLocale", "en_US"]

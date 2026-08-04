@@ -17,7 +17,12 @@ struct HomeSectionView: View {
     let trendingWindow: TrendingWindow
     let posterURL: (Movie) -> URL?
     let onSelectMovie: (Int) -> Void
-    let onSelectWindow: (TrendingWindow) -> Void
+    /// `@Sendable` because it is handed to `Binding(get:set:)`, whose setter is
+    /// `@isolated(any) @Sendable`; the plain closure type converted only with a
+    /// data-race warning. Deliberately NOT `@MainActor @Sendable`, which is the
+    /// more precise type but crashes the 6.3.3 compiler in IRGen while building
+    /// the `@isolated(any)` reabstraction thunk.
+    let onSelectWindow: @Sendable (TrendingWindow) -> Void
     let onSeeAll: () -> Void
     let onRetry: () -> Void
 
