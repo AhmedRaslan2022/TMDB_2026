@@ -1,11 +1,13 @@
 name: CI
 
-# Build + test + lint on every PR into develop/main, and on pushes to develop.
-# Mirrors the local pre-commit gate (swiftformat --lint + swiftlint --strict)
-# and the Test scheme's xcodebuild run so "green locally" == "green in CI".
+# Build + test + lint on every PR into an integration/promotion branch, and on
+# pushes to develop. Mirrors the local pre-commit gate (swiftformat --lint +
+# swiftlint --strict) and the Test scheme's xcodebuild run so "green locally"
+# == "green in CI". Promotion PRs (develop→test→staging→main) are gated too;
+# the actual per-env versioning happens in release.yml once merged.
 on:
   pull_request:
-    branches: [develop, main]
+    branches: [develop, main, test, staging]
   push:
     branches: [develop]
 
@@ -37,10 +39,10 @@ jobs:
           xcode-version: latest-stable
       # Fast, host-safe SPM suites (no SwiftData, no simulator). SwiftData- and
       # UI-backed suites run on the simulator via the Test scheme below.
-      - name: swift test — Networking / CoreModels
+      - name: swift test — Networking / CoreKit
         run: |
           set -o pipefail
-          for pkg in Packages/Core/Networking Packages/Core/CoreModels; do
+          for pkg in Packages/Core/Networking Packages/Core/CoreKit; do
             echo "::group::swift test $pkg"
             swift test --package-path "$pkg"
             echo "::endgroup::"
@@ -56,6 +58,10 @@ jobs:
           xcode-version: latest-stable
       - name: Install xcbeautify
         run: brew install xcbeautify
+      - name: Install Tuist
+        run: brew install tuist
+      - name: Generate the Xcode project
+        run: tuist generate --no-open
       # Secrets.xcconfig is git-ignored; CI recreates it from a repo secret so
       # the token never lives in git. Tests use URLProtocol stubs (no real
       # network), so an unset secret still builds — the value is only wired in.
@@ -97,6 +103,10 @@ jobs:
           xcode-version: latest-stable
       - name: Install xcbeautify
         run: brew install xcbeautify
+      - name: Install Tuist
+        run: brew install tuist
+      - name: Generate the Xcode project
+        run: tuist generate --no-open
       - name: Create Secrets.xcconfig
         env:
           TMDB_ACCESS_TOKEN: ${{ secrets.TMDB_ACCESS_TOKEN }}

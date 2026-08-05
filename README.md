@@ -76,7 +76,7 @@ graph TD
 
     Features --> Core
 
-    subgraph Core ["Packages/Core — one package per module"]
+    subgraph Core ["Packages/Core — Networking · CoreStorage · CoreUI · CoreKit"]
         Networking
         CoreModels
         CoreUI
@@ -107,37 +107,43 @@ Automated App Store screenshots (English + Arabic/RTL) are produced by `fastlane
 | TMDB-Test | Test | `….TMDB.test` | TMDB Test | debug |
 | TMDB-Live | Live | `….TMDB` | TMDB | release |
 
-Environment values flow `Configs/*.xcconfig` → Info.plist → `CoreEnvironment.AppEnvironment` (type-safe, traps on misconfiguration in debug). The TMDB API is authenticated with the **v4 Read Access Token** as an `Authorization: Bearer` header (not the v3 `api_key` query param).
+Environment values flow `Configs/*.xcconfig` → Info.plist → `CoreEnvironment.AppEnvironment` (type-safe, traps on misconfiguration in debug). Tuist owns the project *structure*; the xcconfigs still own the *values*, so each environment is one file and secrets never enter a manifest. The TMDB API is authenticated with the **v4 Read Access Token** as an `Authorization: Bearer` header (not the v3 `api_key` query param).
 
 ## Getting started
 
-1. **Clone & open**
+1. **Clone**
    ```sh
    git clone git@github.com:AhmedRaslan2022/TMDB_2026.git && cd TMDB
-   open TMDB.xcworkspace
    ```
-2. **Secrets** — copy the example and paste your [TMDB v4 Read Access Token](https://www.themoviedb.org/settings/api):
+2. **Tooling**
+   ```sh
+   brew install tuist swiftlint swiftformat
+   git config core.hooksPath .githooks   # enables the pre-commit lint hook
+   ```
+3. **Secrets** — copy the example and paste your [TMDB v4 Read Access Token](https://www.themoviedb.org/settings/api):
    ```sh
    cp Configs/Secrets.example.xcconfig Configs/Secrets.xcconfig
    # edit Configs/Secrets.xcconfig — it is git-ignored, never commit it
    ```
-3. **Tooling**
+4. **Generate & open the project** — `TMDB.xcodeproj` / `TMDB.xcworkspace` are **not** in git; Tuist generates them from [`Project.swift`](Project.swift):
    ```sh
-   brew install swiftlint swiftformat
-   git config core.hooksPath .githooks   # enables the pre-commit lint hook
+   tuist generate          # add --no-open to generate without launching Xcode
    ```
-4. **Run** — select `TMDB-Dev` and hit ⌘R. Debug builds log the network exchange (pretty-printed, secrets redacted) under the `Network` log category.
+   Re-run it after pulling changes to `Project.swift`, or after adding a package
+   or a source folder. Adding a *file* inside an existing folder needs no
+   regeneration — the targets use globs.
+5. **Run** — select `TMDB-Dev` and hit ⌘R. Debug builds log the network exchange (pretty-printed, secrets redacted) under the `Network` log category.
 
 ## Testing
 
 - **Swift Testing** (`@Test` / `#expect`) for unit tests; XCTest only for UI tests. Every use case, ViewModel, and mapper is unit-tested in the same PR as the code.
 - Networking is tested through `URLProtocol` stubs; SwiftData through in-memory containers; the Keychain through a dedicated test service — **no test touches the network**.
-- Run package tests: `swift test` inside a package (e.g. `Packages/Core/Networking`), or ⌘U on the `TMDB-Test` scheme (app unit + UI tests). UI tests run offline via the `-uitest-stubs` seam.
+- Run package tests: `swift test` inside a package (e.g. `Packages/Core/Networking`) — no project generation needed. For the app suites, `tuist generate` first, then ⌘U on the `TMDB-Test` scheme (app unit + UI tests). UI tests run offline via the `-uitest-stubs` seam.
 - SwiftData behaves differently on the macOS host vs iOS; anything touching the real container is covered by an iOS-executed app-target test, not only a package test.
 
 ## CI/CD
 
-- **GitHub Actions** ([`.github/workflows/ci.yml`](.github/workflows/ci.yml)) runs on every PR into `develop`/`main`: a **lint** job (SwiftFormat + SwiftLint, identical to the pre-commit hook), a **unit-tests** job (host `swift test` for pure Core packages), a **build-test** job (`xcodebuild test` on the Test scheme, iOS simulator), and a **per-environment build matrix** (Dev/Staging/Test/Live). `Secrets.xcconfig` is recreated from the `TMDB_ACCESS_TOKEN` repo secret — never committed.
+- **GitHub Actions** ([`.github/workflows/ci.yml`](.github/workflows/ci.yml)) runs on every PR into `develop`/`main`: a **lint** job (SwiftFormat + SwiftLint, identical to the pre-commit hook), a **unit-tests** job (host `swift test` for pure Core packages), a **build-test** job (`xcodebuild test` on the Test scheme, iOS simulator), and a **per-environment build matrix** (Dev/Staging/Test/Live). Jobs that need an Xcode project install Tuist and run `tuist generate` first; the lint and package-test jobs skip it because they never open the project. `Secrets.xcconfig` is recreated from the `TMDB_ACCESS_TOKEN` repo secret — never committed.
 - **Fastlane** ([`fastlane/`](fastlane/)) scaffolds `lint` / `test` / `beta` (Staging → TestFlight) / `release` (Live → App Store) lanes, `match` code signing (git-stored in a separate private repo), and `snapshot` for EN + AR screenshots. Distribution lanes require Apple signing assets — see [`fastlane/SETUP.md`](fastlane/SETUP.md).
 
 ## Key decisions
@@ -152,12 +158,15 @@ Environment values flow `Configs/*.xcconfig` → Info.plist → `CoreEnvironment
 | SwiftData for app data, Keychain for session/tokens | Sensitive material never lands in UserDefaults/SwiftData/source; repositories hide the data origin (offline-first where specified). |
 | String Catalogs + `bundle: .module` from day one | Per-module localization (EN + AR) with graceful English fallback; live RTL switch rebuilds the shell so mirroring applies cleanly. |
 | Snapshot-testing is the only dependency, and test-only | A reference-image diff engine isn't worth hand-rolling; it never links into shipping code. |
+| Tuist generates the Xcode project; `project.pbxproj` is not in git | Kills pbxproj merge conflicts and makes target/scheme/config wiring a reviewable Swift file. Targets use globs, so adding a file needs no project edit. |
 
 ## Project structure
 
 ```
+Project.swift       Tuist manifest — targets, configurations, schemes (the
+                    Xcode project is generated from this and is not in git)
 TMDBApp/            app target — composition root, AppCoordinator, route wiring
-Packages/Core/      Networking · CoreModels · CoreUI · CoreUtilities · CoreEnvironment · CoreStorage
+Packages/Core/      Networking · CoreStorage · CoreUI · CoreKit (CoreModels + CoreUtilities + CoreEnvironment)
 Packages/Features/  FeatureAuth · Home · MovieDetails · Search · Favorites · Profile · TV · Person
 Packages/Shared/    SharedTestSupport (mocks/stubs — test targets only)
 Configs/            xcconfig (Shared + git-ignored Secrets)

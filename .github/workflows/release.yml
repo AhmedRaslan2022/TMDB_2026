@@ -1,0 +1,105 @@
+name: Release
+
+# Promotion pipeline: develop → test → staging → main.
+# A PR merged INTO one of these branches is a push that mints a new versioned
+# build for that environment: a unique build number (the run number, so no
+# commit-back loop), a git tag, a GitHub Release, and — for staging/main — the
+# matching fastlane distribution lane when signing secrets are configured.
+on:
+  push:
+    branches: [test, staging, main]
+
+# Never cancel an in-flight release — each merge gets its own version.
+concurrency:
+  group: release-${{ github.ref }}
+  cancel-in-progress: false
+
+permissions:
+  contents: write # create tags + GitHub Releases
+
+jobs:
+  version-and-build:
+    name: Version & build (${{ github.ref_name }})
+    runs-on: macos-15
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: maxim-lobanov/setup-xcode@v1
+        with:
+          xcode-version: latest-stable
+
+      - name: Resolve environment
+        id: env
+        run: |
+          case "${{ github.ref_name }}" in
+            test)    echo "scheme=TMDB-Test"    >> "$GITHUB_OUTPUT"; echo "lane="        >> "$GITHUB_OUTPUT" ;;
+            staging) echo "scheme=TMDB-Staging" >> "$GITHUB_OUTPUT"; echo "lane=beta"    >> "$GITHUB_OUTPUT" ;;
+            main)    echo "scheme=TMDB-Live"    >> "$GITHUB_OUTPUT"; echo "lane=release" >> "$GITHUB_OUTPUT" ;;
+          esac
+
+      - name: Compute version
+        id: ver
+        run: |
+          MARKETING=$(grep -m1 'APP_MARKETING_VERSION' Configs/Shared.xcconfig | sed -E 's/.*= *//' | tr -d ' ')
+          BUILD=${{ github.run_number }}
+          echo "marketing=$MARKETING" >> "$GITHUB_OUTPUT"
+          echo "build=$BUILD" >> "$GITHUB_OUTPUT"
+          echo "tag=${{ github.ref_name }}-v${MARKETING}-build.${BUILD}" >> "$GITHUB_OUTPUT"
+
+      - name: Create Secrets.xcconfig
+        env:
+          TMDB_ACCESS_TOKEN: ${{ secrets.TMDB_ACCESS_TOKEN }}
+        run: printf 'TMDB_ACCESS_TOKEN = %s\n' "$TMDB_ACCESS_TOKEN" > Configs/Secrets.xcconfig
+
+      - name: Install xcbeautify
+        run: brew install xcbeautify
+      - name: Install Tuist
+        run: brew install tuist
+      - name: Generate the Xcode project
+        run: tuist generate --no-open
+
+      - name: Build ${{ steps.env.outputs.scheme }} (build ${{ steps.ver.outputs.build }})
+        run: |
+          set -o pipefail
+          xcodebuild build \
+            -workspace TMDB.xcworkspace \
+            -scheme ${{ steps.env.outputs.scheme }} \
+            -destination 'platform=iOS Simulator,name=iPhone 16' \
+            CURRENT_PROJECT_VERSION=${{ steps.ver.outputs.build }} \
+            MARKETING_VERSION=${{ steps.ver.outputs.marketing }} \
+            CODE_SIGNING_ALLOWED=NO \
+            | xcbeautify --renderer github-actions
+
+      - name: Tag + GitHub Release
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          git tag "${{ steps.ver.outputs.tag }}"
+          git push origin "${{ steps.ver.outputs.tag }}"
+          gh release create "${{ steps.ver.outputs.tag }}" \
+            --title "${{ github.ref_name }} v${{ steps.ver.outputs.marketing }} (build ${{ steps.ver.outputs.build }})" \
+            --notes "Automated ${{ github.ref_name }} version from merge ${{ github.sha }}." \
+            --target "${{ github.sha }}" \
+            ${{ github.ref_name == 'main' && ' ' || '--prerelease' }}
+
+      # Distribution only runs when App Store Connect + match secrets exist.
+      # Until they do (see fastlane/SETUP.md) this step skips with a warning,
+      # so the version/tag/release above still succeed on every promotion.
+      - name: Distribute — fastlane ${{ steps.env.outputs.lane }}
+        if: ${{ steps.env.outputs.lane != '' }}
+        env:
+          TMDB_ACCESS_TOKEN: ${{ secrets.TMDB_ACCESS_TOKEN }}
+          FASTLANE_APPLE_ID: ${{ secrets.FASTLANE_APPLE_ID }}
+          MATCH_GIT_URL: ${{ secrets.MATCH_GIT_URL }}
+          MATCH_PASSWORD: ${{ secrets.MATCH_PASSWORD }}
+          ASC_KEY_ID: ${{ secrets.ASC_KEY_ID }}
+          ASC_ISSUER_ID: ${{ secrets.ASC_ISSUER_ID }}
+          ASC_KEY: ${{ secrets.ASC_KEY }}
+        run: |
+          if [ -z "$ASC_KEY_ID" ]; then
+            echo "::warning::App Store Connect secrets not set — skipping fastlane ${{ steps.env.outputs.lane }}. The ${{ github.ref_name }} version/tag/release were still created."
+            exit 0
+          fi
+          bundle install
+          bundle exec fastlane ${{ steps.env.outputs.lane }}

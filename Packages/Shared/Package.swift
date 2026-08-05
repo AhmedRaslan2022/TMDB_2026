@@ -11,14 +11,14 @@ let package = Package(
         .library(name: "SharedTestSupport", targets: ["SharedTestSupport"]),
     ],
     dependencies: [
-        .package(path: "../Core/CoreModels"),
+        .package(path: "../Core/CoreKit"),
         .package(path: "../Core/Networking"),
     ],
     targets: [
         .target(
             name: "SharedTestSupport",
             dependencies: [
-                .product(name: "CoreModels", package: "CoreModels"),
+                .product(name: "CoreModels", package: "CoreKit"),
                 .product(name: "Networking", package: "Networking"),
             ]
         ),

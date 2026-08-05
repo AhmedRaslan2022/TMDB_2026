@@ -23,9 +23,7 @@ final class TMDBUITests: XCTestCase {
         app.launch()
 
         // Auth gate → main shell via the guest path.
-        let guestButton = app.buttons["Continue as guest"]
-        XCTAssertTrue(guestButton.waitForExistence(timeout: 5), "Auth gate should show first")
-        guestButton.tap()
+        app.tapContinueAsGuest()
 
         // Tab shell appears on Home.
         XCTAssertTrue(app.tabBars.buttons["Home"].waitForExistence(timeout: 5))
@@ -53,7 +51,10 @@ final class TMDBUITests: XCTestCase {
 
         // Sign out returns to the auth gate.
         app.buttons["Sign Out"].tap()
-        XCTAssertTrue(guestButton.waitForExistence(timeout: 5), "Sign out should return to auth gate")
+        XCTAssertTrue(
+            app.buttons["Continue as guest"].waitForExistence(timeout: 5),
+            "Sign out should return to auth gate"
+        )
     }
 
     @MainActor
@@ -62,7 +63,7 @@ final class TMDBUITests: XCTestCase {
         app.launchArguments += ["-uitest-stubs", "-AppleLanguages", "(en)", "-AppleLocale", "en_US"]
         app.launch()
 
-        app.buttons["Continue as guest"].tap()
+        app.tapContinueAsGuest()
         app.tabBars.buttons["Search"].tap()
 
         // Type into the search field; the stubbed use case returns results.
@@ -117,7 +118,7 @@ final class TMDBUITests: XCTestCase {
         app.launchArguments += ["-uitest-stubs", "-AppleLanguages", "(en)", "-AppleLocale", "en_US"]
         app.launch()
 
-        app.buttons["Continue as guest"].tap()
+        app.tapContinueAsGuest()
 
         // Home → a movie's details.
         let poster = app.buttons["home.movie.550"].firstMatch
@@ -149,7 +150,7 @@ final class TMDBUITests: XCTestCase {
         app.launchArguments += ["-uitest-stubs", "-AppleLanguages", "(en)", "-AppleLocale", "en_US"]
         app.launch()
 
-        app.buttons["Continue as guest"].tap()
+        app.tapContinueAsGuest()
         // Starts in English.
         XCTAssertTrue(app.tabBars.buttons["Home"].waitForExistence(timeout: 5))
 
@@ -193,7 +194,7 @@ final class TMDBUITests: XCTestCase {
         app.launchArguments += ["-uitest-stubs", "-AppleLanguages", "(en)", "-AppleLocale", "en_US"]
         app.launch()
 
-        app.buttons["Continue as guest"].tap()
+        app.tapContinueAsGuest()
         app.tabBars.buttons["TV"].tap()
 
         // A stubbed show card appears and pushes to TV details.
@@ -212,8 +213,7 @@ final class TMDBUITests: XCTestCase {
         app.launchArguments += ["-uitest-stubs", "-AppleLanguages", "(en)", "-AppleLocale", "en_US"]
         app.launch()
 
-        let guestButton = app.buttons["Continue as guest"]
-        guestButton.tap()
+        app.tapContinueAsGuest()
 
         // Profile → Settings.
         app.tabBars.buttons["Profile"].tap()
@@ -225,9 +225,16 @@ final class TMDBUITests: XCTestCase {
         dark.tap()
         XCTAssertTrue(dark.isSelected, "Tapping a theme should select it")
 
-        // Signing out from Settings returns to the auth gate.
-        app.buttons["settings.signOut"].tap()
-        XCTAssertTrue(guestButton.waitForExistence(timeout: 5), "Sign out should return to the auth gate")
+        // A guest session gets a "Sign In" row (not "Sign Out"); tapping it
+        // tears down the guest session and returns to the auth gate.
+        let signIn = app.buttons["settings.signIn"]
+        XCTAssertTrue(signIn.waitForExistence(timeout: 5), "A guest should see Sign In in Settings")
+        XCTAssertFalse(app.buttons["settings.signOut"].exists, "A guest should not see Sign Out in Settings")
+        signIn.tap()
+        XCTAssertTrue(
+            app.buttons["Continue as guest"].waitForExistence(timeout: 5),
+            "Sign In should route to the auth gate"
+        )
     }
 
     @MainActor
@@ -236,7 +243,7 @@ final class TMDBUITests: XCTestCase {
         app.launchArguments += ["-uitest-stubs", "-AppleLanguages", "(en)", "-AppleLocale", "en_US"]
         app.launch()
 
-        app.buttons["Continue as guest"].tap()
+        app.tapContinueAsGuest()
         app.tabBars.buttons["Search"].tap()
 
         // Open the advanced-search (Discover) screen from the search toolbar.

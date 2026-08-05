@@ -6,8 +6,8 @@ import PackageDescription
 /// on another feature target. Cross-feature navigation happens through
 /// coordinators in the app target.
 let coreProducts: [Target.Dependency] = [
-    .product(name: "CoreModels", package: "CoreModels"),
-    .product(name: "CoreUtilities", package: "CoreUtilities"),
+    .product(name: "CoreModels", package: "CoreKit"),
+    .product(name: "CoreUtilities", package: "CoreKit"),
     .product(name: "Networking", package: "Networking"),
     .product(name: "KeychainStorage", package: "CoreStorage"),
     .product(name: "SwiftDataStorage", package: "CoreStorage"),
@@ -24,6 +24,7 @@ let featureNames = [
     "FeatureProfile",
     "FeatureTV",
     "FeaturePerson",
+    "FeatureOnboarding",
 ]
 
 let package = Package(
@@ -32,8 +33,7 @@ let package = Package(
     platforms: [.iOS(.v17), .macOS(.v14)],
     products: featureNames.map { .library(name: $0, targets: [$0]) },
     dependencies: [
-        .package(path: "../Core/CoreModels"),
-        .package(path: "../Core/CoreUtilities"),
+        .package(path: "../Core/CoreKit"),
         .package(path: "../Core/Networking"),
         .package(path: "../Core/CoreStorage"),
         .package(path: "../Core/CoreUI"),
@@ -95,6 +95,13 @@ let package = Package(
             name: "FeaturePersonTests",
             dependencies: [
                 "FeaturePerson",
+                .product(name: "SharedTestSupport", package: "Shared"),
+            ]
+        ),
+        .testTarget(
+            name: "FeatureOnboardingTests",
+            dependencies: [
+                "FeatureOnboarding",
                 .product(name: "SharedTestSupport", package: "Shared"),
             ]
         ),

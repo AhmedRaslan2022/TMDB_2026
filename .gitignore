@@ -30,3 +30,20 @@ fastlane/screenshots/
 fastlane/*.p8
 vendor/bundle/
 .bundle/
+
+# Scratch Flutter demo living in the repo root — not part of the iOS app.
+# Ignored so it stays out of commits and out of the repo-wide SwiftFormat/
+# SwiftLint pre-commit gate (its generated Swift fails the lint rules).
+demo_app/
+
+# Tuist — the Xcode project and workspace are generated from Project.swift.
+# Run `tuist generate` after cloning (see README).
+TMDB.xcodeproj/
+TMDB.xcworkspace/
+.tuist-version
+Tuist/.build/
+Tuist/Dependencies/
+# Synthesized Info.plists and bundle accessors, and the resolved SPM graph
+# Tuist writes beside the workspace — all reproduced by `tuist generate`.
+Derived/
+.package.resolved

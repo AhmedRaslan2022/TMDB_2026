@@ -6,7 +6,7 @@ This file defines the non-negotiable rules for working in this repository. Read 
 
 Portfolio-grade iOS app on the TMDB API. Purpose: demonstrate senior-level iOS skills. Every decision should optimize for **code a reviewer would praise**, not for speed.
 
-- Min iOS: 17.0 · Swift 5.10+ · SwiftUI only · Xcode workspace + local SPM packages
+- Min iOS: 17.0 · Swift 5.10+ · SwiftUI only · **Tuist-generated** Xcode workspace + local SPM packages
 - TMDB API v3 endpoints, authenticated with the **v4 Read Access Token as a `Authorization: Bearer` header** (not the `api_key` query param)
 
 ## Hard Architecture Rules (never violate)
@@ -26,7 +26,8 @@ Portfolio-grade iOS app on the TMDB API. Purpose: demonstrate senior-level iOS s
 
 ```
 TMDBApp (app target: composition root, AppCoordinator, route wiring only)
-Packages/Core:      separate packages — Networking, CoreStorage, CoreModels, CoreUI, CoreUtilities, CoreEnvironment
+Packages/Core:      Networking, CoreStorage, CoreUI, and CoreKit (one package, three targets/products:
+                    CoreModels, CoreUtilities, CoreEnvironment)
 Packages/Features:  FeatureAuth, FeatureHome, FeatureMovieDetails, FeatureSearch, FeatureFavorites, FeatureProfile (+ FeatureTV, FeaturePerson in Sprint 6)
 Packages/Shared:    SharedTestSupport (mocks/stubs — test targets only)
 ```
@@ -42,6 +43,8 @@ New shared code goes in the correct Core package — never duplicated into featu
 ## Environments & Secrets
 
 - 4 configs/schemes: **Dev, Staging, Test, Live** via xcconfig files → Info.plist → `CoreEnvironment.AppEnvironment` (type-safe reader; missing key = precondition failure in debug).
+- **The Xcode project is generated — never edit it.** `TMDB.xcodeproj`/`TMDB.xcworkspace` are git-ignored build artifacts produced by `tuist generate` from `Project.swift`. Targets, configurations, schemes, and package links are declared there; environment *values* stay in the xcconfigs. If a change needs a project edit, edit `Project.swift` and regenerate — do not hand-edit `project.pbxproj` (it will be overwritten), and never commit it.
+- Adding a Swift file inside an existing source folder needs **no** manifest change (targets use globs). Adding a new package, a new target, or a new top-level source folder does.
 - Per-env bundle ID suffix, display name, icon badge.
 - **Secrets:** real values live ONLY in `Configs/Secrets.xcconfig`, which is git-ignored. `Configs/Secrets.example.xcconfig` is committed with placeholder values. NEVER hardcode the TMDB token anywhere, NEVER commit Secrets.xcconfig, NEVER print secrets in logs, commit messages, or PR descriptions. If Secrets.xcconfig is missing, stop and ask the user to create it from the example file.
 
@@ -63,10 +66,12 @@ New shared code goes in the correct Core package — never duplicated into featu
 
 ## Git Workflow
 
-- Branches: `sprint-N/task-N.M-short-name` off `develop`. `main` is release-only.
+- **Promotion pipeline** (see `docs/BRANCHING.md`): `develop → test → staging → main`, each hop a PR, each merge minting a versioned build for that environment (`test`=Test, `staging`=Staging→TestFlight, `main`=Live→App Store). `main` is the production (Live) line; the former `live` branch was retired into it.
+- Work branches: `sprint-N/task-N.M-short-name` (or `fix/…`, `chore/…`) off `develop`.
 - **Conventional commits** (`feat:`, `fix:`, `test:`, `chore:`, `refactor:`, `docs:`). Small, atomic commits.
-- One PR per task (or tightly-related task pair), squash-merged into `develop`. PR description: what/why + which sprint task it closes.
-- Never commit directly to `main` or `develop`. Never force-push shared branches.
+- One PR per task (or tightly-related task pair), **squash-merged into `develop`**. Promotion PRs (develop→test→staging→main) use **merge commits**, forward-only, one hop at a time. PR description: what/why + which sprint task it closes.
+- **Never push directly to `develop`, `test`, `staging`, or `main`** — always open a pull request, including feature work into `develop`. Never force-push a shared branch.
+- CI (`.github/workflows/ci.yml`) gates every PR; `release.yml` versions each promotion merge. Branch protection that blocks non-green/direct pushes is an owner-side GitHub setting.
 
 ## Sprint Execution Protocol
 

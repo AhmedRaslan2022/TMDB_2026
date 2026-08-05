@@ -14,6 +14,11 @@ ASSETCATALOG_COMPILER_INCLUDE_ALL_APPICON_ASSETS = YES
 // App identity base — env files append their suffix / display name.
 APP_BUNDLE_ID_BASE = com.rasslan.github.TMDB
 
+// Marketing version. Single source of truth: the app target reads it as
+// MARKETING_VERSION and .github/workflows/release.yml greps this file (it used
+// to grep project.pbxproj, which Tuist now generates and git no longer tracks).
+APP_MARKETING_VERSION = 1.0
+
 // TMDB API — v3 endpoints, v4 bearer auth. `$()` breaks up `//` so it is
 // not parsed as an xcconfig comment.
 TMDB_API_BASE_URL = https:/$()/api.themoviedb.org/3

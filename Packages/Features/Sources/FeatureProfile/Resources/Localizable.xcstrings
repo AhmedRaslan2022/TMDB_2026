@@ -221,6 +221,17 @@
         }
       }
     },
+    "Sign In" : {
+      "comment" : "Profile sign-in button for guest sessions\nSettings sign-in button for guest or signed-out users",
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "تسجيل الدخول"
+          }
+        }
+      }
+    },
     "Sign in to sync favorites and more." : {
       "comment" : "Guest profile prompt",
       "localizations" : {

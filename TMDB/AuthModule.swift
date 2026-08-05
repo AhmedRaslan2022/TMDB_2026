@@ -56,6 +56,17 @@ struct AuthModule {
         await (try? sessionRepository.currentSession()) != nil
     }
 
+    /// Whether the persisted session is a full TMDB account session. Guest
+    /// sessions and the signed-out state both come out `false` — surfaces that
+    /// offer account entry (e.g. Settings' "Sign In") treat them the same.
+    func isAuthenticated() async -> Bool {
+        guard let session = try? await sessionRepository.currentSession() else { return false }
+        if case .authenticated = session {
+            return true
+        }
+        return false
+    }
+
     /// Starts logout teardown (local wipe first, then remote delete) in the
     /// background and registers it with the barrier. Failures are reported,
     /// not thrown — the user is already logged out on-device.

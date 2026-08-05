@@ -1,0 +1,105 @@
+{
+  "sourceLanguage": "en",
+  "strings": {
+    "Get Started": {
+      "comment": "Onboarding: finish and enter the app",
+      "localizations": {
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "ابدأ الآن"
+          }
+        }
+      }
+    },
+    "Next": {
+      "comment": "Onboarding: advance to the next slide",
+      "localizations": {
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "التالي"
+          }
+        }
+      }
+    },
+    "Skip": {
+      "comment": "Onboarding: skip the walkthrough",
+      "localizations": {
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "تخطّي"
+          }
+        }
+      }
+    },
+    "onboarding.collect.message": {
+      "comment": "Onboarding slide 2 body",
+      "localizations": {
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "احفظ المفضّلة، وأنشئ قائمة مشاهدة، وقيّم ما تشاهده."
+          }
+        }
+      }
+    },
+    "onboarding.collect.title": {
+      "comment": "Onboarding slide 2 title",
+      "localizations": {
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "كوّن مجموعتك"
+          }
+        }
+      }
+    },
+    "onboarding.discover.message": {
+      "comment": "Onboarding slide 1 body",
+      "localizations": {
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "تصفّح الأكثر رواجًا وتعرّف على فرق العمل والممثلين."
+          }
+        }
+      }
+    },
+    "onboarding.discover.title": {
+      "comment": "Onboarding slide 1 title",
+      "localizations": {
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "اكتشف الأفلام والمسلسلات"
+          }
+        }
+      }
+    },
+    "onboarding.made.message": {
+      "comment": "Onboarding slide 3 body",
+      "localizations": {
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "الإنجليزية والعربية، وتخطيط من اليمين إلى اليسار، ومظهر فاتح وداكن."
+          }
+        }
+      }
+    },
+    "onboarding.made.title": {
+      "comment": "Onboarding slide 3 title",
+      "localizations": {
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "مصمّم لك"
+          }
+        }
+      }
+    }
+  },
+  "version": "1.0"
+}
